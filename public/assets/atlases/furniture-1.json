@@ -1,0 +1,183 @@
+{
+  "frames": {
+    "light_rays": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 1024,
+        "h": 768
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 1024,
+        "h": 768
+      },
+      "sourceSize": {
+        "w": 1024,
+        "h": 768
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "kanban_board_prop": {
+      "frame": {
+        "x": 0,
+        "y": 768,
+        "w": 224,
+        "h": 224
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 224,
+        "h": 224
+      },
+      "sourceSize": {
+        "w": 224,
+        "h": 224
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "whiteboard": {
+      "frame": {
+        "x": 224,
+        "y": 768,
+        "w": 224,
+        "h": 191
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 224,
+        "h": 191
+      },
+      "sourceSize": {
+        "w": 224,
+        "h": 191
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "chair": {
+      "frame": {
+        "x": 415,
+        "y": 768,
+        "w": 128,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 192
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "coffee_machine": {
+      "frame": {
+        "x": 543,
+        "y": 768,
+        "w": 161,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 161,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 161,
+        "h": 192
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "desk": {
+      "frame": {
+        "x": 704,
+        "y": 768,
+        "w": 192,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 192,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 192,
+        "h": 192
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "monitor": {
+      "frame": {
+        "x": 0,
+        "y": 992,
+        "w": 129,
+        "h": 160
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 129,
+        "h": 160
+      },
+      "sourceSize": {
+        "w": 129,
+        "h": 160
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  },
+  "meta": {
+    "app": "http://github.com/odrick/free-tex-packer-core",
+    "version": "0.3.8",
+    "image": "furniture-1.webp",
+    "format": "RGBA8888",
+    "size": {
+      "w": 1024,
+      "h": 1121
+    },
+    "scale": 1
+  }
+}

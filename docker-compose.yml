@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  sora-mission-control:
+    build: .
+    container_name: sora-mission-control
+    ports:
+      - "80:80"
+    restart: unless-stopped

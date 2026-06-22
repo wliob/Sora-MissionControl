@@ -1,0 +1,119 @@
+{
+  "frames": {
+    "korra_cheer_0": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 96,
+        "h": 128
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "korra_cheer_1": {
+      "frame": {
+        "x": 96,
+        "y": 0,
+        "w": 96,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 96,
+        "h": 128
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "korra_cheer_2": {
+      "frame": {
+        "x": 192,
+        "y": 0,
+        "w": 96,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 96,
+        "h": 128
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "korra_cheer_3": {
+      "frame": {
+        "x": 288,
+        "y": 0,
+        "w": 96,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 96,
+        "h": 128
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  },
+  "animations": {
+    "korra_cheer": [
+      "korra_cheer_0",
+      "korra_cheer_1",
+      "korra_cheer_2",
+      "korra_cheer_3"
+    ]
+  },
+  "meta": {
+    "app": "hermes-3d-office-v2/pack-spritesheets",
+    "version": "1.0",
+    "image": "korra_cheer.webp",
+    "format": "RGBA8888",
+    "size": {
+      "w": 384,
+      "h": 128
+    },
+    "scale": 1
+  }
+}

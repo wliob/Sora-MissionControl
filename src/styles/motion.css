@@ -1,0 +1,191 @@
+/* ============================================================
+   Sora Mission Control — Motion
+   Animation utilities and reduced-motion overrides.
+
+   Performance rules (see docs/motion-and-fps-report.md):
+   - Only animate `opacity` and `transform` (compositor-only paths).
+     Never animate `box-shadow`, `background`, `border-color`, or layout
+     properties — they force paint and main-thread style recalc.
+   - Infinite animations carry `will-change` for the exact compositor
+     property they touch, and nothing else.
+   - Entrance animations run once (`animation-fill-mode: both`) and never
+     loop — they do not need `will-change`.
+   ============================================================ */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Live-dot pulse — opacity only (compositor-friendly).
+   Previously this animated `box-shadow` on the whole pill, which forced a
+   repaint of the pill + its neighbours every 2s. The dot is a tiny isolated
+   element so the paint cost is negligible even when the compositor promotes
+   it. The pill border/background stay static. */
+@keyframes pulseStatusDot {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ── Entrance (run once, no will-change) ────────────────────── */
+.animate-fade-in {
+  animation: fadeIn var(--dur-reveal) var(--ease-out) both;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft var(--dur-panel) var(--ease-out) both;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight var(--dur-panel) var(--ease-out) both;
+}
+
+/* ── Status live indicator ──────────────────────────────────── */
+/* Applied to the small dot inside the pill, never to the pill itself. */
+.pulse-status-dot {
+  animation: pulseStatusDot 2s var(--ease-in-out) infinite;
+  will-change: opacity;
+}
+
+/* ── Loading shimmer for skeleton states ────────────────────── */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--surface-base) 0%,
+    var(--surface-hover) 50%,
+    var(--surface-base) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+}
+
+/* ── Hover affordances (CSS-only, no JS style mutation) ─────── */
+/* These replace inline onMouseEnter/onMouseLeave handlers that wrote to
+   style.background directly. CSS :hover is cheaper (browser handles it in
+   the compositor-friendly path) and keeps React out of the per-frame loop. */
+.row-hover {
+  transition: background-color var(--dur-micro) var(--ease-out);
+}
+.row-hover:hover {
+  background: var(--surface-base);
+}
+
+/* Acknowledge button in alert rows — quiet dim→secondary color lift. */
+.ack-btn {
+  color: var(--text-dim);
+  transition: color var(--dur-micro) var(--ease-out);
+}
+.ack-btn:hover {
+  color: var(--text-secondary);
+}
+
+.nav-tab {
+  color: var(--text-muted);
+  transition: color var(--dur-micro) var(--ease-out),
+              background-color var(--dur-micro) var(--ease-out);
+}
+
+/* Active tab is the filled, primary-color state; hover/active pseudo-states
+   must not override it. */
+.nav-tab-active {
+  color: var(--text-primary);
+}
+
+/* Non-active nav tabs lift color on hover; active tabs keep their fill. */
+.nav-tab:hover {
+  color: var(--text-secondary);
+}
+.nav-tab:active {
+  color: var(--text-primary);
+}
+.nav-tab-active:hover,
+.nav-tab-active:active {
+  color: var(--text-primary);
+}
+
+/* ── Admin surface hover patterns ───────────────────────────── */
+/* Admin buttons (Cancel, Confirm, Copy, Dismiss, + New Key, etc.)
+   Only transition the properties that actually change on hover/state. */
+.admin-btn {
+  transition: color var(--dur-micro) var(--ease-out),
+              background-color var(--dur-micro) var(--ease-out),
+              border-color var(--dur-micro) var(--ease-out);
+}
+
+/* Admin section tabs (KeyMcpAdminPanel, UnifiedAdminSurface).
+   These use underline indicators, not filled backgrounds. */
+.admin-tab {
+  transition: color var(--dur-micro) var(--ease-out),
+              border-bottom-color var(--dur-micro) var(--ease-out);
+}
+.admin-tab:hover {
+  color: var(--text-secondary);
+}
+
+/* Small action buttons in key/MCP rows. These lift background + border on hover
+   but the hover color depends on a `danger` prop — handled by modifier classes. */
+.admin-action-btn {
+  transition: background-color var(--dur-micro) var(--ease-out),
+              border-color var(--dur-micro) var(--ease-out);
+}
+.admin-action-btn:not(:disabled):hover {
+  background: var(--surface-base);
+  border-color: var(--border-base);
+}
+.admin-action-btn-danger:not(:disabled):hover {
+  background: var(--accent-red-glow);
+  border-color: var(--accent-red)44;
+}
+
+/* Accent-colored action buttons (model admin). Hover lifts border opacity.
+   The inline color variable is set per-instance, so we only transition the
+   border-color itself; the hover state still uses JS for dynamic color refs. */
+.admin-accent-btn {
+  transition: border-color var(--dur-micro) var(--ease-out);
+}
+
+/* Room tab buttons (office). Transition only the properties that change
+   between active/inactive states. */
+.room-tab {
+  transition: color var(--dur-micro) var(--ease-out),
+              background-color var(--dur-micro) var(--ease-out),
+              border-color var(--dur-micro) var(--ease-out);
+}
+
+/* ── Reduced motion ─────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in,
+  .animate-slide-in-left,
+  .animate-slide-in-right,
+  .pulse-status-dot,
+  .shimmer {
+    animation: none !important;
+  }
+
+  /* Kill transitions too so reduced-motion users get instant state changes. */
+  .row-hover,
+  .nav-tab,
+  .ack-btn,
+  .admin-btn,
+  .admin-tab,
+  .admin-action-btn,
+  .admin-accent-btn,
+  .room-tab {
+    transition: none !important;
+  }
+}
