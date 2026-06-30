@@ -1,15 +1,12 @@
 /**
  * HermesChatTransport — Phase 4 verified chat adapter.
  *
- * Uses the real Hermes dashboard API for profile listing. Chat messaging
- * and live events require the dashboard's embedded PTY WebSocket bridge,
- * which is not available to external browser apps. Until Cloud builds a
- * local CLI proxy or the dashboard exposes a direct chat REST/WS surface,
- * sendMessage and subscribe report unavailability honestly.
+ * Uses the Hermes dashboard PTY WebSocket bridge for chat messaging,
+ * proxied through missionControlProxy.js at /api/pty?token=<session-token>.
+ * The bridge forwards WebSocket connections to the Hermes dashboard PTY,
+ * enabling terminal-based chat with Hermes agents.
  *
- * The chatBackbone falls back to createDemoChatTransport when no verified
- * transport is supplied — this transport signals its own unavailability
- * so the backbone can make that decision automatically.
+ * Profile listing uses the verified /api/plugins/kanban/profiles endpoint.
  */
 
 import type { AgentId } from '@/types';
@@ -36,6 +33,10 @@ interface RawKanbanProfilesResponse {
   profiles: RawKanbanProfile[];
 }
 
+function normalizeChatCommandMessage(message: string): string {
+  return message.replace(/[\r\n]+/g, ' ').trim();
+}
+
 export class HermesChatTransport implements ChatTransport {
   private client: HermesDashboardClient;
 
@@ -60,51 +61,172 @@ export class HermesChatTransport implements ChatTransport {
   }
 
   /**
-   * Send a chat message. Currently unavailable — the Hermes dashboard
-   * does not expose a direct REST chat endpoint. Chat messaging goes
-   * through the dashboard's embedded PTY WebSocket bridge, which is
-   * only available inside the dashboard SPA, not to external apps.
+   * Send a chat message via the PTY WebSocket bridge.
    *
-   * Cloud owns building a local CLI proxy or verifying a real chat
-   * transport surface. Until then, the demo transport is the fallback.
+   * Connects to the PTY bridge at /api/pty?token=<session-token> (proxied
+   * through missionControlProxy.js to the Hermes dashboard). Sends a chat
+   * command and returns the agent's response.
    */
-  async sendMessage(_input: SendMessageInput): Promise<SendMessageResult> {
-    // No REST chat endpoint exists on the Hermes dashboard. Chat messaging
-    // goes through the dashboard's embedded PTY WebSocket bridge, which is
-    // only available inside the dashboard SPA, not to external apps. Throw
-    // honestly so the chatBackbone falls back to the demo transport.
-    throw new Error(
-      'no REST chat endpoint: Hermes dashboard does not expose a direct chat REST surface; ' +
-        'messaging requires the embedded PTY WebSocket bridge (dashboard-only).',
-    );
+  async sendMessage(input: SendMessageInput): Promise<SendMessageResult> {
+    const sessionToken = this.client.getSessionToken();
+    const wsBaseUrl = this.client.getWsBaseUrl();
+    const wsUrl = `${wsBaseUrl}/api/pty?token=${encodeURIComponent(sessionToken || '')}`;
+
+    return new Promise((resolve, reject) => {
+      let settled = false;
+      let timeout: ReturnType<typeof setTimeout> | null = null;
+      let idleTimer: ReturnType<typeof setTimeout> | null = null;
+      const chunks: string[] = [];
+      const settle = (fn: () => void) => {
+        if (!settled) {
+          settled = true;
+          if (timeout) clearTimeout(timeout);
+          if (idleTimer) clearTimeout(idleTimer);
+          fn();
+        }
+      };
+
+      try {
+        const ws = new WebSocket(wsUrl);
+        const finishWithBufferedResponse = () => {
+          settle(() => {
+            const response = chunks.join('').trim();
+            if (!response) {
+              reject(new Error('PTY WebSocket closed without response'));
+              return;
+            }
+            try {
+              if (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING) {
+                ws.close();
+              }
+            } catch { /* ignore */ }
+            resolve({
+              sessionId: input.sessionId || `pty-${Date.now()}`,
+              reply: response,
+            });
+          });
+        };
+
+        timeout = setTimeout(() => {
+          settle(() => {
+            try { ws.close(); } catch { /* ignore */ }
+            reject(new Error('PTY WebSocket connection timed out'));
+          });
+        }, 30_000);
+
+        ws.onopen = () => {
+          // Send chat command. The PTY bridge accepts "chat <profile> <message>".
+          const message = normalizeChatCommandMessage(input.message);
+          const cmd = `chat ${input.profile} ${message}\n`;
+          ws.send(cmd);
+        };
+
+        ws.onmessage = (event) => {
+          chunks.push(String(event.data));
+          if (idleTimer) clearTimeout(idleTimer);
+          idleTimer = setTimeout(finishWithBufferedResponse, 350);
+        };
+
+        ws.onerror = () => {
+          settle(() => {
+            reject(new Error('PTY WebSocket connection error'));
+          });
+        };
+
+        ws.onclose = () => {
+          if (chunks.length > 0) {
+            finishWithBufferedResponse();
+            return;
+          }
+          settle(() => {
+            reject(new Error('PTY WebSocket closed without response'));
+          });
+        };
+      } catch (err) {
+        settle(() => {
+          reject(err instanceof Error ? err : new Error(String(err)));
+        });
+      }
+    });
   }
 
   /**
-   * Subscribe to live chat events. Currently unavailable — no chat
-   * WebSocket endpoint exists on the dashboard (/api/plugins/chat/events
-   * returns 404). Same blocker as sendMessage.
+   * Subscribe to live chat events via the PTY WebSocket bridge.
+   *
+   * Opens a persistent WebSocket connection to the PTY bridge for receiving
+   * agent replies and transport status updates. Returns an unsubscribe function.
    */
-  subscribe(_handler: (event: ChatEvent) => void): () => void {
-    // No chat WebSocket endpoint exists on the dashboard
-    // (/api/plugins/chat/events returns 404). Same blocker as sendMessage.
-    throw new Error(
-      'no chat WebSocket endpoint: Hermes dashboard exposes no direct chat event stream; ' +
-        'live events require the embedded PTY WebSocket bridge (dashboard-only).',
-    );
+  subscribe(handler: (event: ChatEvent) => void): () => void {
+    const sessionToken = this.client.getSessionToken();
+    const wsBaseUrl = this.client.getWsBaseUrl();
+    const wsUrl = `${wsBaseUrl}/api/pty?token=${encodeURIComponent(sessionToken || '')}`;
+
+    let ws: WebSocket | null = null;
+    let closed = false;
+    let opened = false;
+
+    try {
+      ws = new WebSocket(wsUrl);
+
+      ws.onopen = () => {
+        opened = true;
+        if (!closed) {
+          handler({
+            type: 'transport.status',
+            profile: 'biscuit' as AgentId,
+            state: 'connected',
+          });
+        }
+      };
+
+      ws.onmessage = () => {
+        // The PTY bridge is terminal-stream oriented, not a profile-scoped
+        // event bus. sendMessage() owns request/response routing; the
+        // persistent subscription is used only to surface connection status.
+      };
+
+      ws.onerror = () => {
+        if (!closed && opened) {
+          handler({
+            type: 'transport.status',
+            profile: 'biscuit' as AgentId,
+            state: 'degraded',
+          });
+        }
+      };
+
+      ws.onclose = () => {
+        if (!closed) {
+          closed = true;
+          handler({
+            type: 'transport.status',
+            profile: 'biscuit' as AgentId,
+            state: 'offline',
+          });
+        }
+        ws = null;
+      };
+    } catch {
+      closed = true;
+    }
+
+    return () => {
+      closed = true;
+      if (ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING)) {
+        try { ws.close(); } catch { /* ignore */ }
+      }
+      ws = null;
+    };
   }
 
   /**
-   * Whether this transport can actually send messages or subscribe to
-   * events. Returns false because the Hermes dashboard exposes no chat
-   * REST or WebSocket surface to external apps — only the embedded PTY
-   * bridge inside the dashboard SPA. The chatBackbone uses this to decide
-   * whether to fall back to the demo transport.
+   * Whether this transport can send messages or subscribe to events.
+   *
+   * Returns true now that the PTY WebSocket bridge is available through
+   * missionControlProxy.js. The chatBackbone uses this to decide whether
+   * to select this transport over the demo mock.
    */
   static isAvailable(): boolean {
-    // The Hermes dashboard does not expose a chat REST or WebSocket surface
-    // to external apps (only the embedded PTY bridge inside the SPA). So this
-    // transport cannot actually send messages or subscribe to events. Return
-    // false so the chatBackbone falls back to the demo transport honestly.
-    return false;
+    return true;
   }
 }

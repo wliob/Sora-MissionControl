@@ -4,9 +4,10 @@ import {
   _resetForTest,
   hasProjectControlReadAdapter,
   projectControlStore,
+  setProjectControlMutationAdapter,
   setProjectControlReadAdapter,
 } from '@/state/projectControlStore';
-import type { ProjectControlReadAdapter } from '@/types/project-control';
+import type { ProjectControlMutationAdapter, ProjectControlReadAdapter } from '@/types/project-control';
 import type { ConnectionStateValue } from '@/types/connection';
 import { initialConnectionState } from '@/types/connection';
 import type { KanbanBoardSnapshot, KanbanTaskCard, ProfileRosterEntry, ActiveWorker } from '@/types/board';
@@ -250,6 +251,131 @@ describe('projectControlStore', () => {
     expect(projectControlStore.state.taskDetail.value?.comments.availability).toBe('unavailable');
     expect(projectControlStore.state.taskDetail.value?.runs.availability).toBe('unavailable');
     expect(projectControlStore.state.taskDetail.value?.logs.availability).toBe('unavailable');
+  });
+
+  it('hydrates diagnostics/comments/runs/logs from a bound read adapter when available', async () => {
+    const adapter: ProjectControlReadAdapter = {
+      readTaskContext: vi.fn().mockResolvedValue({
+        diagnostics: {
+          value: [{ code: 'worker-stalled', detail: 'Heartbeat missing' }],
+          availability: 'available',
+          provenance: {
+            source: 'dashboard-api',
+            freshness: 'live',
+            confidence: 'verified',
+            receivedAt: '2026-06-21T12:06:00Z',
+            note: 'detail diagnostics loaded',
+          },
+        },
+        comments: {
+          value: [{ id: 'c-1', author: 'sora', body: 'Please unblock this lane.', createdAt: '2026-06-21T12:06:00Z' }],
+          availability: 'available',
+          provenance: {
+            source: 'dashboard-api',
+            freshness: 'live',
+            confidence: 'verified',
+            receivedAt: '2026-06-21T12:06:00Z',
+            note: 'comments loaded',
+          },
+        },
+        runs: {
+          value: [{
+            id: 'run_phase7_1',
+            status: 'running',
+            profile: 'biscuit',
+            startedAt: '2026-06-21T12:00:00Z',
+            completedAt: null,
+            workerPid: 4221,
+            lastHeartbeatAt: '2026-06-21T12:05:00Z',
+            outcome: null,
+            summary: null,
+            error: null,
+          }],
+          availability: 'available',
+          provenance: {
+            source: 'dashboard-api',
+            freshness: 'live',
+            confidence: 'verified',
+            receivedAt: '2026-06-21T12:06:00Z',
+            note: 'runs loaded',
+          },
+        },
+        logs: {
+          value: {
+            lines: ['line one', 'line two'],
+            truncated: false,
+            path: '/tmp/t_phase7_1.log',
+            exists: true,
+            sizeBytes: 42,
+          },
+          availability: 'available',
+          provenance: {
+            source: 'dashboard-api',
+            freshness: 'live',
+            confidence: 'verified',
+            receivedAt: '2026-06-21T12:06:00Z',
+            note: 'logs loaded',
+          },
+        },
+      }),
+    };
+    setProjectControlReadAdapter(adapter);
+    projectControlStore.syncFromSources(
+      makeBoardSnapshot({ tasks: [makeTask({ diagnostics: null })] }),
+      makeConnectionState(),
+    );
+
+    await projectControlStore.selectTask('t_phase7_1');
+
+    expect(projectControlStore.state.taskDetail.value?.diagnostics.availability).toBe('available');
+    expect(projectControlStore.state.taskDetail.value?.diagnostics.value).toEqual([
+      { code: 'worker-stalled', detail: 'Heartbeat missing' },
+    ]);
+    expect(projectControlStore.state.taskDetail.value?.comments.value).toHaveLength(1);
+    expect(projectControlStore.state.taskDetail.value?.runs.value).toHaveLength(1);
+    expect(projectControlStore.state.taskDetail.value?.logs.value).toMatchObject({
+      path: '/tmp/t_phase7_1.log',
+      exists: true,
+      sizeBytes: 42,
+    });
+  });
+
+  it('executes a confirmed mutation through the bound adapter and stores the result provenance', async () => {
+    const mutationAdapter: ProjectControlMutationAdapter = {
+      executeAction: vi.fn().mockResolvedValue({
+        ok: true,
+        status: 'submitted',
+        message: 'terminate submitted',
+        raw: { ok: true },
+        provenance: {
+          source: 'dashboard-api',
+          freshness: 'live',
+          confidence: 'verified',
+          receivedAt: '2026-06-21T12:06:00Z',
+          note: 'Mutation sent through /api/plugins/kanban/runs/run_phase7_1/terminate.',
+        },
+      }),
+    };
+    setProjectControlMutationAdapter(mutationAdapter);
+    projectControlStore.syncFromSources(
+      makeBoardSnapshot({ tasks: [makeTask({ status: 'running' })] }),
+      makeConnectionState({ rest: 'connected' }),
+    );
+    await projectControlStore.selectTask('t_phase7_1');
+
+    const result = await projectControlStore.executeAction('terminate', 'operator confirmed stop');
+
+    expect(mutationAdapter.executeAction).toHaveBeenCalledWith({
+      kind: 'terminate',
+      taskId: 't_phase7_1',
+      runId: 'run_phase7_1',
+      confirm: true,
+      reason: 'operator confirmed stop',
+    });
+    expect(result?.message).toBe('terminate submitted');
+    expect(projectControlStore.state.lastMutation.value?.message).toBe('terminate submitted');
+    expect(projectControlStore.state.lastMutation.provenance.source).toBe('dashboard-api');
+    expect(projectControlStore.state.lastError).toBeNull();
   });
 
   it('exposes a plain read-only API with no browser db/filesystem/pid write methods', () => {

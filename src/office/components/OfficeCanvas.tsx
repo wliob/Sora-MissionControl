@@ -28,9 +28,14 @@ interface OfficeCanvasProps {
    * avoid rendering stale agent state.
    */
   onResume?: () => void;
+  /**
+   * When true, the office is in pop-out read-only mode. The canvas should
+   * not render action overlays or interactive command components.
+   */
+  popoutMode?: boolean;
 }
 
-export function OfficeCanvas({ onSelectAgent, onFocusZone, onReady, onStats, onAssetError, onResume }: OfficeCanvasProps) {
+export function OfficeCanvas({ onSelectAgent, onFocusZone, onReady, onStats, onAssetError, onResume, popoutMode }: OfficeCanvasProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const runtimeRef = useRef<GameRuntime | null>(null);
   const [ready, setReady] = useState(false);
@@ -224,6 +229,7 @@ export function OfficeCanvas({ onSelectAgent, onFocusZone, onReady, onStats, onA
     <div
       {...(bind() as Record<string, unknown>)}
       ref={wrapperRef}
+      data-office-popout={popoutMode ? 'true' : 'false'}
       style={{
         position: 'relative',
         flex: 1,

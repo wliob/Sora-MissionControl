@@ -2,14 +2,18 @@
   "name": "sora-missioncontrol",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@11.7.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
+    "proxy": "node missionControlProxy.js",
     "lint": "tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:e2e": "playwright test",
+    "test:watch": "vitest",
+    "check:office-assets": "python3 scripts/check_office_atlases.py"
   },
   "dependencies": {
     "@use-gesture/react": "^10.3.0",
@@ -22,6 +26,7 @@
     "zustand": "^5.0.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",

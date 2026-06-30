@@ -1,0 +1,4200 @@
+{
+  "url": "http://127.0.0.1:9121/kanban",
+  "title": "Hermes Agent - Dashboard",
+  "bodyClass": "",
+  "viewport": {
+    "w": 1440,
+    "h": 950
+  },
+  "bodyTextPrefix": "HERMES\nAGENT\nthis dashboard (default)\nbiscuit\ncloud\nkorra\nlelouch\nrain\ntifa\nCHAT\nSESSIONS\nFILES\nMODELS\nLOGS\nCRON\nSKILLS\nPLUGINS\nMCP\nCHANNELS\nWEBHOOKS\nPAIRING\nPROFILES\nCONFIG\nKEYS\nSYSTEM\nDOCUMENTATION\nPlugins\nKANBAN\nACHIEVEMENTS\nSystem\n\nGateway Status: Running\n\nActive Sessions: 1\n\nRestart Gateway\nCYBERPUNK\nEN\nv0.17.0\nNous Research\nKanban\nBoard\nDefault · 126\n126 tasks\n?\n+ New board\nOrchestration:\nAuto\n▸ Orchestration settings\nSEARCH\nTENANT\nAll tenants\nASSIGNEE\nAll profiles\nShow archived\nLanes by profile\nNudge dispatcher\nRefresh\nClear filters\nTriage\n0\n+\nRaw ideas — a specifier will flesh out the spec\n— no tasks —\nTodo\n4\n+\nWaiting on dependencies or unassigned\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 01 — Korra product/design spec: Hermes TUI clone + office placement\n@korra\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 02 — Cloud auth/proxy/access bridge proof\n@cloud\njust now\n[redacted-long-token]\nP1\nSORA-MISSIONCONTROL\n0/1\nFinal Cloud Unraid deploy readiness and rollback proof\n@cloud\n💬 1\n↔ 2\njust now\n[redacted-long-token]\nSORA-MISSIONCONTROL\nFinal acceptance: build, review, proof tests, Unraid deploy\n@sora\n💬 2\n↔ 1\njust now\nScheduled\n6\n+\nWaiting on a known time delay or scheduled follow-up\n[redacted-long-token]\nP4\n[redacted-long-token]\nRESET 07 — Sora final acceptance and deployment proof\n@sora\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 03 — Biscuit rebuild shell around Hermes TUI clone\n@biscuit\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 04 — Biscuit/Korra office visual corruption fix\n@biscuit\njust now\n[redacted-long-token]\nP2\n[redacted-long-token]\nRESET 05 — Lelouch workflow/copy and user mental model\n@lelouch\njust now\n[redacted-long-token]\nP2\n[redacted-long-token]\nRESET 06 — Tifa risk/false-green acceptance audit\n@tifa\njust now\n[redacted-long-token]\nSORA-MISSIONCONTROL\nPhase 9 - polish, performance, and cohesion\n@sora\n💬 3\n↔ 5\njust now\nReady\n0\n+\nDependencies satisfied; assign a profile to dispatch\n— n",
+  "landmarks": [
+    {
+      "tag": "aside",
+      "role": null,
+      "aria": "Navigation",
+      "text": "HERMES\nAGENT\nthis dashboard (default)\nbiscuit\ncloud\nkorra\nlelouch\nrain\ntifa\nCHAT\nSESSIONS\nFILES\nMODELS\nLOGS\nCRON\nSKILLS\nPLUGINS\nMCP\nCHANNELS\nWEBHOOKS\nPAIRING\nPROFILES\nCONFIG\nKEYS\nSYSTEM\nDOCUMENTATION\nPlugins\nKANBAN\nACHIEVEMENTS\nSystem\n\nGateway Status: Running\n\nActive Sessions: 1\n\nRestart Gateway\nCYBERPUNK\nEN\nv0.17.0\nNous Research",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 240,
+        "h": 950
+      },
+      "cls": "fixed top-0 left-0 z-50 flex h-dvh max-h-dvh w-64 min-h-0 flex-col border-r border-current/20 bg-background-base/95 backdrop-blur-sm transition-[transform] dura"
+    },
+    {
+      "tag": "nav",
+      "role": null,
+      "aria": "Navigation",
+      "text": "CHAT\nSESSIONS\nFILES\nMODELS\nLOGS\nCRON\nSKILLS\nPLUGINS\nMCP\nCHANNELS\nWEBHOOKS\nPAIRING\nPROFILES\nCONFIG\nKEYS\nSYSTEM\nDOCUMENTATION\nPlugins\nKANBAN\nACHIEVEMENTS",
+      "rect": {
+        "x": 0,
+        "y": 95,
+        "w": 239,
+        "h": 675
+      },
+      "cls": "min-h-0 w-full flex-1 overflow-y-auto overflow-x-hidden border-t border-current/10 py-2"
+    },
+    {
+      "tag": "header",
+      "role": "banner",
+      "aria": "",
+      "text": "Kanban",
+      "rect": {
+        "x": 240,
+        "y": 0,
+        "w": 1200,
+        "h": 53
+      },
+      "cls": "z-1 w-full shrink-0 box-border border-b border-current/20 bg-background-base/40 backdrop-blur-sm min-h-0 overflow-x-hidden overflow-y-visible py-3 sm:h-14 sm:mi"
+    },
+    {
+      "tag": "main",
+      "role": null,
+      "aria": "",
+      "text": "Board\nDefault · 126\n126 tasks\n?\n+ New board\nOrchestration:\nAuto\n▸ Orchestration settings\nSEARCH\nTENANT\nAll tenants\nASSIGNEE\nAll profiles\nShow archived\nLanes by profile\nNudge dispatcher\nRefresh\nClear filters\nTriage\n0\n+\nRaw ideas — a specifier will flesh out the spec\n— no tasks —\nTodo\n4\n+\nWaiting on dependencies or unassigned\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 01 — Korra product/design spec: Hermes TUI clone + office placement\n@korra\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 02 — Cloud auth/proxy/access bridge proof\n@cloud\njust now\n[redacted-long-token]\nP1\nSORA-MISSIONCONTROL\n0/1\nFinal Cloud Unraid deploy readiness and rollback proof\n@cloud\n💬 1\n↔ 2\njust now\n[redacted-long-token]\nSORA-MISSIONCONTROL\nFinal acceptance: build, review, proof tests, Unraid deploy\n@sora\n💬 2\n↔ 1\njust now\nScheduled\n6\n+\nWaiting on a known time delay or scheduled follow-up\n[redacted-long-token]\nP4\n[redacted-long-token]\nRESET 07 — Sora final acceptance and deployment proof\n@sora\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 03 — Biscuit rebuild shell around Hermes TUI clone\n@biscuit\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 04 — Biscuit/Korra office visual corruption fix\n@biscuit\njust now\n[redacted-long-token]\nP2\n[redacted-long-token]\nRESET 05 — Lelouch workflow/copy and user mental model\n@lelouch\njust now\n[redacted-long-token]\nP2\n[redacted-long-token]\nRESET 06 — Tifa risk/false-green acceptance audit\n@tifa\njust now\n[redacted-long-token]\nSORA-MISSIONCONTROL\nPhase 9 - polish, performance, and cohesion\n@sora\n💬 3\n↔ 5\njust now\nReady\n0\n+\nDependencies satisfied; assign a profile to dispatch\n— no tasks —\nIn Progress\n0\n+\nClaimed by a worker — in-flight\n— no tasks —\nBlocked\n3\n+\nWorker asked for human input\n[redacted-long-token]\nP2\nSORA-MISSIONCONTROL\nPhase 6 Biscuit admin proxy 401/unauthorized affordance\n@biscuit\n💬 1\njust now\n[redacted-long-token]\nP1\nSORA-MISSIONCONTROL\n0/1\nPhase 8 Biscuit polish fixes after Korra review\n@biscu",
+      "rect": {
+        "x": 240,
+        "y": 53,
+        "w": 1200,
+        "h": 898
+      },
+      "cls": "min-h-0 w-full min-w-0 flex-1 flex flex-col overflow-y-auto overflow-x-hidden [scrollbar-gutter:stable]"
+    }
+  ],
+  "buttons": [
+    {
+      "tag": "button",
+      "role": null,
+      "aria": "Collapse",
+      "text": "",
+      "rect": {
+        "x": 196,
+        "y": 12,
+        "w": 28,
+        "h": 28
+      },
+      "cls": "font-mono group relative cursor-pointer items-center leading-0 font-bold tracking-[0.2em] disabled:pointer-events-none disabled:bg-midground/15 disabled:text-mi"
+    },
+    {
+      "tag": "a",
+      "role": null,
+      "aria": "",
+      "text": "CHAT",
+      "rect": {
+        "x": 0,
+        "y": 103,
+        "w": 239,
+        "h": 38
+      },
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu"
+    },
+    {
+      "tag": "a",
+      "role": null,
+      "aria": "",
+      "text": "SESSIONS",
+      "rect": {
+        "x": 0,
+        "y": 141,
+        "w": 239,
+        "h": 38
+      },
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu"
+    },
+    {
+      "tag": "a",
+      "role": null,
+      "aria": "",
+      "text": "FILES",
+      "rect": {
+        "x": 0,
+        "y": 178,
+        "w": 239,
+        "h": 38
+      },
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu"
+    },
+    {
+      "tag": "a",
+      "role": null,
+      "aria": "",
+      "text": "MODELS",
+      "rect": {
+        "x": 0,
+        "y": 216,
+        "w": 239,
+        "h": 38
+      },
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu"
+    },
+    {
+      "tag": "a",
+      "role": null,
+      "aria": "",
+      "text": "LOGS",
+      "rect": {
+        "x": 0,
+        "y": 253,
+        "w": 239,
+        "h": 38
+      },
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu"
+    },
+    {
+      "tag": "a",
+      "role": null,
+      "aria": "",
+      "text": "CRON",
+      "rect": {
+        "x": 0,
+        "y": 291,
+        "w": 239,
+        "h": 38
+      },
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu"
+    },
+    {
+      "tag": "a",
+      "role": null,
+      "aria": "",
+      "text": "SKILLS",
+      "rect": {
+        "x": 0,
+        "y": 328,
+        "w": 239,
+        "h": 38
+      },
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu"
+    },
+    {
+      "tag": "a",
+      "role": null,
+      "aria": "",
+      "text": "PLUGINS",
+      "rect": {
+        "x": 0,
+        "y": 366,
+        "w": 239,
+        "h": 38
+      },
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu"
+    },
+    {
+      "tag": "a",
+      "role": null,
+      "aria": "",
+      "text": "MCP",
+      "rect": {
+        "x": 0,
+        "y": 403,
+        "w": 239,
+        "h": 38
+      },
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu"
+    },
+    {
+      "tag": "a",
+      "role": null,
+      "aria": "",
+      "text": "CHANNELS",
+      "rect": {
+        "x": 0,
+        "y": 441,
+        "w": 239,
+        "h": 38
+      },
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu"
+    },
+    {
+      "tag": "a",
+      "role": null,
+      "aria": "",
+      "text": "WEBHOOKS",
+      "rect": {
+        "x": 0,
+        "y": 478,
+        "w": 239,
+        "h": 38
+      },
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu"
+    },
+    {
+      "tag": "a",
+      "role": null,
+      "aria": "",
+      "text": "PAIRING",
+      "rect": {
+        "x": 0,
+        "y": 516,
+        "w": 239,
+        "h": 38
+      },
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu"
+    },
+    {
+      "tag": "a",
+      "role": null,
+      "aria": "",
+      "text": "PROFILES",
+      "rect": {
+        "x": 0,
+        "y": 553,
+        "w": 239,
+        "h": 38
+      },
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu"
+    },
+    {
+      "tag": "a",
+      "role": null,
+      "aria": "",
+      "text": "CONFIG",
+      "rect": {
+        "x": 0,
+        "y": 591,
+        "w": 239,
+        "h": 38
+      },
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu"
+    },
+    {
+      "tag": "a",
+      "role": null,
+      "aria": "",
+      "text": "KEYS",
+      "rect": {
+        "x": 0,
+        "y": 628,
+        "w": 239,
+        "h": 38
+      },
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu"
+    },
+    {
+      "tag": "a",
+      "role": null,
+      "aria": "",
+      "text": "SYSTEM",
+      "rect": {
+        "x": 0,
+        "y": 666,
+        "w": 239,
+        "h": 38
+      },
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu"
+    },
+    {
+      "tag": "a",
+      "role": null,
+      "aria": "",
+      "text": "DOCUMENTATION",
+      "rect": {
+        "x": 0,
+        "y": 703,
+        "w": 239,
+        "h": 38
+      },
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu"
+    },
+    {
+      "tag": "a",
+      "role": null,
+      "aria": "",
+      "text": "KANBAN",
+      "rect": {
+        "x": 0,
+        "y": 770,
+        "w": 239,
+        "h": 38
+      },
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu"
+    },
+    {
+      "tag": "a",
+      "role": null,
+      "aria": "",
+      "text": "ACHIEVEMENTS",
+      "rect": {
+        "x": 0,
+        "y": 807,
+        "w": 239,
+        "h": 38
+      },
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu"
+    },
+    {
+      "tag": "a",
+      "role": null,
+      "aria": "",
+      "text": "Gateway Status: Running\n\nActive Sessions: 1",
+      "rect": {
+        "x": 0,
+        "y": 793,
+        "w": 239,
+        "h": 44
+      },
+      "cls": "block text-left px-5 pb-2 pt-0.5 text-text-secondary transition-colors hover:text-midground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-m"
+    },
+    {
+      "tag": "button",
+      "role": null,
+      "aria": "",
+      "text": "Restart Gateway",
+      "rect": {
+        "x": 0,
+        "y": 837,
+        "w": 239,
+        "h": 34
+      },
+      "cls": "group/action relative flex w-full items-center gap-3 px-5 py-2.5 font-mondwest text-xs tracking-[0.1em] whitespace-nowrap transition-colors cursor-pointer focus"
+    },
+    {
+      "tag": "button",
+      "role": null,
+      "aria": "Switch theme",
+      "text": "CYBERPUNK",
+      "rect": {
+        "x": 11,
+        "y": 884,
+        "w": 99,
+        "h": 23
+      },
+      "cls": "font-mono group relative grid cursor-pointer grid-cols-[auto_1fr_auto] items-center disabled:pointer-events-none disabled:bg-midground/15 disabled:text-midgroun"
+    },
+    {
+      "tag": "button",
+      "role": null,
+      "aria": "Switch language",
+      "text": "EN",
+      "rect": {
+        "x": 118,
+        "y": 885,
+        "w": 29,
+        "h": 23
+      },
+      "cls": "font-mono group relative grid cursor-pointer grid-cols-[auto_1fr_auto] items-center disabled:pointer-events-none disabled:bg-midground/15 disabled:text-midgroun"
+    },
+    {
+      "tag": "a",
+      "role": null,
+      "aria": "",
+      "text": "Nous Research",
+      "rect": {
+        "x": 135,
+        "y": 926,
+        "w": 86,
+        "h": 15
+      },
+      "cls": "font-mondwest text-xs tracking-[0.12em] text-midground transition-opacity hover:opacity-90 focus-visible:rounded-sm focus-visible:outline-none focus-visible:rin"
+    },
+    {
+      "tag": "button",
+      "role": "combobox",
+      "aria": "",
+      "text": "Default · 126",
+      "rect": {
+        "x": 276,
+        "y": 104,
+        "w": 220,
+        "h": 34
+      },
+      "cls": "flex h-9 w-full items-center justify-between gap-2 border border-midground/15 bg-background/40 px-3 py-1 font-courier text-sm text-left text-midground transitio"
+    },
+    {
+      "tag": "a",
+      "role": null,
+      "aria": "Hermes Kanban documentation",
+      "text": "?",
+      "rect": {
+        "x": 1254,
+        "y": 111,
+        "w": 23,
+        "h": 23
+      },
+      "cls": "hermes-kanban-docs-link"
+    },
+    {
+      "tag": "button",
+      "role": null,
+      "aria": "",
+      "text": "+ New board",
+      "rect": {
+        "x": 1288,
+        "y": 104,
+        "w": 106,
+        "h": 30
+      },
+      "cls": "font-mono group relative grid cursor-pointer grid-cols-[auto_1fr_auto] items-center font-bold disabled:pointer-events-none disabled:bg-midground/15 disabled:tex"
+    },
+    {
+      "tag": "button",
+      "role": null,
+      "aria": "",
+      "text": "Orchestration:\nAuto",
+      "rect": {
+        "x": 263,
+        "y": 159,
+        "w": 133,
+        "h": 21
+      },
+      "cls": "inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-30"
+    },
+    {
+      "tag": "button",
+      "role": null,
+      "aria": "",
+      "text": "▸ Orchestration settings",
+      "rect": {
+        "x": 406,
+        "y": 162,
+        "w": 145,
+        "h": 15
+      },
+      "cls": "underline text-muted-foreground hover:text-foreground"
+    },
+    {
+      "tag": "button",
+      "role": "combobox",
+      "aria": "",
+      "text": "All tenants",
+      "rect": {
+        "x": 484,
+        "y": 213,
+        "w": 130,
+        "h": 34
+      },
+      "cls": "flex h-9 w-full items-center justify-between gap-2 border border-midground/15 bg-background/40 px-3 py-1 font-courier text-sm text-left text-midground transitio"
+    },
+    {
+      "tag": "button",
+      "role": "combobox",
+      "aria": "",
+      "text": "All profiles",
+      "rect": {
+        "x": 625,
+        "y": 213,
+        "w": 138,
+        "h": 34
+      },
+      "cls": "flex h-9 w-full items-center justify-between gap-2 border border-midground/15 bg-background/40 px-3 py-1 font-courier text-sm text-left text-midground transitio"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "",
+      "text": "",
+      "rect": {
+        "x": 774,
+        "y": 228,
+        "w": 15,
+        "h": 15
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "",
+      "text": "",
+      "rect": {
+        "x": 886,
+        "y": 228,
+        "w": 15,
+        "h": 15
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "button",
+      "role": null,
+      "aria": "",
+      "text": "Nudge dispatcher",
+      "rect": {
+        "x": 1045,
+        "y": 216,
+        "w": 144,
+        "h": 28
+      },
+      "cls": "font-mono group relative grid cursor-pointer grid-cols-[auto_1fr_auto] items-center font-bold disabled:pointer-events-none disabled:bg-midground/15 disabled:tex"
+    },
+    {
+      "tag": "button",
+      "role": null,
+      "aria": "",
+      "text": "Refresh",
+      "rect": {
+        "x": 1200,
+        "y": 216,
+        "w": 76,
+        "h": 28
+      },
+      "cls": "font-mono group relative grid cursor-pointer grid-cols-[auto_1fr_auto] items-center font-bold disabled:pointer-events-none disabled:bg-midground/15 disabled:tex"
+    },
+    {
+      "tag": "button",
+      "role": null,
+      "aria": "",
+      "text": "Clear filters",
+      "rect": {
+        "x": 1287,
+        "y": 216,
+        "w": 121,
+        "h": 28
+      },
+      "cls": "font-mono group relative grid cursor-pointer grid-cols-[auto_1fr_auto] items-center font-bold disabled:pointer-events-none disabled:bg-midground/15 disabled:tex"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select all tasks in Triage",
+      "text": "",
+      "rect": {
+        "x": 275,
+        "y": 275,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "button",
+      "role": null,
+      "aria": "",
+      "text": "+",
+      "rect": {
+        "x": 508,
+        "y": 271,
+        "w": 22,
+        "h": 22
+      },
+      "cls": "hermes-kanban-column-add"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select all tasks in Todo",
+      "text": "",
+      "rect": {
+        "x": 566,
+        "y": 275,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "button",
+      "role": null,
+      "aria": "",
+      "text": "+",
+      "rect": {
+        "x": 800,
+        "y": 271,
+        "w": 22,
+        "h": 22
+      },
+      "cls": "hermes-kanban-column-add"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "RESET 01 — Korra product/design spec: Hermes TUI clone + office placement — [redacted-long-token] — in_progress",
+      "text": "[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 01 — Korra product/design spec: Hermes TUI clone + office placement\n@korra\njust now",
+      "rect": {
+        "x": 562,
+        "y": 330,
+        "w": 262,
+        "h": 123
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task [redacted-long-token]",
+      "text": "",
+      "rect": {
+        "x": 572,
+        "y": 339,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "RESET 02 — Cloud auth/proxy/access bridge proof — [redacted-long-token] — in_progress",
+      "text": "[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 02 — Cloud auth/proxy/access bridge proof\n@cloud\njust now",
+      "rect": {
+        "x": 562,
+        "y": 460,
+        "w": 262,
+        "h": 108
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task [redacted-long-token]",
+      "text": "",
+      "rect": {
+        "x": 572,
+        "y": 469,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "Final Cloud Unraid deploy readiness and rollback proof — [redacted-long-token] — todo",
+      "text": "[redacted-long-token]\nP1\nSORA-MISSIONCONTROL\n0/1\nFinal Cloud Unraid deploy readiness and rollback proof\n@cloud\n💬 1\n↔ 2\njust now",
+      "rect": {
+        "x": 562,
+        "y": 575,
+        "w": 262,
+        "h": 132
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task [redacted-long-token]",
+      "text": "",
+      "rect": {
+        "x": 572,
+        "y": 583,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "Final acceptance: build, review, proof tests, Unraid deploy — [redacted-long-token] — todo",
+      "text": "[redacted-long-token]\nSORA-MISSIONCONTROL\nFinal acceptance: build, review, proof tests, Unraid deploy\n@sora\n💬 2\n↔ 1\njust now",
+      "rect": {
+        "x": 562,
+        "y": 714,
+        "w": 262,
+        "h": 106
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task [redacted-long-token]",
+      "text": "",
+      "rect": {
+        "x": 572,
+        "y": 723,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select all tasks in Scheduled",
+      "text": "",
+      "rect": {
+        "x": 857,
+        "y": 275,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "button",
+      "role": null,
+      "aria": "",
+      "text": "+",
+      "rect": {
+        "x": 1091,
+        "y": 271,
+        "w": 22,
+        "h": 22
+      },
+      "cls": "hermes-kanban-column-add"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "RESET 07 — Sora final acceptance and deployment proof — [redacted-long-token] — scheduled",
+      "text": "[redacted-long-token]\nP4\n[redacted-long-token]\nRESET 07 — Sora final acceptance and deployment proof\n@sora\njust now",
+      "rect": {
+        "x": 854,
+        "y": 346,
+        "w": 262,
+        "h": 108
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task [redacted-long-token]",
+      "text": "",
+      "rect": {
+        "x": 863,
+        "y": 355,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "RESET 03 — Biscuit rebuild shell around Hermes TUI clone — [redacted-long-token] — scheduled",
+      "text": "[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 03 — Biscuit rebuild shell around Hermes TUI clone\n@biscuit\njust now",
+      "rect": {
+        "x": 854,
+        "y": 461,
+        "w": 262,
+        "h": 108
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task [redacted-long-token]",
+      "text": "",
+      "rect": {
+        "x": 863,
+        "y": 470,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "RESET 04 — Biscuit/Korra office visual corruption fix — [redacted-long-token] — scheduled",
+      "text": "[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 04 — Biscuit/Korra office visual corruption fix\n@biscuit\njust now",
+      "rect": {
+        "x": 854,
+        "y": 576,
+        "w": 262,
+        "h": 106
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task [redacted-long-token]",
+      "text": "",
+      "rect": {
+        "x": 863,
+        "y": 585,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "RESET 05 — Lelouch workflow/copy and user mental model — [redacted-long-token] — scheduled",
+      "text": "[redacted-long-token]\nP2\n[redacted-long-token]\nRESET 05 — Lelouch workflow/copy and user mental model\n@lelouch\njust now",
+      "rect": {
+        "x": 854,
+        "y": 689,
+        "w": 262,
+        "h": 108
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task [redacted-long-token]",
+      "text": "",
+      "rect": {
+        "x": 863,
+        "y": 698,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "RESET 06 — Tifa risk/false-green acceptance audit — [redacted-long-token] — scheduled",
+      "text": "[redacted-long-token]\nP2\n[redacted-long-token]\nRESET 06 — Tifa risk/false-green acceptance audit\n@tifa\njust now",
+      "rect": {
+        "x": 854,
+        "y": 804,
+        "w": 262,
+        "h": 106
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task [redacted-long-token]",
+      "text": "",
+      "rect": {
+        "x": 863,
+        "y": 813,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "Phase 9 - polish, performance, and cohesion — [redacted-long-token] — scheduled",
+      "text": "[redacted-long-token]\nSORA-MISSIONCONTROL\nPhase 9 - polish, performance, and cohesion\n@sora\n💬 3\n↔ 5\njust now",
+      "rect": {
+        "x": 854,
+        "y": 917,
+        "w": 262,
+        "h": 106
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task [redacted-long-token]",
+      "text": "",
+      "rect": {
+        "x": 863,
+        "y": 926,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select all tasks in Ready",
+      "text": "",
+      "rect": {
+        "x": 1149,
+        "y": 275,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "button",
+      "role": null,
+      "aria": "",
+      "text": "+",
+      "rect": {
+        "x": 1382,
+        "y": 271,
+        "w": 22,
+        "h": 22
+      },
+      "cls": "hermes-kanban-column-add"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select all tasks in In Progress",
+      "text": "",
+      "rect": {
+        "x": 1440,
+        "y": 275,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "button",
+      "role": null,
+      "aria": "",
+      "text": "+",
+      "rect": {
+        "x": 1673,
+        "y": 271,
+        "w": 22,
+        "h": 22
+      },
+      "cls": "hermes-kanban-column-add"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select all tasks in Blocked",
+      "text": "",
+      "rect": {
+        "x": 1731,
+        "y": 275,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "button",
+      "role": null,
+      "aria": "",
+      "text": "+",
+      "rect": {
+        "x": 1965,
+        "y": 271,
+        "w": 22,
+        "h": 22
+      },
+      "cls": "hermes-kanban-column-add"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "Phase 6 Biscuit admin proxy 401/unauthorized affordance — [redacted-long-token] — blocked",
+      "text": "[redacted-long-token]\nP2\nSORA-MISSIONCONTROL\nPhase 6 Biscuit admin proxy 401/unauthorized affordance\n@biscuit\n💬 1\njust now",
+      "rect": {
+        "x": 1727,
+        "y": 330,
+        "w": 262,
+        "h": 108
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task [redacted-long-token]",
+      "text": "",
+      "rect": {
+        "x": 1737,
+        "y": 339,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "Phase 8 Biscuit polish fixes after Korra review — [redacted-long-token] — blocked",
+      "text": "[redacted-long-token]\nP1\nSORA-MISSIONCONTROL\n0/1\nPhase 8 Biscuit polish fixes after Korra review\n@biscuit\n💬 2\n↔ 2\njust now",
+      "rect": {
+        "x": 1727,
+        "y": 445,
+        "w": 262,
+        "h": 132
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task [redacted-long-token]",
+      "text": "",
+      "rect": {
+        "x": 1737,
+        "y": 453,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "Phase 6 - admin/control backend contract gaps — [redacted-long-token] — blocked",
+      "text": "[redacted-long-token]\nSORA-MISSIONCONTROL\nPhase 6 - admin/control backend contract gaps\n@cloud\n💬 4\n↔ 5\njust now",
+      "rect": {
+        "x": 1727,
+        "y": 584,
+        "w": 262,
+        "h": 106
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task [redacted-long-token]",
+      "text": "",
+      "rect": {
+        "x": 1737,
+        "y": 593,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select all tasks in review",
+      "text": "",
+      "rect": {
+        "x": 2022,
+        "y": 275,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "button",
+      "role": null,
+      "aria": "",
+      "text": "+",
+      "rect": {
+        "x": 2256,
+        "y": 271,
+        "w": 22,
+        "h": 22
+      },
+      "cls": "hermes-kanban-column-add"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select all tasks in Done",
+      "text": "",
+      "rect": {
+        "x": 2314,
+        "y": 275,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "button",
+      "role": null,
+      "aria": "",
+      "text": "+",
+      "rect": {
+        "x": 2547,
+        "y": 271,
+        "w": 22,
+        "h": 22
+      },
+      "cls": "hermes-kanban-column-add"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "RESET 00 — Executive gate: target, access, skills, verification — [redacted-long-token] — done",
+      "text": "[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 00 — Executive gate: target, access, skills, verification\n@sora\njust now",
+      "rect": {
+        "x": 2310,
+        "y": 330,
+        "w": 262,
+        "h": 106
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task [redacted-long-token]",
+      "text": "",
+      "rect": {
+        "x": 2319,
+        "y": 339,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "3D Office: Memory pressure monitoring — t_09f6ea35 — done",
+      "text": "t_09f6ea35\nP2\n3D Office: Memory pressure monitoring\n@biscuit\n💬 2\n3d ago",
+      "rect": {
+        "x": 2310,
+        "y": 443,
+        "w": 262,
+        "h": 91
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task t_09f6ea35",
+      "text": "",
+      "rect": {
+        "x": 2319,
+        "y": 452,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "3D Office: FPS-based quality degradation — t_7318933a — done",
+      "text": "t_7318933a\nP2\n3D Office: FPS-based quality degradation\n@biscuit\n💬 2\n3d ago",
+      "rect": {
+        "x": 2310,
+        "y": 540,
+        "w": 262,
+        "h": 91
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task t_7318933a",
+      "text": "",
+      "rect": {
+        "x": 2319,
+        "y": 549,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "3D Office: Resize debounce — t_7e45d3eb — done",
+      "text": "t_7e45d3eb\nP2\n3D Office: Resize debounce\n@biscuit\n💬 2\n3d ago",
+      "rect": {
+        "x": 2310,
+        "y": 638,
+        "w": 262,
+        "h": 74
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task t_7e45d3eb",
+      "text": "",
+      "rect": {
+        "x": 2319,
+        "y": 647,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "3D Office: Multi-instance guard — t_35251fcb — done",
+      "text": "t_35251fcb\nP2\n3D Office: Multi-instance guard\n@biscuit\n💬 2\n3d ago",
+      "rect": {
+        "x": 2310,
+        "y": 718,
+        "w": 262,
+        "h": 74
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task t_35251fcb",
+      "text": "",
+      "rect": {
+        "x": 2319,
+        "y": 727,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "3D Office: Idle timeout / sleep mode — t_bddbbe27 — done",
+      "text": "t_bddbbe27\nP2\n3D Office: Idle timeout / sleep mode\n@biscuit\n💬 2\n3d ago",
+      "rect": {
+        "x": 2310,
+        "y": 799,
+        "w": 262,
+        "h": 91
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task t_bddbbe27",
+      "text": "",
+      "rect": {
+        "x": 2319,
+        "y": 808,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "3D Office: Asset integrity check — t_15cd9fa8 — done",
+      "text": "t_15cd9fa8\nP2\n3D Office: Asset integrity check\n@biscuit\n💬 2\n3d ago",
+      "rect": {
+        "x": 2310,
+        "y": 896,
+        "w": 262,
+        "h": 74
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task t_15cd9fa8",
+      "text": "",
+      "rect": {
+        "x": 2319,
+        "y": 905,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "3D Office: WebGL fallback chain + error message — t_ffba7653 — done",
+      "text": "t_ffba7653\nP2\n3D Office: WebGL fallback chain + error message\n@biscuit\n💬 2\n3d ago",
+      "rect": {
+        "x": 2310,
+        "y": 977,
+        "w": 262,
+        "h": 91
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task t_ffba7653",
+      "text": "",
+      "rect": {
+        "x": 2319,
+        "y": 986,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "3D Office: Spritesheet load failure warning — t_7f290e39 — done",
+      "text": "t_7f290e39\nP1\n3D Office: Spritesheet load failure warning\n@biscuit\n💬 2\n3d ago",
+      "rect": {
+        "x": 2310,
+        "y": 1074,
+        "w": 262,
+        "h": 91
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task t_7f290e39",
+      "text": "",
+      "rect": {
+        "x": 2319,
+        "y": 1083,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "3D Office: Visibility/background handling — t_aeececba — done",
+      "text": "t_aeececba\nP1\n3D Office: Visibility/background handling\n@biscuit\n💬 3\n3d ago",
+      "rect": {
+        "x": 2310,
+        "y": 1172,
+        "w": 262,
+        "h": 91
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task t_aeececba",
+      "text": "",
+      "rect": {
+        "x": 2319,
+        "y": 1180,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "3D Office: Reconnect catch-up animation — t_b8256316 — done",
+      "text": "t_b8256316\nP1\n3D Office: Reconnect catch-up animation\n@biscuit\n💬 3\n3d ago",
+      "rect": {
+        "x": 2310,
+        "y": 1269,
+        "w": 262,
+        "h": 91
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task t_b8256316",
+      "text": "",
+      "rect": {
+        "x": 2319,
+        "y": 1278,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "Docs: Update api-reference.md with verified chat/auth findings — t_6497e06f — done",
+      "text": "t_6497e06f\nP1\nDocs: Update api-reference.md with verified chat/auth findings\n@biscuit\n💬 1\n3d ago",
+      "rect": {
+        "x": 2310,
+        "y": 1366,
+        "w": 262,
+        "h": 91
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task t_6497e06f",
+      "text": "",
+      "rect": {
+        "x": 2319,
+        "y": 1375,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "Phase 7 Korra Kanban UX acceptance — smc-p7-korra-kanban-ux — done",
+      "text": "smc-p7-korra-kanban-ux\nP1\nSORA-MISSIONCONTROL\nPhase 7 Korra Kanban UX acceptance\n@korra\njust now",
+      "rect": {
+        "x": 2310,
+        "y": 1463,
+        "w": 262,
+        "h": 90
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task smc-p7-korra-kanban-ux",
+      "text": "",
+      "rect": {
+        "x": 2319,
+        "y": 1472,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "Phase 7 Lelouch Kanban workflow/copy — [redacted-long-token] — done",
+      "text": "[redacted-long-token]\nP1\nSORA-MISSIONCONTROL\nPhase 7 Lelouch Kanban workflow/copy\n@lelouch\njust now",
+      "rect": {
+        "x": 2310,
+        "y": 1560,
+        "w": 262,
+        "h": 108
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task [redacted-long-token]",
+      "text": "",
+      "rect": {
+        "x": 2319,
+        "y": 1569,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "Phase 7 Tifa Kanban risk audit — [redacted-long-token] — done",
+      "text": "[redacted-long-token]\nP1\nSORA-MISSIONCONTROL\nPhase 7 Tifa Kanban risk audit\n@tifa\njust now",
+      "rect": {
+        "x": 2310,
+        "y": 1675,
+        "w": 262,
+        "h": 90
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task [redacted-long-token]",
+      "text": "",
+      "rect": {
+        "x": 2319,
+        "y": 1684,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "Inventory profile, status, chat, and model-switching surfaces — t_20e9ad99 — done",
+      "text": "t_20e9ad99\nSORA-MISSIONCONTROL\n2/2\nInventory profile, status, chat, and model-switching surfaces\n@lelouch\n💬 1\n↔ 2\n3d ago",
+      "rect": {
+        "x": 2310,
+        "y": 1771,
+        "w": 262,
+        "h": 93
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task t_20e9ad99",
+      "text": "",
+      "rect": {
+        "x": 2319,
+        "y": 1781,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "Inventory cron, webhook, key, skill, and MCP surfaces — t_96695be5 — done",
+      "text": "t_96695be5\nSORA-MISSIONCONTROL\n2/2\nInventory cron, webhook, key, skill, and MCP surfaces\n@cloud\n💬 1\n↔ 2\n3d ago",
+      "rect": {
+        "x": 2310,
+        "y": 1871,
+        "w": 262,
+        "h": 93
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task t_96695be5",
+      "text": "",
+      "rect": {
+        "x": 2319,
+        "y": 1882,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "Inspect 3D office reuse boundaries from v2 — t_9c7306b0 — done",
+      "text": "t_9c7306b0\nSORA-MISSIONCONTROL\n2/2\nInspect 3D office reuse boundaries from v2\n@korra\n💬 1\n↔ 2\n3d ago",
+      "rect": {
+        "x": 2310,
+        "y": 1971,
+        "w": 262,
+        "h": 93
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task t_9c7306b0",
+      "text": "",
+      "rect": {
+        "x": 2319,
+        "y": 1982,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "Synthesize the Hermes source map and frozen contracts — t_91f38b37 — done",
+      "text": "t_91f38b37\nSORA-MISSIONCONTROL\n1/1\nSynthesize the Hermes source map and frozen contracts\n@biscuit\n💬 1\n↔ 4\n3d ago",
+      "rect": {
+        "x": 2310,
+        "y": 2071,
+        "w": 262,
+        "h": 93
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task t_91f38b37",
+      "text": "",
+      "rect": {
+        "x": 2319,
+        "y": 2082,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "Define the premium dark color palette — t_c5c9edd3 — done",
+      "text": "t_c5c9edd3\nSORA-MISSIONCONTROL\n2/2\nDefine the premium dark color palette\n@korra\n💬 1\n↔ 2\n3d ago",
+      "rect": {
+        "x": 2310,
+        "y": 2171,
+        "w": 262,
+        "h": 93
+      },
+      "cls": "hermes-kanban-card"
+    },
+    {
+      "tag": "button",
+      "role": "checkbox",
+      "aria": "Select task t_c5c9edd3",
+      "text": "",
+      "rect": {
+        "x": 2319,
+        "y": 2182,
+        "w": 14,
+        "h": 14
+      },
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visible:ring-1 focus-visible:ring-midground/30"
+    },
+    {
+      "tag": "div",
+      "role": "button",
+      "aria": "Specify typography and spacing tokens — t_804ddb54 — done",
+      "text": "t_804ddb54\nSORA-MISSIONCONTROL\n2/2\nSpecify typography and spacing tokens\n@korra\n💬 1\n↔ 2\n3d ago",
+      "rect": {
+        "x": 2310,
+        "y": 2271,
+        "w": 262,
+        "h": 93
+      },
+      "cls": "hermes-kanban-card"
+    }
+  ],
+  "textInventory": [
+    {
+      "tag": "div",
+      "cls": "",
+      "role": null,
+      "aria": null,
+      "text": "HERMES\nAGENT\nthis dashboard (default)\nbiscuit\ncloud\nkorra\nlelouch\nrain\ntifa\nCHAT\nSESSIONS\nFILES\nMODELS\nLOGS\nCRON\nSKILLS\nPLUGINS\nMCP\nCHANNELS\nWEBHOOKS\nPAIRING\nPROFILES\nCONFIG\nKEYS\nSYSTEM\nDOCUMENTATION\nPlugins\nKANBAN\nACHIEVEMENTS\nSystem\n\nGateway Status: Running\n\nActive Sessions: 1\n\nRestart Gateway\nCYBERPUNK\nEN\nv0.17.0\nNous Research\nKanban\nBoard\nDefault · 126\n126 tasks\n?\n+ New board\nOrchestration:\nAuto\n▸ Orchestration settings\nSEARCH\nTENANT\nAll tenants\nASSIGNEE\nAll profiles\nShow archived\nLanes by profile\nNudge dispatcher\nRefresh\nClear filters\nTriage\n0\n+\nRaw ideas — a specifier will flesh out the spec\n— no tasks —\nTodo\n4\n+\nWaiting on dependencies or unassigned\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 01 — Korra product/design spec: Hermes TUI clone + office placement\n@korra\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 02 — Cloud auth/proxy/access bridge proof\n@cloud\njust now\n[redacted-long-token]\nP1\nSORA-MISSIONCONTROL\n0/1\nFinal Cloud Unraid deploy readiness and rollback proof\n@cloud\n💬 1\n↔ 2\njust now\n[redacted-long-token]\nSORA-MISSIONCONTROL\nFinal acceptance: build, review, proof tests, Unraid deploy\n@sora\n💬 2\n↔ 1\njust now\nScheduled\n6\n+\nWaiting on a known time delay or scheduled follow-up\n[redacted-long-token]\nP4\n[redacted-long-token]\nRESET 07 — Sora final acceptance and deployment proof\n@sora\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 03 — Biscuit rebuild shell around Hermes TUI clone\n@biscuit\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 04 — Biscuit/Korra office visual corruption fix\n@biscuit\njust now\n[redacted-long-token]\nP2\n[redacted-long-token]\nRESET 05 — Lelouch workflow/copy and user mental model\n@lelouch\njust now\n[redacted-long-token]\nP2\n[redacted-long-token]\nRESET 06 — Tifa risk/false-green acceptance audit\n@tifa\njust now\n[redacted-long-token]\nSORA-MISSIONCONTROL\nPhase 9 - polish, performance, and cohesion\n@sora\n💬 3\n↔ 5\njust now\nReady\n0\n+\nDependencies satisfied; assign a profile to dispatch\n— n",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 1440,
+        "h": 950
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "flex h-dvh max-h-dvh min-h-0 flex-col overflow-hidden bg-black text-text-primary antialiased",
+      "role": null,
+      "aria": null,
+      "text": "HERMES\nAGENT\nthis dashboard (default)\nbiscuit\ncloud\nkorra\nlelouch\nrain\ntifa\nCHAT\nSESSIONS\nFILES\nMODELS\nLOGS\nCRON\nSKILLS\nPLUGINS\nMCP\nCHANNELS\nWEBHOOKS\nPAIRING\nPROFILES\nCONFIG\nKEYS\nSYSTEM\nDOCUMENTATION\nPlugins\nKANBAN\nACHIEVEMENTS\nSystem\n\nGateway Status: Running\n\nActive Sessions: 1\n\nRestart Gateway\nCYBERPUNK\nEN\nv0.17.0\nNous Research\nKanban\nBoard\nDefault · 126\n126 tasks\n?\n+ New board\nOrchestration:\nAuto\n▸ Orchestration settings\nSEARCH\nTENANT\nAll tenants\nASSIGNEE\nAll profiles\nShow archived\nLanes by profile\nNudge dispatcher\nRefresh\nClear filters\nTriage\n0\n+\nRaw ideas — a specifier will flesh out the spec\n— no tasks —\nTodo\n4\n+\nWaiting on dependencies or unassigned\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 01 — Korra product/design spec: Hermes TUI clone + office placement\n@korra\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 02 — Cloud auth/proxy/access bridge proof\n@cloud\njust now\n[redacted-long-token]\nP1\nSORA-MISSIONCONTROL\n0/1\nFinal Cloud Unraid deploy readiness and rollback proof\n@cloud\n💬 1\n↔ 2\njust now\n[redacted-long-token]\nSORA-MISSIONCONTROL\nFinal acceptance: build, review, proof tests, Unraid deploy\n@sora\n💬 2\n↔ 1\njust now\nScheduled\n6\n+\nWaiting on a known time delay or scheduled follow-up\n[redacted-long-token]\nP4\n[redacted-long-token]\nRESET 07 — Sora final acceptance and deployment proof\n@sora\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 03 — Biscuit rebuild shell around Hermes TUI clone\n@biscuit\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 04 — Biscuit/Korra office visual corruption fix\n@biscuit\njust now\n[redacted-long-token]\nP2\n[redacted-long-token]\nRESET 05 — Lelouch workflow/copy and user mental model\n@lelouch\njust now\n[redacted-long-token]\nP2\n[redacted-long-token]\nRESET 06 — Tifa risk/false-green acceptance audit\n@tifa\njust now\n[redacted-long-token]\nSORA-MISSIONCONTROL\nPhase 9 - polish, performance, and cohesion\n@sora\n💬 3\n↔ 5\njust now\nReady\n0\n+\nDependencies satisfied; assign a profile to dispatch\n— n",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 1440,
+        "h": 950
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden pt-14 lg:pt-0",
+      "role": null,
+      "aria": null,
+      "text": "HERMES\nAGENT\nthis dashboard (default)\nbiscuit\ncloud\nkorra\nlelouch\nrain\ntifa\nCHAT\nSESSIONS\nFILES\nMODELS\nLOGS\nCRON\nSKILLS\nPLUGINS\nMCP\nCHANNELS\nWEBHOOKS\nPAIRING\nPROFILES\nCONFIG\nKEYS\nSYSTEM\nDOCUMENTATION\nPlugins\nKANBAN\nACHIEVEMENTS\nSystem\n\nGateway Status: Running\n\nActive Sessions: 1\n\nRestart Gateway\nCYBERPUNK\nEN\nv0.17.0\nNous Research\nKanban\nBoard\nDefault · 126\n126 tasks\n?\n+ New board\nOrchestration:\nAuto\n▸ Orchestration settings\nSEARCH\nTENANT\nAll tenants\nASSIGNEE\nAll profiles\nShow archived\nLanes by profile\nNudge dispatcher\nRefresh\nClear filters\nTriage\n0\n+\nRaw ideas — a specifier will flesh out the spec\n— no tasks —\nTodo\n4\n+\nWaiting on dependencies or unassigned\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 01 — Korra product/design spec: Hermes TUI clone + office placement\n@korra\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 02 — Cloud auth/proxy/access bridge proof\n@cloud\njust now\n[redacted-long-token]\nP1\nSORA-MISSIONCONTROL\n0/1\nFinal Cloud Unraid deploy readiness and rollback proof\n@cloud\n💬 1\n↔ 2\njust now\n[redacted-long-token]\nSORA-MISSIONCONTROL\nFinal acceptance: build, review, proof tests, Unraid deploy\n@sora\n💬 2\n↔ 1\njust now\nScheduled\n6\n+\nWaiting on a known time delay or scheduled follow-up\n[redacted-long-token]\nP4\n[redacted-long-token]\nRESET 07 — Sora final acceptance and deployment proof\n@sora\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 03 — Biscuit rebuild shell around Hermes TUI clone\n@biscuit\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 04 — Biscuit/Korra office visual corruption fix\n@biscuit\njust now\n[redacted-long-token]\nP2\n[redacted-long-token]\nRESET 05 — Lelouch workflow/copy and user mental model\n@lelouch\njust now\n[redacted-long-token]\nP2\n[redacted-long-token]\nRESET 06 — Tifa risk/false-green acceptance audit\n@tifa\njust now\n[redacted-long-token]\nSORA-MISSIONCONTROL\nPhase 9 - polish, performance, and cohesion\n@sora\n💬 3\n↔ 5\njust now\nReady\n0\n+\nDependencies satisfied; assign a profile to dispatch\n— n",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 1440,
+        "h": 950
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "flex min-h-0 min-w-0 flex-1",
+      "role": null,
+      "aria": null,
+      "text": "HERMES\nAGENT\nthis dashboard (default)\nbiscuit\ncloud\nkorra\nlelouch\nrain\ntifa\nCHAT\nSESSIONS\nFILES\nMODELS\nLOGS\nCRON\nSKILLS\nPLUGINS\nMCP\nCHANNELS\nWEBHOOKS\nPAIRING\nPROFILES\nCONFIG\nKEYS\nSYSTEM\nDOCUMENTATION\nPlugins\nKANBAN\nACHIEVEMENTS\nSystem\n\nGateway Status: Running\n\nActive Sessions: 1\n\nRestart Gateway\nCYBERPUNK\nEN\nv0.17.0\nNous Research\nKanban\nBoard\nDefault · 126\n126 tasks\n?\n+ New board\nOrchestration:\nAuto\n▸ Orchestration settings\nSEARCH\nTENANT\nAll tenants\nASSIGNEE\nAll profiles\nShow archived\nLanes by profile\nNudge dispatcher\nRefresh\nClear filters\nTriage\n0\n+\nRaw ideas — a specifier will flesh out the spec\n— no tasks —\nTodo\n4\n+\nWaiting on dependencies or unassigned\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 01 — Korra product/design spec: Hermes TUI clone + office placement\n@korra\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 02 — Cloud auth/proxy/access bridge proof\n@cloud\njust now\n[redacted-long-token]\nP1\nSORA-MISSIONCONTROL\n0/1\nFinal Cloud Unraid deploy readiness and rollback proof\n@cloud\n💬 1\n↔ 2\njust now\n[redacted-long-token]\nSORA-MISSIONCONTROL\nFinal acceptance: build, review, proof tests, Unraid deploy\n@sora\n💬 2\n↔ 1\njust now\nScheduled\n6\n+\nWaiting on a known time delay or scheduled follow-up\n[redacted-long-token]\nP4\n[redacted-long-token]\nRESET 07 — Sora final acceptance and deployment proof\n@sora\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 03 — Biscuit rebuild shell around Hermes TUI clone\n@biscuit\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 04 — Biscuit/Korra office visual corruption fix\n@biscuit\njust now\n[redacted-long-token]\nP2\n[redacted-long-token]\nRESET 05 — Lelouch workflow/copy and user mental model\n@lelouch\njust now\n[redacted-long-token]\nP2\n[redacted-long-token]\nRESET 06 — Tifa risk/false-green acceptance audit\n@tifa\njust now\n[redacted-long-token]\nSORA-MISSIONCONTROL\nPhase 9 - polish, performance, and cohesion\n@sora\n💬 3\n↔ 5\njust now\nReady\n0\n+\nDependencies satisfied; assign a profile to dispatch\n— n",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 1440,
+        "h": 950
+      }
+    },
+    {
+      "tag": "aside",
+      "cls": "fixed top-0 left-0 z-50 flex h-dvh max-h-dvh w-64 min-h-0 flex-col border-r border-current/20 bg-background-base/95 backdrop-blur-sm transition-[transform] dura",
+      "role": null,
+      "aria": "Navigation",
+      "text": "HERMES\nAGENT\nthis dashboard (default)\nbiscuit\ncloud\nkorra\nlelouch\nrain\ntifa\nCHAT\nSESSIONS\nFILES\nMODELS\nLOGS\nCRON\nSKILLS\nPLUGINS\nMCP\nCHANNELS\nWEBHOOKS\nPAIRING\nPROFILES\nCONFIG\nKEYS\nSYSTEM\nDOCUMENTATION\nPlugins\nKANBAN\nACHIEVEMENTS\nSystem\n\nGateway Status: Running\n\nActive Sessions: 1\n\nRestart Gateway\nCYBERPUNK\nEN\nv0.17.0\nNous Research",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 240,
+        "h": 950
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "flex h-14 shrink-0 items-center gap-2 border-b border-current/20 px-4 justify-between",
+      "role": null,
+      "aria": null,
+      "text": "HERMES\nAGENT",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 239,
+        "h": 53
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "flex items-center gap-2",
+      "role": null,
+      "aria": null,
+      "text": "HERMES\nAGENT",
+      "rect": {
+        "x": 15,
+        "y": 10,
+        "w": 59,
+        "h": 32
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "font-sans font-bold text-[1.125rem] leading-[0.95] tracking-[0.0525rem] text-midground uppercase",
+      "role": null,
+      "aria": null,
+      "text": "HERMES\nAGENT",
+      "rect": {
+        "x": 15,
+        "y": 10,
+        "w": 59,
+        "h": 32
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "flex items-center gap-2 border-b border-current/10 px-3 py-2",
+      "role": null,
+      "aria": null,
+      "text": "this dashboard (default)\nbiscuit\ncloud\nkorra\nlelouch\nrain\ntifa",
+      "rect": {
+        "x": 0,
+        "y": 53,
+        "w": 239,
+        "h": 42
+      }
+    },
+    {
+      "tag": "select",
+      "cls": "h-7 w-full min-w-0 rounded-none border bg-background px-1 text-xs border-border text-text-secondary",
+      "role": null,
+      "aria": "Managing profile",
+      "text": "this dashboard (default)\nbiscuit\ncloud\nkorra\nlelouch\nrain\ntifa",
+      "rect": {
+        "x": 32,
+        "y": 60,
+        "w": 196,
+        "h": 26
+      }
+    },
+    {
+      "tag": "nav",
+      "cls": "min-h-0 w-full flex-1 overflow-y-auto overflow-x-hidden border-t border-current/10 py-2",
+      "role": null,
+      "aria": "Navigation",
+      "text": "CHAT\nSESSIONS\nFILES\nMODELS\nLOGS\nCRON\nSKILLS\nPLUGINS\nMCP\nCHANNELS\nWEBHOOKS\nPAIRING\nPROFILES\nCONFIG\nKEYS\nSYSTEM\nDOCUMENTATION\nPlugins\nKANBAN\nACHIEVEMENTS",
+      "rect": {
+        "x": 0,
+        "y": 95,
+        "w": 239,
+        "h": 675
+      }
+    },
+    {
+      "tag": "ul",
+      "cls": "flex flex-col",
+      "role": null,
+      "aria": null,
+      "text": "CHAT\nSESSIONS\nFILES\nMODELS\nLOGS\nCRON\nSKILLS\nPLUGINS\nMCP\nCHANNELS\nWEBHOOKS\nPAIRING\nPROFILES\nCONFIG\nKEYS\nSYSTEM\nDOCUMENTATION",
+      "rect": {
+        "x": 0,
+        "y": 103,
+        "w": 239,
+        "h": 638
+      }
+    },
+    {
+      "tag": "li",
+      "cls": "",
+      "role": null,
+      "aria": null,
+      "text": "CHAT",
+      "rect": {
+        "x": 0,
+        "y": 103,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "a",
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu",
+      "role": null,
+      "aria": null,
+      "text": "CHAT",
+      "rect": {
+        "x": 0,
+        "y": 103,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "truncate transition-opacity duration-300 lg:opacity-100",
+      "role": null,
+      "aria": null,
+      "text": "CHAT",
+      "rect": {
+        "x": 43,
+        "y": 113,
+        "w": 38,
+        "h": 19
+      }
+    },
+    {
+      "tag": "li",
+      "cls": "",
+      "role": null,
+      "aria": null,
+      "text": "SESSIONS",
+      "rect": {
+        "x": 0,
+        "y": 141,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "a",
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu",
+      "role": null,
+      "aria": null,
+      "text": "SESSIONS",
+      "rect": {
+        "x": 0,
+        "y": 141,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "truncate transition-opacity duration-300 lg:opacity-100",
+      "role": null,
+      "aria": null,
+      "text": "SESSIONS",
+      "rect": {
+        "x": 43,
+        "y": 150,
+        "w": 71,
+        "h": 19
+      }
+    },
+    {
+      "tag": "li",
+      "cls": "",
+      "role": null,
+      "aria": null,
+      "text": "FILES",
+      "rect": {
+        "x": 0,
+        "y": 178,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "a",
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu",
+      "role": null,
+      "aria": null,
+      "text": "FILES",
+      "rect": {
+        "x": 0,
+        "y": 178,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "truncate transition-opacity duration-300 lg:opacity-100",
+      "role": null,
+      "aria": null,
+      "text": "FILES",
+      "rect": {
+        "x": 43,
+        "y": 188,
+        "w": 43,
+        "h": 19
+      }
+    },
+    {
+      "tag": "li",
+      "cls": "",
+      "role": null,
+      "aria": null,
+      "text": "MODELS",
+      "rect": {
+        "x": 0,
+        "y": 216,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "a",
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu",
+      "role": null,
+      "aria": null,
+      "text": "MODELS",
+      "rect": {
+        "x": 0,
+        "y": 216,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "truncate transition-opacity duration-300 lg:opacity-100",
+      "role": null,
+      "aria": null,
+      "text": "MODELS",
+      "rect": {
+        "x": 43,
+        "y": 225,
+        "w": 60,
+        "h": 19
+      }
+    },
+    {
+      "tag": "li",
+      "cls": "",
+      "role": null,
+      "aria": null,
+      "text": "LOGS",
+      "rect": {
+        "x": 0,
+        "y": 253,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "a",
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu",
+      "role": null,
+      "aria": null,
+      "text": "LOGS",
+      "rect": {
+        "x": 0,
+        "y": 253,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "truncate transition-opacity duration-300 lg:opacity-100",
+      "role": null,
+      "aria": null,
+      "text": "LOGS",
+      "rect": {
+        "x": 43,
+        "y": 263,
+        "w": 40,
+        "h": 19
+      }
+    },
+    {
+      "tag": "li",
+      "cls": "",
+      "role": null,
+      "aria": null,
+      "text": "CRON",
+      "rect": {
+        "x": 0,
+        "y": 291,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "a",
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu",
+      "role": null,
+      "aria": null,
+      "text": "CRON",
+      "rect": {
+        "x": 0,
+        "y": 291,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "truncate transition-opacity duration-300 lg:opacity-100",
+      "role": null,
+      "aria": null,
+      "text": "CRON",
+      "rect": {
+        "x": 43,
+        "y": 300,
+        "w": 41,
+        "h": 19
+      }
+    },
+    {
+      "tag": "li",
+      "cls": "",
+      "role": null,
+      "aria": null,
+      "text": "SKILLS",
+      "rect": {
+        "x": 0,
+        "y": 328,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "a",
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu",
+      "role": null,
+      "aria": null,
+      "text": "SKILLS",
+      "rect": {
+        "x": 0,
+        "y": 328,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "truncate transition-opacity duration-300 lg:opacity-100",
+      "role": null,
+      "aria": null,
+      "text": "SKILLS",
+      "rect": {
+        "x": 43,
+        "y": 338,
+        "w": 53,
+        "h": 19
+      }
+    },
+    {
+      "tag": "li",
+      "cls": "",
+      "role": null,
+      "aria": null,
+      "text": "PLUGINS",
+      "rect": {
+        "x": 0,
+        "y": 366,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "a",
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu",
+      "role": null,
+      "aria": null,
+      "text": "PLUGINS",
+      "rect": {
+        "x": 0,
+        "y": 366,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "truncate transition-opacity duration-300 lg:opacity-100",
+      "role": null,
+      "aria": null,
+      "text": "PLUGINS",
+      "rect": {
+        "x": 43,
+        "y": 375,
+        "w": 62,
+        "h": 19
+      }
+    },
+    {
+      "tag": "li",
+      "cls": "",
+      "role": null,
+      "aria": null,
+      "text": "MCP",
+      "rect": {
+        "x": 0,
+        "y": 403,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "a",
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu",
+      "role": null,
+      "aria": null,
+      "text": "MCP",
+      "rect": {
+        "x": 0,
+        "y": 403,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "truncate transition-opacity duration-300 lg:opacity-100",
+      "role": null,
+      "aria": null,
+      "text": "MCP",
+      "rect": {
+        "x": 43,
+        "y": 413,
+        "w": 31,
+        "h": 19
+      }
+    },
+    {
+      "tag": "li",
+      "cls": "",
+      "role": null,
+      "aria": null,
+      "text": "CHANNELS",
+      "rect": {
+        "x": 0,
+        "y": 441,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "a",
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu",
+      "role": null,
+      "aria": null,
+      "text": "CHANNELS",
+      "rect": {
+        "x": 0,
+        "y": 441,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "truncate transition-opacity duration-300 lg:opacity-100",
+      "role": null,
+      "aria": null,
+      "text": "CHANNELS",
+      "rect": {
+        "x": 43,
+        "y": 450,
+        "w": 79,
+        "h": 19
+      }
+    },
+    {
+      "tag": "li",
+      "cls": "",
+      "role": null,
+      "aria": null,
+      "text": "WEBHOOKS",
+      "rect": {
+        "x": 0,
+        "y": 478,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "a",
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu",
+      "role": null,
+      "aria": null,
+      "text": "WEBHOOKS",
+      "rect": {
+        "x": 0,
+        "y": 478,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "truncate transition-opacity duration-300 lg:opacity-100",
+      "role": null,
+      "aria": null,
+      "text": "WEBHOOKS",
+      "rect": {
+        "x": 43,
+        "y": 488,
+        "w": 82,
+        "h": 19
+      }
+    },
+    {
+      "tag": "li",
+      "cls": "",
+      "role": null,
+      "aria": null,
+      "text": "PAIRING",
+      "rect": {
+        "x": 0,
+        "y": 516,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "a",
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu",
+      "role": null,
+      "aria": null,
+      "text": "PAIRING",
+      "rect": {
+        "x": 0,
+        "y": 516,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "truncate transition-opacity duration-300 lg:opacity-100",
+      "role": null,
+      "aria": null,
+      "text": "PAIRING",
+      "rect": {
+        "x": 43,
+        "y": 525,
+        "w": 60,
+        "h": 19
+      }
+    },
+    {
+      "tag": "li",
+      "cls": "",
+      "role": null,
+      "aria": null,
+      "text": "PROFILES",
+      "rect": {
+        "x": 0,
+        "y": 553,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "a",
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu",
+      "role": null,
+      "aria": null,
+      "text": "PROFILES",
+      "rect": {
+        "x": 0,
+        "y": 553,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "truncate transition-opacity duration-300 lg:opacity-100",
+      "role": null,
+      "aria": null,
+      "text": "PROFILES",
+      "rect": {
+        "x": 43,
+        "y": 563,
+        "w": 72,
+        "h": 19
+      }
+    },
+    {
+      "tag": "li",
+      "cls": "",
+      "role": null,
+      "aria": null,
+      "text": "CONFIG",
+      "rect": {
+        "x": 0,
+        "y": 591,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "a",
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu",
+      "role": null,
+      "aria": null,
+      "text": "CONFIG",
+      "rect": {
+        "x": 0,
+        "y": 591,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "truncate transition-opacity duration-300 lg:opacity-100",
+      "role": null,
+      "aria": null,
+      "text": "CONFIG",
+      "rect": {
+        "x": 43,
+        "y": 600,
+        "w": 56,
+        "h": 19
+      }
+    },
+    {
+      "tag": "li",
+      "cls": "",
+      "role": null,
+      "aria": null,
+      "text": "KEYS",
+      "rect": {
+        "x": 0,
+        "y": 628,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "a",
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu",
+      "role": null,
+      "aria": null,
+      "text": "KEYS",
+      "rect": {
+        "x": 0,
+        "y": 628,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "truncate transition-opacity duration-300 lg:opacity-100",
+      "role": null,
+      "aria": null,
+      "text": "KEYS",
+      "rect": {
+        "x": 43,
+        "y": 638,
+        "w": 35,
+        "h": 19
+      }
+    },
+    {
+      "tag": "li",
+      "cls": "",
+      "role": null,
+      "aria": null,
+      "text": "SYSTEM",
+      "rect": {
+        "x": 0,
+        "y": 666,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "a",
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu",
+      "role": null,
+      "aria": null,
+      "text": "SYSTEM",
+      "rect": {
+        "x": 0,
+        "y": 666,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "truncate transition-opacity duration-300 lg:opacity-100",
+      "role": null,
+      "aria": null,
+      "text": "SYSTEM",
+      "rect": {
+        "x": 43,
+        "y": 675,
+        "w": 55,
+        "h": 19
+      }
+    },
+    {
+      "tag": "li",
+      "cls": "",
+      "role": null,
+      "aria": null,
+      "text": "DOCUMENTATION",
+      "rect": {
+        "x": 0,
+        "y": 703,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "a",
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu",
+      "role": null,
+      "aria": null,
+      "text": "DOCUMENTATION",
+      "rect": {
+        "x": 0,
+        "y": 703,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "truncate transition-opacity duration-300 lg:opacity-100",
+      "role": null,
+      "aria": null,
+      "text": "DOCUMENTATION",
+      "rect": {
+        "x": 43,
+        "y": 713,
+        "w": 129,
+        "h": 19
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "flex flex-col border-t border-current/10 pb-2",
+      "role": "group",
+      "aria": null,
+      "text": "Plugins\nKANBAN\nACHIEVEMENTS",
+      "rect": {
+        "x": 0,
+        "y": 741,
+        "w": 239,
+        "h": 112
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "px-5 pt-2.5 pb-1 font-mondwest text-xs tracking-[0.12em] text-text-tertiary",
+      "role": null,
+      "aria": null,
+      "text": "Plugins",
+      "rect": {
+        "x": 0,
+        "y": 742,
+        "w": 239,
+        "h": 28
+      }
+    },
+    {
+      "tag": "ul",
+      "cls": "flex flex-col",
+      "role": null,
+      "aria": null,
+      "text": "KANBAN\nACHIEVEMENTS",
+      "rect": {
+        "x": 0,
+        "y": 770,
+        "w": 239,
+        "h": 75
+      }
+    },
+    {
+      "tag": "li",
+      "cls": "",
+      "role": null,
+      "aria": null,
+      "text": "KANBAN",
+      "rect": {
+        "x": 0,
+        "y": 770,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "a",
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu",
+      "role": null,
+      "aria": null,
+      "text": "KANBAN",
+      "rect": {
+        "x": 0,
+        "y": 770,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "truncate transition-opacity duration-300 lg:opacity-100",
+      "role": null,
+      "aria": null,
+      "text": "KANBAN",
+      "rect": {
+        "x": 43,
+        "y": 779,
+        "w": 57,
+        "h": 19
+      }
+    },
+    {
+      "tag": "li",
+      "cls": "",
+      "role": null,
+      "aria": null,
+      "text": "ACHIEVEMENTS",
+      "rect": {
+        "x": 0,
+        "y": 807,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "a",
+      "cls": "group/nav relative flex items-center gap-3 px-5 py-2.5 font-mondwest uppercase text-sm tracking-[0.12em] whitespace-nowrap transition-colors cursor-pointer focu",
+      "role": null,
+      "aria": null,
+      "text": "ACHIEVEMENTS",
+      "rect": {
+        "x": 0,
+        "y": 807,
+        "w": 239,
+        "h": 38
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "truncate transition-opacity duration-300 lg:opacity-100",
+      "role": null,
+      "aria": null,
+      "text": "ACHIEVEMENTS",
+      "rect": {
+        "x": 43,
+        "y": 817,
+        "w": 116,
+        "h": 19
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "shrink-0 flex flex-col border-t border-current/10 py-1",
+      "role": null,
+      "aria": null,
+      "text": "System\n\nGateway Status: Running\n\nActive Sessions: 1\n\nRestart Gateway",
+      "rect": {
+        "x": 0,
+        "y": 769,
+        "w": 239,
+        "h": 105
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "px-5 pt-0.5 pb-0.5 font-mondwest text-xs tracking-[0.12em] text-text-tertiary",
+      "role": null,
+      "aria": null,
+      "text": "System",
+      "rect": {
+        "x": 0,
+        "y": 774,
+        "w": 239,
+        "h": 19
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "",
+      "role": null,
+      "aria": null,
+      "text": "Gateway Status: Running\n\nActive Sessions: 1",
+      "rect": {
+        "x": 0,
+        "y": 793,
+        "w": 239,
+        "h": 44
+      }
+    },
+    {
+      "tag": "a",
+      "cls": "block text-left px-5 pb-2 pt-0.5 text-text-secondary transition-colors hover:text-midground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-m",
+      "role": null,
+      "aria": null,
+      "text": "Gateway Status: Running\n\nActive Sessions: 1",
+      "rect": {
+        "x": 0,
+        "y": 793,
+        "w": 239,
+        "h": 44
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "flex flex-col gap-1 font-mondwest text-xs leading-snug tracking-[0.08em]",
+      "role": null,
+      "aria": null,
+      "text": "Gateway Status: Running\n\nActive Sessions: 1",
+      "rect": {
+        "x": 19,
+        "y": 795,
+        "w": 202,
+        "h": 35
+      }
+    },
+    {
+      "tag": "p",
+      "cls": "break-words",
+      "role": null,
+      "aria": null,
+      "text": "Gateway Status: Running",
+      "rect": {
+        "x": 19,
+        "y": 795,
+        "w": 202,
+        "h": 15
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "text-text-tertiary",
+      "role": null,
+      "aria": null,
+      "text": "Gateway Status:",
+      "rect": {
+        "x": 19,
+        "y": 796,
+        "w": 92,
+        "h": 12
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "font-medium text-success",
+      "role": null,
+      "aria": null,
+      "text": "Running",
+      "rect": {
+        "x": 113,
+        "y": 796,
+        "w": 46,
+        "h": 12
+      }
+    },
+    {
+      "tag": "p",
+      "cls": "break-words",
+      "role": null,
+      "aria": null,
+      "text": "Active Sessions: 1",
+      "rect": {
+        "x": 19,
+        "y": 814,
+        "w": 202,
+        "h": 15
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "text-text-tertiary",
+      "role": null,
+      "aria": null,
+      "text": "Active Sessions:",
+      "rect": {
+        "x": 19,
+        "y": 815,
+        "w": 86,
+        "h": 12
+      }
+    },
+    {
+      "tag": "ul",
+      "cls": "flex flex-col",
+      "role": null,
+      "aria": null,
+      "text": "Restart Gateway",
+      "rect": {
+        "x": 0,
+        "y": 837,
+        "w": 239,
+        "h": 34
+      }
+    },
+    {
+      "tag": "li",
+      "cls": "",
+      "role": null,
+      "aria": null,
+      "text": "Restart Gateway",
+      "rect": {
+        "x": 0,
+        "y": 837,
+        "w": 239,
+        "h": 34
+      }
+    },
+    {
+      "tag": "button",
+      "cls": "group/action relative flex w-full items-center gap-3 px-5 py-2.5 font-mondwest text-xs tracking-[0.1em] whitespace-nowrap transition-colors cursor-pointer focus",
+      "role": null,
+      "aria": null,
+      "text": "Restart Gateway",
+      "rect": {
+        "x": 0,
+        "y": 837,
+        "w": 239,
+        "h": 34
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "truncate transition-opacity duration-300 lg:opacity-100",
+      "role": null,
+      "aria": null,
+      "text": "Restart Gateway",
+      "rect": {
+        "x": 43,
+        "y": 846,
+        "w": 99,
+        "h": 15
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "flex shrink-0 items-center gap-2 px-3 py-2 border-t border-current/20 justify-between",
+      "role": null,
+      "aria": null,
+      "text": "CYBERPUNK\nEN",
+      "rect": {
+        "x": 0,
+        "y": 875,
+        "w": 239,
+        "h": 41
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "flex min-w-0 items-center gap-2",
+      "role": null,
+      "aria": null,
+      "text": "CYBERPUNK\nEN",
+      "rect": {
+        "x": 11,
+        "y": 883,
+        "w": 135,
+        "h": 25
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "relative w-fit",
+      "role": null,
+      "aria": null,
+      "text": "CYBERPUNK",
+      "rect": {
+        "x": 11,
+        "y": 884,
+        "w": 99,
+        "h": 23
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "relative",
+      "role": null,
+      "aria": null,
+      "text": "CYBERPUNK",
+      "rect": {
+        "x": 11,
+        "y": 884,
+        "w": 99,
+        "h": 23
+      }
+    },
+    {
+      "tag": "button",
+      "cls": "font-mono group relative grid cursor-pointer grid-cols-[auto_1fr_auto] items-center disabled:pointer-events-none disabled:bg-midground/15 disabled:text-midgroun",
+      "role": null,
+      "aria": "Switch theme",
+      "text": "CYBERPUNK",
+      "rect": {
+        "x": 11,
+        "y": 884,
+        "w": 99,
+        "h": 23
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "inline-flex items-center gap-1.5",
+      "role": null,
+      "aria": null,
+      "text": "CYBERPUNK",
+      "rect": {
+        "x": 19,
+        "y": 888,
+        "w": 84,
+        "h": 15
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "font-mondwest hidden sm:inline text-display tracking-wide text-xs",
+      "role": null,
+      "aria": null,
+      "text": "CYBERPUNK",
+      "rect": {
+        "x": 38,
+        "y": 888,
+        "w": 66,
+        "h": 15
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "relative w-fit",
+      "role": null,
+      "aria": null,
+      "text": "EN",
+      "rect": {
+        "x": 118,
+        "y": 883,
+        "w": 29,
+        "h": 25
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "relative inline-flex",
+      "role": null,
+      "aria": null,
+      "text": "EN",
+      "rect": {
+        "x": 118,
+        "y": 885,
+        "w": 29,
+        "h": 23
+      }
+    },
+    {
+      "tag": "button",
+      "cls": "font-mono group relative grid cursor-pointer grid-cols-[auto_1fr_auto] items-center disabled:pointer-events-none disabled:bg-midground/15 disabled:text-midgroun",
+      "role": null,
+      "aria": "Switch language",
+      "text": "EN",
+      "rect": {
+        "x": 118,
+        "y": 885,
+        "w": 29,
+        "h": 23
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "inline-flex items-center gap-1.5",
+      "role": null,
+      "aria": null,
+      "text": "EN",
+      "rect": {
+        "x": 126,
+        "y": 889,
+        "w": 14,
+        "h": 15
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "font-mondwest hidden sm:inline text-display tracking-wide text-xs",
+      "role": null,
+      "aria": null,
+      "text": "EN",
+      "rect": {
+        "x": 126,
+        "y": 889,
+        "w": 14,
+        "h": 15
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "flex shrink-0 flex-col",
+      "role": null,
+      "aria": null,
+      "text": "v0.17.0\nNous Research",
+      "rect": {
+        "x": 0,
+        "y": 915,
+        "w": 239,
+        "h": 35
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "flex shrink-0 items-center justify-between gap-2 px-5 py-2.5 border-t border-current/10",
+      "role": null,
+      "aria": null,
+      "text": "v0.17.0\nNous Research",
+      "rect": {
+        "x": 0,
+        "y": 915,
+        "w": 239,
+        "h": 35
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "font-mono-ui text-xs tabular-nums tracking-[0.08em] text-text-tertiary lowercase",
+      "role": null,
+      "aria": null,
+      "text": "v0.17.0",
+      "rect": {
+        "x": 19,
+        "y": 926,
+        "w": 48,
+        "h": 15
+      }
+    },
+    {
+      "tag": "a",
+      "cls": "font-mondwest text-xs tracking-[0.12em] text-midground transition-opacity hover:opacity-90 focus-visible:rounded-sm focus-visible:outline-none focus-visible:rin",
+      "role": null,
+      "aria": null,
+      "text": "Nous Research",
+      "rect": {
+        "x": 135,
+        "y": 926,
+        "w": 86,
+        "h": 15
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "flex min-h-0 w-full min-w-0 flex-1 flex-col overflow-hidden",
+      "role": null,
+      "aria": null,
+      "text": "Kanban\nBoard\nDefault · 126\n126 tasks\n?\n+ New board\nOrchestration:\nAuto\n▸ Orchestration settings\nSEARCH\nTENANT\nAll tenants\nASSIGNEE\nAll profiles\nShow archived\nLanes by profile\nNudge dispatcher\nRefresh\nClear filters\nTriage\n0\n+\nRaw ideas — a specifier will flesh out the spec\n— no tasks —\nTodo\n4\n+\nWaiting on dependencies or unassigned\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 01 — Korra product/design spec: Hermes TUI clone + office placement\n@korra\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 02 — Cloud auth/proxy/access bridge proof\n@cloud\njust now\n[redacted-long-token]\nP1\nSORA-MISSIONCONTROL\n0/1\nFinal Cloud Unraid deploy readiness and rollback proof\n@cloud\n💬 1\n↔ 2\njust now\n[redacted-long-token]\nSORA-MISSIONCONTROL\nFinal acceptance: build, review, proof tests, Unraid deploy\n@sora\n💬 2\n↔ 1\njust now\nScheduled\n6\n+\nWaiting on a known time delay or scheduled follow-up\n[redacted-long-token]\nP4\n[redacted-long-token]\nRESET 07 — Sora final acceptance and deployment proof\n@sora\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 03 — Biscuit rebuild shell around Hermes TUI clone\n@biscuit\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 04 — Biscuit/Korra office visual corruption fix\n@biscuit\njust now\n[redacted-long-token]\nP2\n[redacted-long-token]\nRESET 05 — Lelouch workflow/copy and user mental model\n@lelouch\njust now\n[redacted-long-token]\nP2\n[redacted-long-token]\nRESET 06 — Tifa risk/false-green acceptance audit\n@tifa\njust now\n[redacted-long-token]\nSORA-MISSIONCONTROL\nPhase 9 - polish, performance, and cohesion\n@sora\n💬 3\n↔ 5\njust now\nReady\n0\n+\nDependencies satisfied; assign a profile to dispatch\n— no tasks —\nIn Progress\n0\n+\nClaimed by a worker — in-flight\n— no tasks —\nBlocked\n3\n+\nWorker asked for human input\n[redacted-long-token]\nP2\nSORA-MISSIONCONTROL\nPhase 6 Biscuit admin proxy 401/unauthorized affordance\n@biscuit\n💬 1\njust now\n[redacted-long-token]\nP1\nSORA-MISSIONCONTROL\n0/1\nPhase 8 Biscuit polish fixes after Korra review",
+      "rect": {
+        "x": 240,
+        "y": 0,
+        "w": 1200,
+        "h": 950
+      }
+    },
+    {
+      "tag": "header",
+      "cls": "z-1 w-full shrink-0 box-border border-b border-current/20 bg-background-base/40 backdrop-blur-sm min-h-0 overflow-x-hidden overflow-y-visible py-3 sm:h-14 sm:mi",
+      "role": "banner",
+      "aria": null,
+      "text": "Kanban",
+      "rect": {
+        "x": 240,
+        "y": 0,
+        "w": 1200,
+        "h": 53
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "flex w-full min-w-0 flex-1 gap-3 px-3 sm:h-full sm:gap-3 sm:px-6 flex-col justify-center sm:flex-row sm:items-center",
+      "role": null,
+      "aria": null,
+      "text": "Kanban",
+      "rect": {
+        "x": 240,
+        "y": 0,
+        "w": 1200,
+        "h": 52
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "flex min-w-0 flex-1 gap-2 sm:gap-3 flex-row items-center",
+      "role": null,
+      "aria": null,
+      "text": "Kanban",
+      "rect": {
+        "x": 263,
+        "y": 16,
+        "w": 1155,
+        "h": 19
+      }
+    },
+    {
+      "tag": "h1",
+      "cls": "font-expanded min-w-0 text-sm font-bold tracking-[0.08em] text-midground truncate",
+      "role": null,
+      "aria": null,
+      "text": "Kanban",
+      "rect": {
+        "x": 263,
+        "y": 16,
+        "w": 80,
+        "h": 19
+      }
+    },
+    {
+      "tag": "main",
+      "cls": "min-h-0 w-full min-w-0 flex-1 flex flex-col overflow-y-auto overflow-x-hidden [scrollbar-gutter:stable]",
+      "role": null,
+      "aria": null,
+      "text": "Board\nDefault · 126\n126 tasks\n?\n+ New board\nOrchestration:\nAuto\n▸ Orchestration settings\nSEARCH\nTENANT\nAll tenants\nASSIGNEE\nAll profiles\nShow archived\nLanes by profile\nNudge dispatcher\nRefresh\nClear filters\nTriage\n0\n+\nRaw ideas — a specifier will flesh out the spec\n— no tasks —\nTodo\n4\n+\nWaiting on dependencies or unassigned\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 01 — Korra product/design spec: Hermes TUI clone + office placement\n@korra\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 02 — Cloud auth/proxy/access bridge proof\n@cloud\njust now\n[redacted-long-token]\nP1\nSORA-MISSIONCONTROL\n0/1\nFinal Cloud Unraid deploy readiness and rollback proof\n@cloud\n💬 1\n↔ 2\njust now\n[redacted-long-token]\nSORA-MISSIONCONTROL\nFinal acceptance: build, review, proof tests, Unraid deploy\n@sora\n💬 2\n↔ 1\njust now\nScheduled\n6\n+\nWaiting on a known time delay or scheduled follow-up\n[redacted-long-token]\nP4\n[redacted-long-token]\nRESET 07 — Sora final acceptance and deployment proof\n@sora\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 03 — Biscuit rebuild shell around Hermes TUI clone\n@biscuit\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 04 — Biscuit/Korra office visual corruption fix\n@biscuit\njust now\n[redacted-long-token]\nP2\n[redacted-long-token]\nRESET 05 — Lelouch workflow/copy and user mental model\n@lelouch\njust now\n[redacted-long-token]\nP2\n[redacted-long-token]\nRESET 06 — Tifa risk/false-green acceptance audit\n@tifa\njust now\n[redacted-long-token]\nSORA-MISSIONCONTROL\nPhase 9 - polish, performance, and cohesion\n@sora\n💬 3\n↔ 5\njust now\nReady\n0\n+\nDependencies satisfied; assign a profile to dispatch\n— no tasks —\nIn Progress\n0\n+\nClaimed by a worker — in-flight\n— no tasks —\nBlocked\n3\n+\nWorker asked for human input\n[redacted-long-token]\nP2\nSORA-MISSIONCONTROL\nPhase 6 Biscuit admin proxy 401/unauthorized affordance\n@biscuit\n💬 1\njust now\n[redacted-long-token]\nP1\nSORA-MISSIONCONTROL\n0/1\nPhase 8 Biscuit polish fixes after Korra review\n@biscu",
+      "rect": {
+        "x": 240,
+        "y": 53,
+        "w": 1200,
+        "h": 898
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "relative z-2 flex min-w-0 min-h-0 flex-1 flex-col px-3 sm:px-6 pt-2 sm:pt-4 lg:pt-6",
+      "role": null,
+      "aria": null,
+      "text": "Board\nDefault · 126\n126 tasks\n?\n+ New board\nOrchestration:\nAuto\n▸ Orchestration settings\nSEARCH\nTENANT\nAll tenants\nASSIGNEE\nAll profiles\nShow archived\nLanes by profile\nNudge dispatcher\nRefresh\nClear filters\nTriage\n0\n+\nRaw ideas — a specifier will flesh out the spec\n— no tasks —\nTodo\n4\n+\nWaiting on dependencies or unassigned\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 01 — Korra product/design spec: Hermes TUI clone + office placement\n@korra\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 02 — Cloud auth/proxy/access bridge proof\n@cloud\njust now\n[redacted-long-token]\nP1\nSORA-MISSIONCONTROL\n0/1\nFinal Cloud Unraid deploy readiness and rollback proof\n@cloud\n💬 1\n↔ 2\njust now\n[redacted-long-token]\nSORA-MISSIONCONTROL\nFinal acceptance: build, review, proof tests, Unraid deploy\n@sora\n💬 2\n↔ 1\njust now\nScheduled\n6\n+\nWaiting on a known time delay or scheduled follow-up\n[redacted-long-token]\nP4\n[redacted-long-token]\nRESET 07 — Sora final acceptance and deployment proof\n@sora\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 03 — Biscuit rebuild shell around Hermes TUI clone\n@biscuit\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 04 — Biscuit/Korra office visual corruption fix\n@biscuit\njust now\n[redacted-long-token]\nP2\n[redacted-long-token]\nRESET 05 — Lelouch workflow/copy and user mental model\n@lelouch\njust now\n[redacted-long-token]\nP2\n[redacted-long-token]\nRESET 06 — Tifa risk/false-green acceptance audit\n@tifa\njust now\n[redacted-long-token]\nSORA-MISSIONCONTROL\nPhase 9 - polish, performance, and cohesion\n@sora\n💬 3\n↔ 5\njust now\nReady\n0\n+\nDependencies satisfied; assign a profile to dispatch\n— no tasks —\nIn Progress\n0\n+\nClaimed by a worker — in-flight\n— no tasks —\nBlocked\n3\n+\nWorker asked for human input\n[redacted-long-token]\nP2\nSORA-MISSIONCONTROL\nPhase 6 Biscuit admin proxy 401/unauthorized affordance\n@biscuit\n💬 1\njust now\n[redacted-long-token]\nP1\nSORA-MISSIONCONTROL\n0/1\nPhase 8 Biscuit polish fixes after Korra review\n@biscu",
+      "rect": {
+        "x": 240,
+        "y": 53,
+        "w": 1190,
+        "h": 898
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "w-full min-w-0 pb-[calc(2rem+env(safe-area-inset-bottom,0px))] lg:pb-8",
+      "role": null,
+      "aria": null,
+      "text": "Board\nDefault · 126\n126 tasks\n?\n+ New board\nOrchestration:\nAuto\n▸ Orchestration settings\nSEARCH\nTENANT\nAll tenants\nASSIGNEE\nAll profiles\nShow archived\nLanes by profile\nNudge dispatcher\nRefresh\nClear filters\nTriage\n0\n+\nRaw ideas — a specifier will flesh out the spec\n— no tasks —\nTodo\n4\n+\nWaiting on dependencies or unassigned\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 01 — Korra product/design spec: Hermes TUI clone + office placement\n@korra\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 02 — Cloud auth/proxy/access bridge proof\n@cloud\njust now\n[redacted-long-token]\nP1\nSORA-MISSIONCONTROL\n0/1\nFinal Cloud Unraid deploy readiness and rollback proof\n@cloud\n💬 1\n↔ 2\njust now\n[redacted-long-token]\nSORA-MISSIONCONTROL\nFinal acceptance: build, review, proof tests, Unraid deploy\n@sora\n💬 2\n↔ 1\njust now\nScheduled\n6\n+\nWaiting on a known time delay or scheduled follow-up\n[redacted-long-token]\nP4\n[redacted-long-token]\nRESET 07 — Sora final acceptance and deployment proof\n@sora\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 03 — Biscuit rebuild shell around Hermes TUI clone\n@biscuit\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 04 — Biscuit/Korra office visual corruption fix\n@biscuit\njust now\n[redacted-long-token]\nP2\n[redacted-long-token]\nRESET 05 — Lelouch workflow/copy and user mental model\n@lelouch\njust now\n[redacted-long-token]\nP2\n[redacted-long-token]\nRESET 06 — Tifa risk/false-green acceptance audit\n@tifa\njust now\n[redacted-long-token]\nSORA-MISSIONCONTROL\nPhase 9 - polish, performance, and cohesion\n@sora\n💬 3\n↔ 5\njust now\nReady\n0\n+\nDependencies satisfied; assign a profile to dispatch\n— no tasks —\nIn Progress\n0\n+\nClaimed by a worker — in-flight\n— no tasks —\nBlocked\n3\n+\nWorker asked for human input\n[redacted-long-token]\nP2\nSORA-MISSIONCONTROL\nPhase 6 Biscuit admin proxy 401/unauthorized affordance\n@biscuit\n💬 1\njust now\n[redacted-long-token]\nP1\nSORA-MISSIONCONTROL\n0/1\nPhase 8 Biscuit polish fixes after Korra review\n@biscu",
+      "rect": {
+        "x": 263,
+        "y": 75,
+        "w": 1145,
+        "h": 943
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "hermes-kanban flex flex-col gap-4",
+      "role": null,
+      "aria": null,
+      "text": "Board\nDefault · 126\n126 tasks\n?\n+ New board\nOrchestration:\nAuto\n▸ Orchestration settings\nSEARCH\nTENANT\nAll tenants\nASSIGNEE\nAll profiles\nShow archived\nLanes by profile\nNudge dispatcher\nRefresh\nClear filters\nTriage\n0\n+\nRaw ideas — a specifier will flesh out the spec\n— no tasks —\nTodo\n4\n+\nWaiting on dependencies or unassigned\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 01 — Korra product/design spec: Hermes TUI clone + office placement\n@korra\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 02 — Cloud auth/proxy/access bridge proof\n@cloud\njust now\n[redacted-long-token]\nP1\nSORA-MISSIONCONTROL\n0/1\nFinal Cloud Unraid deploy readiness and rollback proof\n@cloud\n💬 1\n↔ 2\njust now\n[redacted-long-token]\nSORA-MISSIONCONTROL\nFinal acceptance: build, review, proof tests, Unraid deploy\n@sora\n💬 2\n↔ 1\njust now\nScheduled\n6\n+\nWaiting on a known time delay or scheduled follow-up\n[redacted-long-token]\nP4\n[redacted-long-token]\nRESET 07 — Sora final acceptance and deployment proof\n@sora\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 03 — Biscuit rebuild shell around Hermes TUI clone\n@biscuit\njust now\n[redacted-long-token]\nP3\n[redacted-long-token]\nRESET 04 — Biscuit/Korra office visual corruption fix\n@biscuit\njust now\n[redacted-long-token]\nP2\n[redacted-long-token]\nRESET 05 — Lelouch workflow/copy and user mental model\n@lelouch\njust now\n[redacted-long-token]\nP2\n[redacted-long-token]\nRESET 06 — Tifa risk/false-green acceptance audit\n@tifa\njust now\n[redacted-long-token]\nSORA-MISSIONCONTROL\nPhase 9 - polish, performance, and cohesion\n@sora\n💬 3\n↔ 5\njust now\nReady\n0\n+\nDependencies satisfied; assign a profile to dispatch\n— no tasks —\nIn Progress\n0\n+\nClaimed by a worker — in-flight\n— no tasks —\nBlocked\n3\n+\nWorker asked for human input\n[redacted-long-token]\nP2\nSORA-MISSIONCONTROL\nPhase 6 Biscuit admin proxy 401/unauthorized affordance\n@biscuit\n💬 1\njust now\n[redacted-long-token]\nP1\nSORA-MISSIONCONTROL\n0/1\nPhase 8 Biscuit polish fixes after Korra review\n@biscu",
+      "rect": {
+        "x": 263,
+        "y": 75,
+        "w": 1145,
+        "h": 913
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "hermes-kanban-boardswitcher",
+      "role": null,
+      "aria": null,
+      "text": "Board\nDefault · 126\n126 tasks\n?\n+ New board",
+      "rect": {
+        "x": 263,
+        "y": 75,
+        "w": 1145,
+        "h": 69
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "hermes-kanban-boardswitcher-inner",
+      "role": null,
+      "aria": null,
+      "text": "Board\nDefault · 126\n126 tasks\n?\n+ New board",
+      "rect": {
+        "x": 276,
+        "y": 85,
+        "w": 1118,
+        "h": 49
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "flex flex-col gap-0.5",
+      "role": null,
+      "aria": null,
+      "text": "Board\nDefault · 126\n126 tasks",
+      "rect": {
+        "x": 276,
+        "y": 85,
+        "w": 282,
+        "h": 49
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "text-[11px] tracking-wider text-muted-foreground",
+      "role": null,
+      "aria": null,
+      "text": "Board",
+      "rect": {
+        "x": 276,
+        "y": 85,
+        "w": 282,
+        "h": 17
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "flex items-center gap-2",
+      "role": null,
+      "aria": null,
+      "text": "Default · 126\n126 tasks",
+      "rect": {
+        "x": 276,
+        "y": 104,
+        "w": 282,
+        "h": 30
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "relative h-8 min-w-[220px]",
+      "role": null,
+      "aria": null,
+      "text": "Default · 126",
+      "rect": {
+        "x": 276,
+        "y": 104,
+        "w": 220,
+        "h": 30
+      }
+    },
+    {
+      "tag": "button",
+      "cls": "flex h-9 w-full items-center justify-between gap-2 border border-midground/15 bg-background/40 px-3 py-1 font-courier text-sm text-left text-midground transitio",
+      "role": "combobox",
+      "aria": null,
+      "text": "Default · 126",
+      "rect": {
+        "x": 276,
+        "y": 104,
+        "w": 220,
+        "h": 34
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "truncate",
+      "role": null,
+      "aria": null,
+      "text": "Default · 126",
+      "rect": {
+        "x": 289,
+        "y": 111,
+        "w": 103,
+        "h": 19
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "text-xs text-muted-foreground",
+      "role": null,
+      "aria": null,
+      "text": "126 tasks",
+      "rect": {
+        "x": 504,
+        "y": 111,
+        "w": 54,
+        "h": 15
+      }
+    },
+    {
+      "tag": "button",
+      "cls": "font-mono group relative grid cursor-pointer grid-cols-[auto_1fr_auto] items-center font-bold disabled:pointer-events-none disabled:bg-midground/15 disabled:tex",
+      "role": null,
+      "aria": null,
+      "text": "+ New board",
+      "rect": {
+        "x": 1288,
+        "y": 104,
+        "w": 106,
+        "h": 30
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "flex items-center gap-3 text-xs",
+      "role": null,
+      "aria": null,
+      "text": "Orchestration:\nAuto\n▸ Orchestration settings",
+      "rect": {
+        "x": 263,
+        "y": 159,
+        "w": 1145,
+        "h": 21
+      }
+    },
+    {
+      "tag": "button",
+      "cls": "inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-30",
+      "role": null,
+      "aria": null,
+      "text": "Orchestration:\nAuto",
+      "rect": {
+        "x": 263,
+        "y": 159,
+        "w": 133,
+        "h": 21
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "ml-1 font-semibold",
+      "role": null,
+      "aria": null,
+      "text": "Auto",
+      "rect": {
+        "x": 363,
+        "y": 162,
+        "w": 24,
+        "h": 15
+      }
+    },
+    {
+      "tag": "button",
+      "cls": "underline text-muted-foreground hover:text-foreground",
+      "role": null,
+      "aria": null,
+      "text": "▸ Orchestration settings",
+      "rect": {
+        "x": 406,
+        "y": 162,
+        "w": 145,
+        "h": 15
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "flex flex-wrap items-end gap-3",
+      "role": null,
+      "aria": null,
+      "text": "SEARCH\nTENANT\nAll tenants\nASSIGNEE\nAll profiles\nShow archived\nLanes by profile\nNudge dispatcher\nRefresh\nClear filters",
+      "rect": {
+        "x": 263,
+        "y": 195,
+        "w": 1145,
+        "h": 49
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "flex flex-col gap-1",
+      "role": null,
+      "aria": null,
+      "text": "SEARCH",
+      "rect": {
+        "x": 263,
+        "y": 195,
+        "w": 210,
+        "h": 49
+      }
+    },
+    {
+      "tag": "label",
+      "cls": "font-mondwest tracking-[0.1em] uppercase peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-xs text-muted-foreground",
+      "role": null,
+      "aria": null,
+      "text": "SEARCH",
+      "rect": {
+        "x": 263,
+        "y": 195,
+        "w": 210,
+        "h": 15
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "flex flex-col gap-1",
+      "role": null,
+      "aria": null,
+      "text": "TENANT\nAll tenants",
+      "rect": {
+        "x": 484,
+        "y": 195,
+        "w": 130,
+        "h": 49
+      }
+    },
+    {
+      "tag": "label",
+      "cls": "font-mondwest tracking-[0.1em] uppercase peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-xs text-muted-foreground",
+      "role": null,
+      "aria": null,
+      "text": "TENANT",
+      "rect": {
+        "x": 484,
+        "y": 195,
+        "w": 130,
+        "h": 15
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "relative h-8",
+      "role": null,
+      "aria": null,
+      "text": "All tenants",
+      "rect": {
+        "x": 484,
+        "y": 213,
+        "w": 130,
+        "h": 30
+      }
+    },
+    {
+      "tag": "button",
+      "cls": "flex h-9 w-full items-center justify-between gap-2 border border-midground/15 bg-background/40 px-3 py-1 font-courier text-sm text-left text-midground transitio",
+      "role": "combobox",
+      "aria": null,
+      "text": "All tenants",
+      "rect": {
+        "x": 484,
+        "y": 213,
+        "w": 130,
+        "h": 34
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "truncate",
+      "role": null,
+      "aria": null,
+      "text": "All tenants",
+      "rect": {
+        "x": 496,
+        "y": 221,
+        "w": 87,
+        "h": 19
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "flex flex-col gap-1",
+      "role": null,
+      "aria": null,
+      "text": "ASSIGNEE\nAll profiles",
+      "rect": {
+        "x": 625,
+        "y": 195,
+        "w": 138,
+        "h": 49
+      }
+    },
+    {
+      "tag": "label",
+      "cls": "font-mondwest tracking-[0.1em] uppercase peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-xs text-muted-foreground",
+      "role": null,
+      "aria": null,
+      "text": "ASSIGNEE",
+      "rect": {
+        "x": 625,
+        "y": 195,
+        "w": 138,
+        "h": 15
+      }
+    },
+    {
+      "tag": "div",
+      "cls": "relative h-8",
+      "role": null,
+      "aria": null,
+      "text": "All profiles",
+      "rect": {
+        "x": 625,
+        "y": 213,
+        "w": 138,
+        "h": 30
+      }
+    },
+    {
+      "tag": "button",
+      "cls": "flex h-9 w-full items-center justify-between gap-2 border border-midground/15 bg-background/40 px-3 py-1 font-courier text-sm text-left text-midground transitio",
+      "role": "combobox",
+      "aria": null,
+      "text": "All profiles",
+      "rect": {
+        "x": 625,
+        "y": 213,
+        "w": 138,
+        "h": 34
+      }
+    },
+    {
+      "tag": "span",
+      "cls": "truncate",
+      "role": null,
+      "aria": null,
+      "text": "All profiles",
+      "rect": {
+        "x": 637,
+        "y": 221,
+        "w": 95,
+        "h": 19
+      }
+    },
+    {
+      "tag": "label",
+      "cls": "flex items-center gap-2 text-xs",
+      "role": null,
+      "aria": null,
+      "text": "Show archived",
+      "rect": {
+        "x": 774,
+        "y": 228,
+        "w": 101,
+        "h": 15
+      }
+    },
+    {
+      "tag": "label",
+      "cls": "flex items-center gap-2 text-xs",
+      "role": null,
+      "aria": null,
+      "text": "Lanes by profile",
+      "rect": {
+        "x": 886,
+        "y": 228,
+        "w": 119,
+        "h": 15
+      }
+    }
+  ],
+  "styleProbe": [
+    {
+      "tag": "body",
+      "cls": "",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 1440,
+        "h": 950
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "color(srgb 0.0156863 0.0235294 0.0313726)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "15px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "aside",
+      "cls": "fixed top-0 left-0 z-50 flex h-dvh max-h-dvh w-64 min-h-0 flex-col border-r border-current/20 bg-background-base/95 back",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 240,
+        "h": 950
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "15px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "font-mono group relative cursor-pointer items-center leading-0 font-bold tracking-[0.2em] disabled:pointer-events-none d",
+      "rect": {
+        "x": 196,
+        "y": 12,
+        "w": 28,
+        "h": 28
+      },
+      "color": "color(srgb 0.607843 1 0.811765 / 0.8)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "15px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "nav",
+      "cls": "min-h-0 w-full flex-1 overflow-y-auto overflow-x-hidden border-t border-current/10 py-2",
+      "rect": {
+        "x": 0,
+        "y": 95,
+        "w": 239,
+        "h": 675
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "15px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "group/action relative flex w-full items-center gap-3 px-5 py-2.5 font-mondwest text-xs tracking-[0.1em] whitespace-nowra",
+      "rect": {
+        "x": 0,
+        "y": 837,
+        "w": 239,
+        "h": 34
+      },
+      "color": "color(srgb 0.607843 1 0.811765 / 0.8)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "Mondwest, sans-serif",
+      "fontSize": "11.25px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "font-mono group relative grid cursor-pointer grid-cols-[auto_1fr_auto] items-center disabled:pointer-events-none disable",
+      "rect": {
+        "x": 11,
+        "y": 884,
+        "w": 99,
+        "h": 23
+      },
+      "color": "color(srgb 0.607843 1 0.811765 / 0.8)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "11.25px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "font-mono group relative grid cursor-pointer grid-cols-[auto_1fr_auto] items-center disabled:pointer-events-none disable",
+      "rect": {
+        "x": 118,
+        "y": 885,
+        "w": 29,
+        "h": 23
+      },
+      "color": "color(srgb 0.607843 1 0.811765 / 0.8)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "11.25px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "header",
+      "cls": "z-1 w-full shrink-0 box-border border-b border-current/20 bg-background-base/40 backdrop-blur-sm min-h-0 overflow-x-hidd",
+      "rect": {
+        "x": 240,
+        "y": 0,
+        "w": 1200,
+        "h": 53
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "oklab(0.119876 -0.00347888 -0.0068709 / 0.4)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "15px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "main",
+      "cls": "min-h-0 w-full min-w-0 flex-1 flex flex-col overflow-y-auto overflow-x-hidden [scrollbar-gutter:stable]",
+      "rect": {
+        "x": 240,
+        "y": 53,
+        "w": 1200,
+        "h": 898
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "15px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "flex h-9 w-full items-center justify-between gap-2 border border-midground/15 bg-background/40 px-3 py-1 font-courier te",
+      "rect": {
+        "x": 276,
+        "y": 104,
+        "w": 220,
+        "h": 34
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "oklab(0.119876 -0.00347888 -0.0068709 / 0.4)",
+      "font": "\"Courier New\", \"Courier Prime\", monospace, monospace",
+      "fontSize": "13.125px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "font-mono group relative grid cursor-pointer grid-cols-[auto_1fr_auto] items-center font-bold disabled:pointer-events-no",
+      "rect": {
+        "x": 1288,
+        "y": 104,
+        "w": 106,
+        "h": 30
+      },
+      "color": "rgb(4, 6, 8)",
+      "bg": "color(srgb 0.607843 1 0.811765)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "10.5px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium border-emerald-500/40 bg-emerald-500/",
+      "rect": {
+        "x": 263,
+        "y": 159,
+        "w": 133,
+        "h": 21
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "11.25px",
+      "borderRadius": "3.35544e+07px"
+    },
+    {
+      "tag": "button",
+      "cls": "underline text-muted-foreground hover:text-foreground",
+      "rect": {
+        "x": 406,
+        "y": 162,
+        "w": 145,
+        "h": 15
+      },
+      "color": "color(srgb 0.607843 1 0.811765 / 0.8)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "11.25px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "flex h-9 w-full items-center justify-between gap-2 border border-midground/15 bg-background/40 px-3 py-1 font-courier te",
+      "rect": {
+        "x": 484,
+        "y": 213,
+        "w": 130,
+        "h": 34
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "oklab(0.119876 -0.00347888 -0.0068709 / 0.4)",
+      "font": "\"Courier New\", \"Courier Prime\", monospace, monospace",
+      "fontSize": "13.125px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "flex h-9 w-full items-center justify-between gap-2 border border-midground/15 bg-background/40 px-3 py-1 font-courier te",
+      "rect": {
+        "x": 625,
+        "y": 213,
+        "w": 138,
+        "h": 34
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "oklab(0.119876 -0.00347888 -0.0068709 / 0.4)",
+      "font": "\"Courier New\", \"Courier Prime\", monospace, monospace",
+      "fontSize": "13.125px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visibl",
+      "rect": {
+        "x": 774,
+        "y": 228,
+        "w": 15,
+        "h": 15
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "color(srgb 0.0156863 0.0235294 0.0313726)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "11.25px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visibl",
+      "rect": {
+        "x": 886,
+        "y": 228,
+        "w": 15,
+        "h": 15
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "oklab(0.925511 -0.110442 0.0355719 / 0.15)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "11.25px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "font-mono group relative grid cursor-pointer grid-cols-[auto_1fr_auto] items-center font-bold disabled:pointer-events-no",
+      "rect": {
+        "x": 1045,
+        "y": 216,
+        "w": 144,
+        "h": 28
+      },
+      "color": "rgb(4, 6, 8)",
+      "bg": "color(srgb 0.607843 1 0.811765)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "10.5px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "font-mono group relative grid cursor-pointer grid-cols-[auto_1fr_auto] items-center font-bold disabled:pointer-events-no",
+      "rect": {
+        "x": 1200,
+        "y": 216,
+        "w": 76,
+        "h": 28
+      },
+      "color": "rgb(4, 6, 8)",
+      "bg": "color(srgb 0.607843 1 0.811765)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "10.5px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "font-mono group relative grid cursor-pointer grid-cols-[auto_1fr_auto] items-center font-bold disabled:pointer-events-no",
+      "rect": {
+        "x": 1287,
+        "y": 216,
+        "w": 121,
+        "h": 28
+      },
+      "color": "rgb(4, 6, 8)",
+      "bg": "color(srgb 0.607843 1 0.811765)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "10.5px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visibl",
+      "rect": {
+        "x": 275,
+        "y": 275,
+        "w": 14,
+        "h": 14
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "color(srgb 0.0156863 0.0235294 0.0313726)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "12.75px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "hermes-kanban-column-add",
+      "rect": {
+        "x": 508,
+        "y": 271,
+        "w": 22,
+        "h": 22
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "15px",
+      "borderRadius": "3.75px"
+    },
+    {
+      "tag": "button",
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visibl",
+      "rect": {
+        "x": 566,
+        "y": 275,
+        "w": 14,
+        "h": 14
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "color(srgb 0.0156863 0.0235294 0.0313726)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "12.75px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "hermes-kanban-column-add",
+      "rect": {
+        "x": 800,
+        "y": 271,
+        "w": 22,
+        "h": 22
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "15px",
+      "borderRadius": "3.75px"
+    },
+    {
+      "tag": "button",
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visibl",
+      "rect": {
+        "x": 572,
+        "y": 339,
+        "w": 14,
+        "h": 14
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "color(srgb 0.0156863 0.0235294 0.0313726)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "15px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visibl",
+      "rect": {
+        "x": 572,
+        "y": 469,
+        "w": 14,
+        "h": 14
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "color(srgb 0.0156863 0.0235294 0.0313726)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "15px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visibl",
+      "rect": {
+        "x": 572,
+        "y": 583,
+        "w": 14,
+        "h": 14
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "color(srgb 0.0156863 0.0235294 0.0313726)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "15px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visibl",
+      "rect": {
+        "x": 572,
+        "y": 723,
+        "w": 14,
+        "h": 14
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "color(srgb 0.0156863 0.0235294 0.0313726)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "15px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visibl",
+      "rect": {
+        "x": 857,
+        "y": 275,
+        "w": 14,
+        "h": 14
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "color(srgb 0.0156863 0.0235294 0.0313726)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "12.75px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "hermes-kanban-column-add",
+      "rect": {
+        "x": 1091,
+        "y": 271,
+        "w": 22,
+        "h": 22
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "15px",
+      "borderRadius": "3.75px"
+    },
+    {
+      "tag": "button",
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visibl",
+      "rect": {
+        "x": 863,
+        "y": 355,
+        "w": 14,
+        "h": 14
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "color(srgb 0.0156863 0.0235294 0.0313726)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "15px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visibl",
+      "rect": {
+        "x": 863,
+        "y": 470,
+        "w": 14,
+        "h": 14
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "color(srgb 0.0156863 0.0235294 0.0313726)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "15px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visibl",
+      "rect": {
+        "x": 863,
+        "y": 585,
+        "w": 14,
+        "h": 14
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "color(srgb 0.0156863 0.0235294 0.0313726)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "15px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visibl",
+      "rect": {
+        "x": 863,
+        "y": 698,
+        "w": 14,
+        "h": 14
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "color(srgb 0.0156863 0.0235294 0.0313726)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "15px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visibl",
+      "rect": {
+        "x": 863,
+        "y": 813,
+        "w": 14,
+        "h": 14
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "color(srgb 0.0156863 0.0235294 0.0313726)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "15px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visibl",
+      "rect": {
+        "x": 863,
+        "y": 926,
+        "w": 14,
+        "h": 14
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "color(srgb 0.0156863 0.0235294 0.0313726)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "15px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visibl",
+      "rect": {
+        "x": 1149,
+        "y": 275,
+        "w": 14,
+        "h": 14
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "color(srgb 0.0156863 0.0235294 0.0313726)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "12.75px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "hermes-kanban-column-add",
+      "rect": {
+        "x": 1382,
+        "y": 271,
+        "w": 22,
+        "h": 22
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "15px",
+      "borderRadius": "3.75px"
+    },
+    {
+      "tag": "button",
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visibl",
+      "rect": {
+        "x": 1440,
+        "y": 275,
+        "w": 14,
+        "h": 14
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "color(srgb 0.0156863 0.0235294 0.0313726)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "12.75px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "hermes-kanban-column-add",
+      "rect": {
+        "x": 1673,
+        "y": 271,
+        "w": 22,
+        "h": 22
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "15px",
+      "borderRadius": "3.75px"
+    },
+    {
+      "tag": "button",
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visibl",
+      "rect": {
+        "x": 1731,
+        "y": 275,
+        "w": 14,
+        "h": 14
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "color(srgb 0.0156863 0.0235294 0.0313726)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "12.75px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "hermes-kanban-column-add",
+      "rect": {
+        "x": 1965,
+        "y": 271,
+        "w": 22,
+        "h": 22
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "15px",
+      "borderRadius": "3.75px"
+    },
+    {
+      "tag": "button",
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visibl",
+      "rect": {
+        "x": 1737,
+        "y": 339,
+        "w": 14,
+        "h": 14
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "color(srgb 0.0156863 0.0235294 0.0313726)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "15px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visibl",
+      "rect": {
+        "x": 1737,
+        "y": 453,
+        "w": 14,
+        "h": 14
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "color(srgb 0.0156863 0.0235294 0.0313726)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "15px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visibl",
+      "rect": {
+        "x": 1737,
+        "y": 593,
+        "w": 14,
+        "h": 14
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "color(srgb 0.0156863 0.0235294 0.0313726)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "15px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visibl",
+      "rect": {
+        "x": 2022,
+        "y": 275,
+        "w": 14,
+        "h": 14
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "color(srgb 0.0156863 0.0235294 0.0313726)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "12.75px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "hermes-kanban-column-add",
+      "rect": {
+        "x": 2256,
+        "y": 271,
+        "w": 22,
+        "h": 22
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "15px",
+      "borderRadius": "3.75px"
+    },
+    {
+      "tag": "button",
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visibl",
+      "rect": {
+        "x": 2314,
+        "y": 275,
+        "w": 14,
+        "h": 14
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "color(srgb 0.0156863 0.0235294 0.0313726)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "12.75px",
+      "borderRadius": "0px"
+    },
+    {
+      "tag": "button",
+      "cls": "hermes-kanban-column-add",
+      "rect": {
+        "x": 2547,
+        "y": 271,
+        "w": 22,
+        "h": 22
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "15px",
+      "borderRadius": "3.75px"
+    },
+    {
+      "tag": "button",
+      "cls": "peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center border transition-colors outline-none focus-visibl",
+      "rect": {
+        "x": 2319,
+        "y": 339,
+        "w": 14,
+        "h": 14
+      },
+      "color": "color(srgb 0.607843 1 0.811765)",
+      "bg": "color(srgb 0.0156863 0.0235294 0.0313726)",
+      "font": "\"Share Tech Mono\", \"JetBrains Mono\", ui-monospace, \"SF Mono\", \"Cascadia Mono\", Menlo, Consolas, monospace",
+      "fontSize": "15px",
+      "borderRadius": "0px"
+    }
+  ]
+}

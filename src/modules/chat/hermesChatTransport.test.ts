@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { HermesChatTransport } from './hermesChatTransport';
 import { HermesDashboardClient } from '@/services/hermes/dashboardClient';
 
@@ -6,19 +6,66 @@ const mockRequestJson = vi.fn();
 
 const mockDashboardClient = {
   requestJson: mockRequestJson,
-  baseUrl: 'http://localhost:9119',
-  tokenProvider: {
-    getToken: () => 'mock-token',
-    hasToken: () => true,
-  },
+  baseUrl: 'http://localhost:3187',
+  getSessionToken: () => 'mock-token',
+  getWsBaseUrl: () => 'ws://localhost:3187',
 } as unknown as HermesDashboardClient;
+
+class MockWebSocket {
+  static CONNECTING = 0;
+  static OPEN = 1;
+  static CLOSING = 2;
+  static CLOSED = 3;
+  static instances: MockWebSocket[] = [];
+
+  readonly url: string;
+  readyState = MockWebSocket.CONNECTING;
+  sent: string[] = [];
+  onopen: ((event: Event) => void) | null = null;
+  onmessage: ((event: MessageEvent) => void) | null = null;
+  onerror: ((event: Event) => void) | null = null;
+  onclose: ((event: CloseEvent) => void) | null = null;
+
+  constructor(url: string) {
+    this.url = url;
+    MockWebSocket.instances.push(this);
+  }
+
+  send(data: string) {
+    this.sent.push(data);
+  }
+
+  close() {
+    this.readyState = MockWebSocket.CLOSED;
+    this.onclose?.({} as CloseEvent);
+  }
+
+  open() {
+    this.readyState = MockWebSocket.OPEN;
+    this.onopen?.({} as Event);
+  }
+
+  message(data: string) {
+    this.onmessage?.({ data } as MessageEvent);
+  }
+
+  error() {
+    this.onerror?.({} as Event);
+  }
+}
 
 describe('HermesChatTransport', () => {
   let transport: HermesChatTransport;
 
   beforeEach(() => {
     vi.clearAllMocks();
+    MockWebSocket.instances = [];
+    vi.stubGlobal('WebSocket', MockWebSocket as unknown as typeof WebSocket);
     transport = new HermesChatTransport(mockDashboardClient);
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
   });
 
   it('lists profiles from /api/plugins/kanban/profiles', async () => {
@@ -78,22 +125,53 @@ describe('HermesChatTransport', () => {
     expect(profiles[0].role).toBe('default');
   });
 
-  it('sendMessage throws with clear unavailability message', async () => {
-    await expect(
-      transport.sendMessage({
-        profile: 'cloud' as any,
-        message: 'test',
-      }),
-    ).rejects.toThrow(/no REST chat endpoint/);
+  it('sendMessage connects to the proxied PTY WebSocket bridge and sends a chat command', async () => {
+    const resultPromise = transport.sendMessage({
+      profile: 'cloud' as any,
+      message: 'ship it',
+    });
+
+    const ws = MockWebSocket.instances[0];
+    expect(ws.url).toBe('ws://localhost:3187/api/pty?token=mock-token');
+
+    ws.open();
+    expect(ws.sent).toEqual(['chat cloud ship it\n']);
+    ws.message('agent reply');
+    ws.close();
+
+    await expect(resultPromise).resolves.toEqual({
+      sessionId: expect.stringMatching(/^pty-\d+$/),
+      reply: 'agent reply',
+    });
   });
 
-  it('subscribe throws with clear unavailability message', () => {
-    expect(() => transport.subscribe(vi.fn())).toThrow(
-      /no chat WebSocket endpoint/,
-    );
+  it('sendMessage rejects on PTY WebSocket errors', async () => {
+    const resultPromise = transport.sendMessage({
+      profile: 'cloud' as any,
+      message: 'test',
+    });
+    MockWebSocket.instances[0].error();
+    await expect(resultPromise).rejects.toThrow('PTY WebSocket connection error');
   });
 
-  it('isAvailable returns false', () => {
-    expect(HermesChatTransport.isAvailable()).toBe(false);
+  it('subscribe opens a persistent PTY bridge connection and returns unsubscribe', () => {
+    const handler = vi.fn();
+    const unsub = transport.subscribe(handler);
+    const ws = MockWebSocket.instances[0];
+
+    expect(ws.url).toBe('ws://localhost:3187/api/pty?token=mock-token');
+    ws.open();
+    expect(handler).toHaveBeenCalledWith({
+      type: 'transport.status',
+      profile: 'biscuit',
+      state: 'connected',
+    });
+
+    unsub();
+    expect(ws.readyState).toBe(MockWebSocket.CLOSED);
+  });
+
+  it('isAvailable returns true (PTY bridge is available)', () => {
+    expect(HermesChatTransport.isAvailable()).toBe(true);
   });
 });

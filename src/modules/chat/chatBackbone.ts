@@ -7,9 +7,10 @@
  * — the store and UI depend only on the `ChatTransport` interface.
  *
  * Responsibilities:
- *   1. Pick a transport: a Cloud-verified transport if one is supplied, else
- *      the explicit demo mock (`createDemoChatTransport`). The choice is
- *      surfaced via `isDemoMode()` so the UI can label DEMO MODE honestly.
+ *   1. Pick a transport: a supplied transport first, else the real Hermes PTY
+ *      transport when a dashboard client is available, else the explicit demo
+ *      mock (`createDemoChatTransport`) for isolated tests/offline shells.
+ *      `isDemoMode()` remains available for diagnostics/backward compatibility.
  *   2. Bind it to the chat store (`setTransport`).
  *   3. Bridge the profile roster: call `transport.listProfiles()`, map to
  *      `ChatProfileContext`, and push into `setProfiles`. The chat module
@@ -39,7 +40,7 @@ import {
 } from '@/state/sessionConnectionStore';
 import type { SourceHealth } from '@/types/connection';
 
-/** Whether the active chat transport is the demo mock. UI labels accordingly. */
+/** Whether the active chat transport is the fallback demo mock. */
 let demoMode = true;
 
 /** Accents for the 5 department leads, used to build ChatProfileContext. */
@@ -147,7 +148,7 @@ export function startChatBackbone(
   chatBackbone?.stop();
 
   const transport = options.transport ?? (options.dashboardClient && HermesChatTransport.isAvailable() ? new HermesChatTransport(options.dashboardClient) : createDemoChatTransport());
-  demoMode = options.transport == null && !HermesChatTransport.isAvailable();
+  demoMode = options.transport == null && !(options.dashboardClient && HermesChatTransport.isAvailable());
 
   setTransport(transport);
 

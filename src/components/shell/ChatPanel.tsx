@@ -9,15 +9,14 @@
  * docs/section-contracts.md → Chat module forbidden dependencies).
  *
  * The panel consumes the store; it never touches transport, auth, or the
- * profile roster directly. When the demo mock transport is active a clear
- * DEMO MODE label is shown so demo output is never mistaken for live agent
- * responses.
+ * profile roster directly.
  */
 
 import { useEffect, useMemo } from 'react';
 import type { AgentId } from '@/types';
 import { AGENTS } from '@/types';
 import { useShellState, shellStore } from '@/state/shellStore';
+import { useBoardStoreSnapshot } from '@/state/boardStore';
 import { ProfileSelector } from '@/components/common/ProfileSelector';
 import { CommandInput } from '@/components/common/CommandInput';
 import {
@@ -32,8 +31,30 @@ import {
   getActiveThread,
   getThreadIds,
 } from '@/modules/chat/chatStore';
-import { isDemoMode } from '@/modules/chat/chatBackbone';
 import type { ChatMessage } from '@/modules/chat/types';
+import type { KanbanTaskCard, KanbanStatus } from '@/types/board';
+
+const CURRENT_WORK_PRIORITY: Record<KanbanStatus, number> = {
+  running: 0,
+  blocked: 1,
+  review: 2,
+  ready: 3,
+  scheduled: 4,
+  todo: 5,
+  triage: 6,
+  done: 7,
+};
+
+function flattenBoardTasks(board: ReturnType<typeof useBoardStoreSnapshot>['board']['value']): KanbanTaskCard[] {
+  if (!board) return [];
+  return board.columns.flatMap((column) => column.tasks);
+}
+
+function compareCurrentWork(a: KanbanTaskCard, b: KanbanTaskCard): number {
+  const statusDelta = CURRENT_WORK_PRIORITY[a.status] - CURRENT_WORK_PRIORITY[b.status];
+  if (statusDelta !== 0) return statusDelta;
+  return b.priority - a.priority;
+}
 
 function hhmm(ts: number): string {
   const d = new Date(ts);
@@ -49,6 +70,7 @@ const DELIVERY_LABEL: Record<ChatMessage['delivery'], string> = {
 
 export function ChatPanel() {
   const { selectedAgent } = useShellState();
+  const boardSnapshot = useBoardStoreSnapshot();
   const chatState = useChatState();
   const activeAgent: AgentId | null = selectedAgent ?? null;
 
@@ -66,12 +88,31 @@ export function ChatPanel() {
 
   const activeThread = activeAgent ? getActiveThread() : null;
   const threadIds = activeAgent ? getThreadIds(activeAgent) : [];
-  const demo = isDemoMode();
   const sendEnabled = canSend() && activeAgent !== null;
+  const currentWorkTasks = useMemo(() => {
+    if (!activeAgent) return [];
+    return flattenBoardTasks(boardSnapshot.board.value)
+      .filter((task) => task.assignee === activeAgent)
+      .sort(compareCurrentWork);
+  }, [activeAgent, boardSnapshot.board.value]);
+  const currentWorkTask = currentWorkTasks[0] ?? null;
+  const currentWorkDisabledReason = !activeAgent
+    ? 'Select a profile to focus current work.'
+    : !currentWorkTask
+      ? `Current work unavailable until a verified Kanban task is mapped for ${agentMeta?.name ?? activeAgent}.`
+      : null;
 
   function handleSelectProfile(id: AgentId) {
     shellStore.setSelectedAgent(id);
+    shellStore.setSelectedOwner(id);
     // selectProfile is driven by the effect above; no direct call needed.
+  }
+
+  function handleViewCurrentWork() {
+    if (!activeAgent || !currentWorkTask) return;
+    shellStore.setSelectedOwner(activeAgent);
+    shellStore.setSelectedAgent(activeAgent);
+    shellStore.setView('kanban');
   }
 
   function handleSelectThread(threadId: string) {
@@ -131,7 +172,7 @@ export function ChatPanel() {
         activity={profileActivity}
       />
 
-      {/* Agent status header — consistent with office/ops + DEMO MODE label */}
+      {/* Agent status header — consistent with office/ops + mock/demo label */}
       {agentMeta && (
         <div
           style={{
@@ -158,23 +199,40 @@ export function ChatPanel() {
           <span style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>
             {agentMeta.role}
           </span>
-          {demo && (
-            <span
-              className="mono"
-              title="Demo mock transport is active — replies are canned, not from a live agent"
+          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 'var(--space-2)', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+            <button
+              type="button"
+              data-chat-current-work-button
+              disabled={currentWorkTask === null}
+              className="admin-btn"
+              onClick={handleViewCurrentWork}
               style={{
-                marginLeft: 'auto',
-                fontSize: 'var(--text-xs)',
-                color: 'var(--accent-amber, var(--text-dim))',
-                padding: '1px 6px',
-                border: '1px solid var(--border-faint)',
+                padding: 'var(--space-2) var(--space-3)',
                 borderRadius: 'var(--radius-sm)',
-                letterSpacing: '0.04em',
+                border: '1px solid var(--border-faint)',
+                background: currentWorkTask ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.02)',
+                color: currentWorkTask ? 'var(--text-primary)' : 'var(--text-dim)',
+                cursor: currentWorkTask ? 'pointer' : 'not-allowed',
+                opacity: currentWorkTask ? 1 : 0.6,
+                minHeight: 44,
               }}
             >
-              DEMO MODE
-            </span>
-          )}
+              View current work
+            </button>
+
+          </div>
+        </div>
+      )}
+      {agentMeta && currentWorkDisabledReason && (
+        <div
+          style={{
+            padding: 'var(--space-2) var(--space-3)',
+            borderBottom: '1px solid var(--border-faint)',
+            color: 'var(--text-dim)',
+            fontSize: 'var(--text-sm)',
+          }}
+        >
+          {currentWorkDisabledReason}
         </div>
       )}
 

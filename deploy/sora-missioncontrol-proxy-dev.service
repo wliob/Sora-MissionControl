@@ -1,0 +1,28 @@
+[Unit]
+Description=Sora Mission Control same-origin app and admin proxy (development)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/wliob/llm-brain/Projects/Active/Sora-MissionControl
+Environment=NODE_ENV=development
+Environment=MISSION_CONTROL_PROXY_HOST=0.0.0.0
+Environment=MISSION_CONTROL_PROXY_PORT=3187
+# For development, auth mode can be "optional" (no token required)
+# Change to "required" to test production-like token enforcement
+Environment=MISSION_CONTROL_PROXY_AUTH_MODE=optional
+Environment=HERMES_DASHBOARD_URL=http://192.168.0.85:9119
+Environment=HERMES_WS_URL=ws://192.168.0.85:9119
+# On baset-ai, Hermes CLI is available natively — no SSH bridge needed
+# The proxy will exec 'hermes' directly from PATH
+Environment=HERMES_REMOTE_USER=wliob
+Environment=HERMES_REMOTE_HOST=192.168.0.85
+Environment=HERMES_REMOTE_PATH=/home/wliob/.local/bin/hermes
+EnvironmentFile=-/home/wliob/.config/sora-missioncontrol/proxy.env
+ExecStart=/home/wliob/.hermes/node/bin/node missionControlProxy.js
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

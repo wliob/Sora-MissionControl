@@ -7,7 +7,7 @@
  *
  * This is the explicit mock. It satisfies the `ChatTransport` interface so the
  * chat store, backbone, and UI can be exercised end-to-end without Cloud's
- * verified transport. It is clearly labelled DEMO MODE:
+ * verified transport. It is clearly labelled mock/demo:
  *   - `isDemo` is `true` (real transports set it `false`).
  *   - Every agent reply is prefixed with `[demo]` so demo output is never
  *     mistaken for a real agent response.
@@ -46,6 +46,8 @@ const DEMO_REPLIES: Record<AgentId, string> = {
   korra: '[demo] Korra in demo mode. Visuals are real; chat replies are canned.',
   lelouch: '[demo] Lelouch demo reply. Logistics channel is a mock until transport is verified.',
   tifa: '[demo] Tifa demo reply. Finance channel is mocked in demo mode.',
+  sora: '[demo] Sora demo reply. Guild master channel is mocked in demo mode.',
+  rain: '[demo] Rain demo reply. Communications channel is mocked in demo mode.',
 };
 
 /**

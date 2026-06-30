@@ -1,24 +1,42 @@
-# Stage 1: Build the React app
-FROM node:20-alpine as builder
+# Stage 1: install dependencies and build the React app.
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
-RUN npm install -g pnpm && pnpm install
+COPY package.json package-lock.json ./
+RUN npm ci
 
 COPY . .
+RUN npm run build
+RUN npm prune --omit=dev
 
-RUN pnpm run build
+# Stage 2: same-origin app + admin proxy server.
+FROM node:20-alpine
 
-# Stage 2: Serve the app with Nginx
-FROM nginx:alpine
+WORKDIR /app
 
-COPY --from=builder /app/dist /usr/share/nginx/html
+ENV NODE_ENV=production
+ENV MISSION_CONTROL_PROXY_HOST=0.0.0.0
+ENV MISSION_CONTROL_PROXY_PORT=3187
 
-# Optional: Copy a custom nginx configuration
-# COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Hermes Runtime Bridge: SSH client for remote hermes CLI execution
+RUN apk add --no-cache openssh-client
 
-# Expose port 80
-EXPOSE 80
+COPY --from=builder /app/package.json /app/package-lock.json ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+COPY missionControlProxy.js ./missionControlProxy.js
 
-CMD ["nginx", "-g", "daemon off;"]
+# Hermes Runtime Bridge: wrapper script replaces hermes CLI with SSH bridge
+COPY deploy/hermes-bridge.sh /usr/local/bin/hermes
+RUN chmod 755 /usr/local/bin/hermes
+
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 missioncontrol && \
+    chown -R missioncontrol:nodejs /app && \
+    chmod 644 /app/missionControlProxy.js
+USER missioncontrol
+
+EXPOSE 3187
+
+CMD ["node", "missionControlProxy.js"]

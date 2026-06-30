@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kanban Board Walkthrough — Sora-MissionControl</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0d1117;
+    color: #e6edf3;
+    font-family: 'Inter', sans-serif;
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  h1 { font-size: 28px; margin-bottom: 8px; color: #f0e6d0; }
+  h1 span { color: #d4943a; }
+  .subtitle { color: #8b949e; font-size: 14px; margin-bottom: 32px; }
+  
+  .section { margin-bottom: 40px; border: 1px solid #30363d; border-radius: 8px; overflow: hidden; }
+  .section-header {
+    background: #161b22;
+    padding: 14px 20px;
+    border-bottom: 1px solid #30363d;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-header .num { 
+    background: #d4943a20;
+    color: #d4943a;
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .section-body { padding: 20px; }
+  .label { color: #8b949e; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .callout {
+    background: #1a1f2e;
+    border-left: 3px solid #d4943a;
+    padding: 12px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 12px 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #c9d1d9;
+  }
+  .callout code {
+    font-family: 'JetBrains Mono', monospace;
+    background: #0d1117;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 13px;
+    color: #f0e6d0;
+  }
+
+  /* Board visual */
+  .board { 
+    display: flex; gap: 12px; 
+    background: #0d1117; 
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid #30363d;
+    min-height: 400px;
+    overflow-x: auto;
+  }
+  .lane {
+    flex: 1;
+    min-width: 140px;
+    background: #161b22;
+    border-radius: 8px;
+    border: 1px solid #21262d;
+  }
+  .lane-header {
+    padding: 10px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #30363d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .lane-header .count {
+    background: #21262d;
+    color: #8b949e;
+    padding: 1px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+  }
+  .lane-cards { padding: 8px; display: flex; flex-direction: column; gap: 6px; min-height: 60px; }
+  .card {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .card:hover { border-color: #d4943a; }
+  .card .id { color: #8b949e; font-family: 'JetBrains Mono', monospace; font-size: 10px; }
+  .card .title { color: #e6edf3; font-weight: 500; margin: 4px 0; }
+  .card .meta { display: flex; gap: 8px; font-size: 10px; margin-top: 6px; }
+  .card .assignee { background: #1f2a3a; color: #58a6ff; padding: 1px 6px; border-radius: 4px; }
+  .card .tenant { color: #8b949e; }
+
+  /* Lane colors */
+  .lane-triage .lane-header { border-bottom-color: #8b949e; }
+  .lane-todo .lane-header { border-bottom-color: #58a6ff; }
+  .lane-scheduled .lane-header { border-bottom-color: #d4943a; }
+  .lane-ready .lane-header { border-bottom-color: #3fb950; }
+  .lane-in_progress .lane-header { border-bottom-color: #d4943a; }
+  .lane-review .lane-header { border-bottom-color: #bc8cff; }
+  .lane-blocked .lane-header { border-bottom-color: #f85149; }
+  .lane-done .lane-header { border-bottom-color: #3fb950; }
+
+  .step-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .step-card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .step-card .step-num {
+    font-family: 'JetBrains Mono', monospace;
+    color: #d4943a;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .step-card h3 { font-size: 14px; margin-bottom: 6px; }
+  .step-card p { font-size: 13px; color: #8b949e; line-height: 1.5; }
+
+  hr { border: none; border-top: 1px solid #21262d; margin: 32px 0; }
+  .highlight { color: #d4943a; }
+  .green { color: #3fb950; }
+  .red { color: #f85149; }
+  .purple { color: #bc8cff; }
+  .blue { color: #58a6ff; }
+
+  .toolbar-demo {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    background: #161b22;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid #30363d;
+    margin: 12px 0;
+  }
+  .toolbar-demo .btn {
+    background: #21262d;
+    border: 1px solid #30363d;
+    color: #c9d1d9;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+  }
+  .toolbar-demo .btn:hover { border-color: #d4943a; }
+  .toolbar-demo .btn-primary { background: #d4943a20; border-color: #d4943a40; color: #d4943a; }
+  .toolbar-demo .spacer { flex: 1; }
+  .toolbar-demo .status { font-size: 11px; color: #8b949e; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; }
+  .tag-amber { background: #d4943a20; color: #d4943a; }
+  .tag-green { background: #3fb95020; color: #3fb950; }
+  .tag-red { background: #f8514920; color: #f85149; }
+  .tag-purple { background: #bc8cff20; color: #bc8cff; }
+  .tag-blue { background: #58a6ff20; color: #58a6ff; }
+
+  .shortcut-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 8px;
+  }
+  .shortcut-grid kbd {
+    font-family: 'JetBrains Mono', monospace;
+    background: #21262d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+
+<h1>⟐ <span>KANBAN</span> Board Walkthrough</h1>
+<p class="subtitle">How to read, manage, and command your Sora-MissionControl pipeline • <code>http://192.168.0.85:9119/kanban</code></p>
+
+<!-- SECTION 1: WHAT IS THE KANBAN -->
+<div class="section">
+  <div class="section-header"><span class="num">1</span> What Is the Kanban Board?</div>
+  <div class="section-body">
+    <p style="line-height:1.7; margin-bottom:12px;">The Kanban board is your <strong>project command surface</strong> — it shows every task across every project in lane-based columns. Think of it like a live Jira/Linear board, but for <strong>all your agents</strong>.</p>
+    
+    <div class="board">
+      <div class="lane lane-triage">
+        <div class="lane-header">📋 Triage <span class="count">0</span></div>
+        <div class="lane-cards"></div>
+      </div>
+      <div class="lane lane-todo">
+        <div class="lane-header">📝 Todo <span class="count">0</span></div>
+        <div class="lane-cards"></div>
+      </div>
+      <div class="lane lane-scheduled">
+        <div class="lane-header">⏳ Scheduled <span class="count">7</span></div>
+        <div class="lane-cards">
+          <div class="card"><div class="id">smc2-p1-office-screen</div><div class="title">Office Immersive Screen</div><div class="meta"><span class="assignee">biscuit</span><span class="tenant">sora-missioncontrol-v2</span></div></div>
+          <div class="card"><div class="id">smc2-p2-sora-identity</div><div class="title">Sora Identity</div><div class="meta"><span class="assignee">korra</span></div></div>
+          <div class="card"><div class="id">smc2-p3-guild-cues</div><div class="title">Guild Cues QA Pass</div><div class="meta"><span class="assignee">korra</span></div></div>
+        </div>
+      </div>
+      <div class="lane lane-in_progress">
+        <div class="lane-header">⚡ In Progress <span class="count">1</span></div>
+        <div class="lane-cards">
+          <div class="card" style="border-color:#d4943a;"><div class="id">smc2-p0-team-surface</div><div class="title">Team Command Surface</div><div class="meta"><span class="assignee">biscuit</span><span class="tenant">sora-missioncontrol-v2</span></div></div>
+        </div>
+      </div>
+      <div class="lane lane-review">
+        <div class="lane-header">🔍 Review <span class="count">0</span></div>
+        <div class="lane-cards"></div>
+      </div>
+      <div class="lane lane-blocked">
+        <div class="lane-header">🚫 Blocked <span class="count">1</span></div>
+        <div class="lane-cards">
+          <div class="card" style="border-color:#f85149;"><div class="id">smc-reset-07</div><div class="title">Sora Final Acceptance</div><div class="meta"><span class="assignee">sora</span></div></div>
+        </div>
+      </div>
+      <div class="lane lane-done">
+        <div class="lane-header">✅ Done <span class="count">108</span></div>
+        <div class="lane-cards">
+          <div class="card" style="opacity:0.5;"><div class="id">smc-phase0-research</div><div class="title">Phase 0 - Research</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">Your board has <strong>7 columns</strong> (lanes). Cards flow left-to-right: <code>Triage → Todo → Scheduled → In Progress → Review → Done</code>. Cards can also go to <code>Blocked</code> from any lane.</div>
+  </div>
+</div>
+
+<!-- SECTION 2: THE LANES EXPLAINED -->
+<div class="section">
+  <div class="section-header"><span class="num">2</span> Each Lane — What It Means</div>
+  <div class="section-body">
+    <div class="step-grid">
+      <div class="step-card"><div class="step-num">📋</div><h3>Triage</h3><p>New/unprocessed ideas. Cards here haven't been reviewed yet. <span class="blue">0 cards = nothing waiting.</span></p></div>
+      <div class="step-card"><div class="step-num">📝</div><h3>Todo</h3><p>Approved and waiting to be scheduled. Ready to be picked up when capacity opens. <span class="blue">0 here = no backlog.</span></p></div>
+      <div class="step-card"><div class="step-num">⏳</div><h3>Scheduled</h3><p>Planned for a specific phase or time. <span class="highlight">7 phases</span> in your pipeline — next up after Phase A completes.</p></div>
+      <div class="step-card"><div class="step-num">⚡</div><h3>In Progress</h3><p>Actively being worked. <span class="highlight">Phase A</span> is in here now, assigned to <span class="tag tag-amber">biscuit</span>. Only one card should be here at a time per project.</p></div>
+      <div class="step-card"><div class="step-num">🔍</div><h3>Review</h3><p>Work is done — waiting for YOU to inspect. This is your <strong>approval gate</strong> between phases. You check it, say "approved," it moves to Done.</p></div>
+      <div class="step-card"><div class="step-num">🚫</div><h3>Blocked</h3><p>Something is stuck. <span class="red">1 blocked card</span> — the reset track. Click it to see why it's blocked and what needs to happen.</p></div>
+      <div class="step-card"><div class="step-num">✅</div><h3>Done</h3><p>Completed and verified. <span class="green">108 completed</span> tasks across all projects. Scroll to review history.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 3: HOW TO USE IT -->
+<div class="section">
+  <div class="section-header"><span class="num">3</span> How To Use The Board</div>
+  <div class="section-body">
+    
+    <div class="toolbar-demo">
+      <span class="btn btn-primary">▸ Orchestration: Manual</span>
+      <span class="btn">⚙ Filter</span>
+      <span class="btn">🔍 Search</span>
+      <span class="spacer"></span>
+      <span class="status">🟢 Connected</span>
+    </div>
+
+    <div class="step-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h3>Filter by Project</h3>
+        <p>Click <strong>⚙ Filter</strong> and type <code>sora-missioncontrol-v2</code> to see only your 8-phase pipeline. This clears the clutter of 108 done cards.</p>
+        <p style="margin-top:6px;color:#8b949e;font-size:12px;"><span class="highlight">Pro tip:</span> Save this as a filter preset if available.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h3>Click a Card</h3>
+        <p>Click any card to open its <strong>detail view</strong> — you'll see the full spec, comments, events, and run history. This is where you read what needs to happen.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h3>Check Orchestration Mode</h3>
+        <p>The button at the top-left shows <span class="tag tag-amber">Manual</span> or <span class="tag tag-green">Auto</span>.</p>
+        <ul style="font-size:12px;color:#8b949e;margin-top:6px;padding-left:16px;">
+          <li><strong>Manual</strong> — cards sit until <em>you</em> say go. <span class="green">✓ Current state</span></li>
+          <li><strong>Auto</strong> — ready cards get automatically dispatched to agents. Dangerous if unchecked.</li>
+        </ul>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <h3>Read Attention Indicators</h3>
+        <p>Cards show <span class="red">red "⚠"</span> for attention-needed. This means: crashed, gave-up, blocked, or stuck.</p>
+        <p style="margin-top:4px;color:#8b949e;font-size:12px;">Green <span class="green">●</span> = healthy. No icon = waiting.</p>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:16px;">
+      <strong>🔑 The key insight:</strong> You don't need to check every card. Just look at <span class="highlight">In Progress</span> to see what's running, <span class="red">Blocked</span> for what's stuck, and <span class="purple">Review</span> for what needs your sign-off. Those three lanes are your daily attention surface.
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4: YOUR PIPELINE VIEW -->
+<div class="section">
+  <div class="section-header"><span class="num">4</span> Your Sora-MissionControl Pipeline</div>
+  <div class="section-body">
+    <p style="margin-bottom:12px;">Filter by tenant <code>sora-missioncontrol-v2</code> to see only this:</p>
+
+    <div style="display:flex; flex-direction:column; gap:6px; font-family:'JetBrains Mono', monospace; font-size:13px;">
+      <div style="display:flex; align-items:center; gap:12px; padding:10px 14px; background:#161b22; border-radius:6px; border:1px solid #d4943a;">
+        <span class="tag tag-amber">IN PROGRESS</span>
+        <span style="flex:1; color:#e6edf3;">smc2-p0-team-surface → biscuit</span>
+        <span style="color:#8b949e; font-size:11px;">Phase A</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px; padding:10px 14px; background:#161b22; border-radius:6px; border:1px solid #30363d; opacity:0.7;">
+        <span class="tag tag-blue">SCHEDULED</span>
+        <span style="flex:1; color:#e6edf3;">smc2-p1-office-screen → biscuit</span>
+        <span style="color:#8b949e; font-size:11px;">Phase B</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px; padding:10px 14px; background:#161b22; border-radius:6px; border:1px solid #30363d; opacity:0.7;">
+        <span class="tag tag-blue">SCHEDULED</span>
+        <span style="flex:1; color:#e6edf3;">smc2-p2-sora-identity → korra</span>
+        <span style="color:#8b949e; font-size:11px;">Phase C</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px; padding:10px 14px; background:#161b22; border-radius:6px; border:1px solid #30363d; opacity:0.7;">
+        <span class="tag tag-blue">SCHEDULED</span>
+        <span style="flex:1; color:#e6edf3;">smc2-p3-guild-cues-qa → korra</span>
+        <span style="color:#8b949e; font-size:11px;">Phase D</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px; padding:10px 14px; background:#161b22; border-radius:6px; border:1px solid #30363d; opacity:0.7;">
+        <span class="tag tag-blue">SCHEDULED</span>
+        <span style="flex:1; color:#e6edf3;">smc2-p4-attention-engine → biscuit</span>
+        <span style="color:#8b949e; font-size:11px;">Phase E</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px; padding:10px 14px; background:#161b22; border-radius:6px; border:1px solid #30363d; opacity:0.7;">
+        <span class="tag tag-blue">SCHEDULED</span>
+        <span style="flex:1; color:#e6edf3;">smc2-p5-remaining-screens → biscuit</span>
+        <span style="color:#8b949e; font-size:11px;">Phase F</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px; padding:10px 14px; background:#161b22; border-radius:6px; border:1px solid #30363d; opacity:0.7;">
+        <span class="tag tag-blue">SCHEDULED</span>
+        <span style="flex:1; color:#e6edf3;">smc2-p6-korra-visual-freeze → korra</span>
+        <span style="color:#8b949e; font-size:11px;">Phase G</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px; padding:10px 14px; background:#161b22; border-radius:6px; border:1px solid #30363d; opacity:0.7;">
+        <span class="tag tag-blue">SCHEDULED</span>
+        <span style="flex:1; color:#e6edf3;">smc2-p7-final-integration-deploy → biscuit</span>
+        <span style="color:#8b949e; font-size:11px;">Phase H</span>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:16px;">
+      <strong>Your workflow:</strong> Phase A is <span class="highlight">In Progress</span> (Biscuit is coding it now). When done, it moves to <span class="purple">Review</span>. You inspect. Say "approved, next" → Phase A goes to <span class="green">Done</span>, Phase B auto-promotes to <span class="tag tag-amber">Ready</span>. Rinse-repeat.
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 5: WHAT TO CLICK -->
+<div class="section">
+  <div class="section-header"><span class="num">5</span> What To Click & When</div>
+  <div class="section-body">
+    <div class="shortcut-grid">
+      <div style="background:#161b22; padding:12px; border-radius:8px; border:1px solid #30363d;">
+        <div style="font-size:13px;font-weight:600;margin-bottom:4px;">👆 Click a card</div>
+        <div style="font-size:12px;color:#8b949e;">Opens detail view with full spec, events, comments, and runs. Read the <code>body</code> to understand what this card needs.</div>
+      </div>
+      <div style="background:#161b22; padding:12px; border-radius:8px; border:1px solid #30363d;">
+        <div style="font-size:13px;font-weight:600;margin-bottom:4px;">🔽 Drag a card</div>
+        <div style="font-size:12px;color:#8b949e;">Drag between lanes to change status. Drag to Blocked lane to mark stuck. Drag to Done when verified.</div>
+      </div>
+      <div style="background:#161b22; padding:12px; border-radius:8px; border:1px solid #30363d;">
+        <div style="font-size:13px;font-weight:600;margin-bottom:4px;">⚙ Filter button</div>
+        <div style="font-size:12px;color:#8b949e;">Filter by tenant (project). Type <code>sora-missioncontrol-v2</code> to see only your pipeline. Clears the noise.</div>
+      </div>
+      <div style="background:#161b22; padding:12px; border-radius:8px; border:1px solid #30363d;">
+        <div style="font-size:13px;font-weight:600;margin-bottom:4px;">▸ Orchestration toggle</div>
+        <div style="font-size:12px;color:#8b949e;">Top-left. <span class="highlight">Manual</span> = you control dispatch. <span class="red">Auto</span> = system dispatches ready cards. Leave on Manual unless I tell you otherwise.</div>
+      </div>
+      <div style="background:#161b22; padding:12px; border-radius:8px; border:1px solid #30363d;">
+        <div style="font-size:13px;font-weight:600;margin-bottom:4px;">📋 Card comments</div>
+        <div style="font-size:12px;color:#8b949e;">Click a card → scroll to comments. Add notes like "Looks good, proceed" or "Fix the grid alignment." Sora reads these.</div>
+      </div>
+      <div style="background:#161b22; padding:12px; border-radius:8px; border:1px solid #30363d;">
+        <div style="font-size:13px;font-weight:600;margin-bottom:4px;">📊 View events</div>
+        <div style="font-size:12px;color:#8b949e;">Inside a card: the event log shows every status change, dispatch, and verification. Provenance for everything.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 6: YOUR COMMANDS -->
+<div class="section">
+  <div class="section-header"><span class="num">6</span> Your Commands (How You Drive This)</div>
+  <div class="section-body">
+    <p style="margin-bottom:12px;">You never need to click through menus. Just tell Sora:</p>
+
+    <div style="display:flex; flex-direction:column; gap:6px;font-size:14px;">
+      <div style="background:#161b22; padding:12px 16px; border-radius:6px; border-left:3px solid #d4943a;">
+        "<kbd>start Phase B</kbd>" → Sora dispatches Office Screen to Biscuit, card goes In Progress
+      </div>
+      <div style="background:#161b22; padding:12px 16px; border-radius:6px; border-left:3px solid #3fb950;">
+        "<kbd>approved, next</kbd>" → Current card → Done, next card → Ready, dispatch
+      </div>
+      <div style="background:#161b22; padding:12px 16px; border-radius:6px; border-left:3px solid #bc8cff;">
+        "<kbd>review Phase B</kbd>" → I show you the screenshot + what changed
+      </div>
+      <div style="background:#161b22; padding:12px 16px; border-radius:6px; border-left:3px solid #f85149;">
+        "<kbd>fix the [thing]</kbd>" → Route fix back to lead, card stays in Review
+      </div>
+      <div style="background:#161b22; padding:12px 16px; border-radius:6px; border-left:3px solid #f85149;">
+        "<kbd>blocked: [reason]</kbd>" → Card → Blocked, reason recorded
+      </div>
+      <div style="background:#161b22; padding:12px 16px; border-radius:6px; border-left:3px solid #58a6ff;">
+        "<kbd>status</kbd>" → I post current board state + next action
+      </div>
+      <div style="background:#161b22; padding:12px 16px; border-radius:6px; border-left:3px solid #d4943a;">
+        "<kbd>auto-pilot on</kbd>" → Orchestrator cron resumes, phases self-drive between your reviews
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:16px;">
+      <strong>TL;DR:</strong> You only need to check <span class="highlight">Review</span> lane. When something lands there, look at the screenshot I post, say <strong>"approved, next"</strong> or <strong>"fix [thing]"</strong>. Everything else flows automatically.
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<div style="text-align:center; padding:20px; color:#8b949e; font-size:13px;">
+  Sora-MissionControl • Phase Gate Workflow • <code>docs/phase-gate-workflow.md</code> for full reference
+</div>
+
+</body>
+</html>

@@ -81,7 +81,7 @@ export class Agent {
   private shadow: Sprite;
   private body: AnimatedSprite | Sprite;
   private halo: Graphics;
-  private speechBubble: Container | null = null;
+  private statusCallout: Container | null = null;
   private _col: number;
   private _row: number;
 
@@ -96,9 +96,23 @@ export class Agent {
   private blockedFx: Container | null = null;
   private blockedFxRaf: number | null = null;
   private haloRaf: number | null = null;
-  private speechBubbleRaf: number | null = null;
-  private speechBubbleTimeout: ReturnType<typeof setTimeout> | null = null;
+  private statusCalloutRaf: number | null = null;
+  private statusCalloutTimeout: ReturnType<typeof setTimeout> | null = null;
   private onAssetError?: (info: AgentAssetError) => void;
+
+  // Phase B: Desk indicators
+  private monitorGlow: Graphics | null = null;
+  private projectBadge: Container | null = null;
+  /** Presence alpha — 1.0 = present, 0.7 = away, 0 = absent */
+  private presenceAlpha: number = 1.0;
+
+  // State badge indicator (pixi.js overlay above agent head)
+  private stateBadge: Container | null = null;
+  private stateBadgeText: Text | null = null;
+  private stateBadgeRaf: number | null = null;
+  private stateBadgeAnimated: boolean = false;
+  private stateBadgeFrame: number = 0;
+  private stateBadgeLastFrameAt: number = 0;
 
   constructor(options: AgentOptions) {
     this.id = options.id;
@@ -223,6 +237,213 @@ export class Agent {
     this.swapBody(textures, id);
   }
 
+  // ─── Phase B: Desk Indicators ──────────────────────────────────────────
+
+  /**
+   * Set the monitor glow behind the agent's desk monitor.
+   * @param show - Whether to show the glow
+   * @param glowColor - Color of the glow (hex number)
+   * @param alpha - Opacity of the glow
+   */
+  showMonitorGlow(glowColor: number, alpha: number): void {
+    this.hideMonitorGlow();
+    const glow = new Graphics();
+    const radius = 40;
+    const steps = 4;
+    for (let s = steps; s >= 0; s--) {
+      const t = s / steps;
+      const r = radius * (0.5 + t * 0.5);
+      const a = alpha * Math.pow(1 - t, 2.5);
+      glow.circle(0, 0, r);
+      glow.fill({ color: glowColor, alpha: a });
+    }
+    // Position behind the monitor — monitor is at y-offset −28 from desk center,
+    // agent body is at y −40. Place glow above the agent.
+    glow.y = -68;
+    this.monitorGlow = glow;
+    this.container.addChildAt(glow, 0); // Behind everything
+  }
+
+  hideMonitorGlow(): void {
+    if (this.monitorGlow) {
+      this.container.removeChild(this.monitorGlow);
+      this.monitorGlow.destroy();
+      this.monitorGlow = null;
+    }
+  }
+
+  /**
+   * Set the project badge (active project name label above desk).
+   * @param text - Project name (max 16 chars, truncated with …)
+   */
+  showProjectBadge(text: string): void {
+    this.hideProjectBadge();
+
+    const displayText = text.length > 16
+      ? text.slice(0, 15) + '\u2026'
+      : text;
+
+    const badgeText = new Text({
+      text: displayText,
+      style: new TextStyle({
+        fontFamily: '"JetBrains Mono", monospace',
+        fontSize: 9,
+        fill: 0xffffff,
+      }),
+    });
+    badgeText.anchor.set(0.5, 0.5);
+    badgeText.alpha = 0.85;
+
+    const padding = 6;
+    const bg = new Graphics();
+    const width = badgeText.width + padding * 2;
+    const height = badgeText.height + padding * 2;
+    bg.roundRect(-width / 2, -height / 2, width, height, 6);
+    bg.fill({ color: 0xd4943a, alpha: 0.15 }); // Guild amber at 15%
+
+    const container = new Container();
+    container.addChild(bg);
+    container.addChild(badgeText);
+    container.y = -82; // Spec: y-offset −82px from desk center
+
+    this.projectBadge = container;
+    this.container.addChild(container);
+  }
+
+  hideProjectBadge(): void {
+    if (this.projectBadge) {
+      this.container.removeChild(this.projectBadge);
+      this.projectBadge.destroy({ children: true });
+      this.projectBadge = null;
+    }
+  }
+
+  /**
+   * Show a compact operational state badge above the agent's head.
+   * @param label - Short truth/workflow label to display
+   * @param animated - Whether to animate (for working activity)
+   */
+  showStateBadge(label: string, animated: boolean = false): void {
+    // Remove existing indicator if present
+    this.hideStateBadge();
+
+    const fontSize = 10;
+    const padding = 6;
+
+    const style = new TextStyle({
+      fontSize,
+      fontFamily: '"JetBrains Mono", ui-monospace, monospace',
+      fill: 0xf0e8d8,
+      fontWeight: '600',
+      letterSpacing: 0.6,
+      lineHeight: fontSize + 3,
+    });
+
+    const text = new Text({ text: label, style });
+    text.anchor.set(0.5, 0.5);
+
+    const bg = new Graphics();
+    const bgWidth = Math.max(text.width + padding * 2, 44);
+    const bgHeight = Math.max(text.height + padding * 2, 22);
+    bg.roundRect(-bgWidth / 2, -bgHeight / 2, bgWidth, bgHeight, 5);
+    bg.fill({ color: 0x05070d, alpha: 0.82 });
+    bg.stroke({ color: 0xd4943a, width: 1, alpha: 0.42 });
+
+    const container = new Container();
+    container.addChild(bg);
+    container.addChild(text);
+    // Position above other operational overlays without reading as chatter.
+    container.y = -116;
+
+    this.stateBadge = container;
+    this.stateBadgeText = text;
+    this.stateBadgeAnimated = animated;
+    this.stateBadgeFrame = 0;
+    this.stateBadgeLastFrameAt = 0;
+
+    this.container.addChild(container);
+
+    // Start subtle text animation for working state
+    if (animated) {
+      this.startStateBadgePulse();
+    }
+  }
+
+  /**
+   * Hide and destroy the state badge indicator.
+   */
+  hideStateBadge(): void {
+    this.stopStateBadgePulse();
+    if (this.stateBadge) {
+      this.container.removeChild(this.stateBadge);
+      this.stateBadge.destroy({ children: true });
+      this.stateBadge = null;
+      this.stateBadgeText = null;
+      this.stateBadgeAnimated = false;
+    }
+  }
+
+  /**
+   * Animate the working indicator by cycling through restrained labels.
+   * Runs via requestAnimationFrame.
+   */
+  private startStateBadgePulse(): void {
+    if (this.stateBadgeRaf !== null || this.reducedMotion) return;
+
+    const DOT_FRAMES = ['WORK', 'WORK ·', 'WORK ··'];
+    const FRAME_DURATION_MS = 600;
+
+    const animate = (now: number) => {
+      if (!this.stateBadgeText || !this.stateBadgeAnimated) {
+        this.stateBadgeRaf = null;
+        return;
+      }
+      if (this.stateBadgeLastFrameAt === 0) {
+        this.stateBadgeLastFrameAt = now;
+      }
+      if (now - this.stateBadgeLastFrameAt >= FRAME_DURATION_MS) {
+        this.stateBadgeFrame = (this.stateBadgeFrame + 1) % DOT_FRAMES.length;
+        this.stateBadgeLastFrameAt = now;
+        // Update text with gentle alpha pulse
+        this.stateBadgeText.text = DOT_FRAMES[this.stateBadgeFrame];
+        this.stateBadgeText.alpha = 0.7 + 0.3 * Math.sin(this.stateBadgeFrame * (Math.PI * 2 / DOT_FRAMES.length));
+      }
+      this.stateBadgeRaf = requestAnimationFrame(animate);
+    };
+
+    this.stateBadgeRaf = requestAnimationFrame(animate);
+  }
+
+  private stopStateBadgePulse(): void {
+    if (this.stateBadgeRaf !== null) {
+      cancelAnimationFrame(this.stateBadgeRaf);
+      this.stateBadgeRaf = null;
+    }
+  }
+
+  /**
+   * Set agent presence alpha.
+   * @param alpha - 1.0 = present (online/active), 0.7 = away (idle but online), 0 = absent
+   */
+  setPresence(alpha: number): void {
+    this.presenceAlpha = alpha;
+    this.body.alpha = alpha;
+    this.shadow.alpha = 0.25 * alpha;
+    // When absent, hide the state badge indicator
+    if (alpha <= 0 && this.stateBadge) {
+      this.stateBadge.visible = false;
+    } else if (alpha > 0 && this.stateBadge) {
+      // Restore the appropriate badge for offline → back online
+      this.stateBadge.visible = true;
+    }
+  }
+
+  get presence(): number {
+    return this.presenceAlpha;
+  }
+
+  // ─── Existing methods ──────────────────────────────────────────────────
+
   showBlockedFx(): void {
     if (this.blockedFx) return;
 
@@ -253,7 +474,46 @@ export class Agent {
       fx.addChild(label);
     }
 
-    fx.y = -70;
+    fx.y = -100; // Spec: y-offset −100px from desk center (above monitor)
+    this.container.addChild(fx);
+    this.blockedFx = fx;
+
+    if (!this.reducedMotion) {
+      let phase = 0;
+      const animate = () => {
+        if (!this.blockedFx) return;
+        phase += 0.06;
+        this.blockedFx.alpha = 0.6 + 0.4 * Math.abs(Math.sin(phase));
+        this.blockedFxRaf = requestAnimationFrame(animate);
+      };
+      this.blockedFxRaf = requestAnimationFrame(animate);
+    }
+  }
+
+  showBlockedFxAmber(): void {
+    // Phase B: Show amber blocker (aged/stale block >1hr)
+    if (this.blockedFx) return;
+
+    const fx = new Container();
+    const bg = new Graphics();
+    bg.circle(0, 0, 10);
+    bg.fill({ color: 0xffb000, alpha: 0.9 }); // CRT amber
+    bg.stroke({ color: 0xcc8800, width: 1.5 });
+    fx.addChild(bg);
+
+    const label = new Text({
+      text: '!',
+      style: {
+        fontSize: 14,
+        fill: 0xffffff,
+        fontWeight: 'bold',
+        fontFamily: 'Inter, system-ui, sans-serif',
+      },
+    });
+    label.anchor.set(0.5, 0.55);
+    fx.addChild(label);
+
+    fx.y = -100;
     this.container.addChild(fx);
     this.blockedFx = fx;
 
@@ -283,22 +543,25 @@ export class Agent {
 
   destroy(): void {
     this.hideBlockedFx();
+    this.hideMonitorGlow();
+    this.hideProjectBadge();
+    this.hideStateBadge();
     this.stopHaloPulse();
-    this.clearSpeechBubble();
+    this.clearStatusCallout();
     this.container.destroy({ children: true });
   }
 
-  showSpeechBubble(text: string, duration: number = 3000): void {
-    this.clearSpeechBubble();
+  showStatusCallout(text: string, duration: number = 3000): void {
+    this.clearStatusCallout();
 
     const displayText = text.length > 40 ? text.slice(0, 39) + '\u2026' : text;
 
-    const bubble = new Container();
+    const callout = new Container();
     const padding = 8;
     const style = new TextStyle({
-      fontSize: 12,
-      fill: 0x1a1a2e,
-      fontFamily: 'monospace',
+      fontSize: 10,
+      fill: 0xbecde1,
+      fontFamily: '"JetBrains Mono", ui-monospace, monospace',
       wordWrap: true,
       wordWrapWidth: 200,
     });
@@ -308,52 +571,52 @@ export class Agent {
     const bg = new Graphics();
     const bgWidth = textObj.width + padding * 2;
     const bgHeight = textObj.height + padding * 2;
-    bg.roundRect(-bgWidth / 2, -bgHeight / 2, bgWidth, bgHeight, 8);
-    bg.fill({ color: 0xffffff, alpha: 0.95 });
-    bg.stroke({ color: 0xcccccc, width: 1 });
+    bg.roundRect(-bgWidth / 2, -bgHeight / 2, bgWidth, bgHeight, 5);
+    bg.fill({ color: 0x05070d, alpha: 0.88 });
+    bg.stroke({ color: 0xd4943a, width: 1, alpha: 0.32 });
 
-    bubble.addChild(bg);
-    bubble.addChild(textObj);
-    bubble.y = -80;
+    callout.addChild(bg);
+    callout.addChild(textObj);
+    callout.y = -82;
 
-    this.container.addChild(bubble);
-    this.speechBubble = bubble;
+    this.container.addChild(callout);
+    this.statusCallout = callout;
 
     if (this.reducedMotion) {
-      bubble.alpha = 1;
-      this.speechBubbleTimeout = setTimeout(() => {
-        if (this.speechBubble === bubble) {
-          this.clearSpeechBubble();
+      callout.alpha = 1;
+      this.statusCalloutTimeout = setTimeout(() => {
+        if (this.statusCallout === callout) {
+          this.clearStatusCallout();
         }
       }, duration + 300);
       return;
     }
 
-    bubble.alpha = 0;
+    callout.alpha = 0;
     const startTime = performance.now();
     const fadeInMs = 300;
     const fadeOutMs = 500;
 
     const animate = (): void => {
-      if (!this.speechBubble || this.speechBubble !== bubble) return;
+      if (!this.statusCallout || this.statusCallout !== callout) return;
       const elapsed = performance.now() - startTime;
 
       if (elapsed < fadeInMs) {
-        bubble.alpha = elapsed / fadeInMs;
+        callout.alpha = elapsed / fadeInMs;
       } else if (elapsed < fadeInMs + duration) {
-        bubble.alpha = 1;
+        callout.alpha = 1;
       } else if (elapsed < fadeInMs + duration + fadeOutMs) {
         const fadeProgress = (elapsed - fadeInMs - duration) / fadeOutMs;
-        bubble.alpha = 1 - fadeProgress;
+        callout.alpha = 1 - fadeProgress;
       } else {
-        if (this.speechBubble === bubble) {
-          this.clearSpeechBubble();
+        if (this.statusCallout === callout) {
+          this.clearStatusCallout();
         }
         return;
       }
-      this.speechBubbleRaf = requestAnimationFrame(animate);
+      this.statusCalloutRaf = requestAnimationFrame(animate);
     };
-    this.speechBubbleRaf = requestAnimationFrame(animate);
+    this.statusCalloutRaf = requestAnimationFrame(animate);
   }
 
   private async loadAnimSheet(type: string): Promise<void> {
@@ -377,9 +640,6 @@ export class Agent {
       await sheet.parse();
       this.animSheets.set(type, sheet);
     } catch (err) {
-      // Animation sheets are optional; failures fall back to base texture.
-      // Sora stability audit #4 / R12: surface the failure so devs see it and
-      // the dashboard can show a subtle indicator instead of a frozen agent.
       reportAssetError(this.id, type, err, import.meta.env?.DEV ?? false, this.onAssetError);
     }
   }
@@ -474,19 +734,19 @@ export class Agent {
     this.halo.scale.set(1);
   }
 
-  private clearSpeechBubble(): void {
-    if (this.speechBubbleRaf !== null) {
-      cancelAnimationFrame(this.speechBubbleRaf);
-      this.speechBubbleRaf = null;
+  private clearStatusCallout(): void {
+    if (this.statusCalloutRaf !== null) {
+      cancelAnimationFrame(this.statusCalloutRaf);
+      this.statusCalloutRaf = null;
     }
-    if (this.speechBubbleTimeout !== null) {
-      clearTimeout(this.speechBubbleTimeout);
-      this.speechBubbleTimeout = null;
+    if (this.statusCalloutTimeout !== null) {
+      clearTimeout(this.statusCalloutTimeout);
+      this.statusCalloutTimeout = null;
     }
-    if (this.speechBubble) {
-      this.container.removeChild(this.speechBubble);
-      this.speechBubble.destroy({ children: true });
-      this.speechBubble = null;
+    if (this.statusCallout) {
+      this.container.removeChild(this.statusCallout);
+      this.statusCallout.destroy({ children: true });
+      this.statusCallout = null;
     }
   }
 

@@ -67,11 +67,18 @@ export interface ProjectControlRunRecord {
   startedAt: string | null;
   completedAt: string | null;
   workerPid: number | null;
+  lastHeartbeatAt: string | null;
+  outcome: string | null;
+  summary: string | null;
+  error: string | null;
 }
 
 export interface ProjectControlLogChunk {
   lines: string[];
   truncated: boolean;
+  path: string | null;
+  exists: boolean | null;
+  sizeBytes: number | null;
 }
 
 export interface ProjectControlReadSection<T> {
@@ -80,16 +87,42 @@ export interface ProjectControlReadSection<T> {
   provenance: Provenance;
 }
 
+export type ProjectControlActionKind = 'dispatch' | 'decompose' | 'reclaim' | 'terminate';
+export type ProjectControlActionRisk = 'medium' | 'high';
+
 export interface DisabledProjectControlAction {
-  kind: 'dispatch' | 'decompose' | 'reclaim' | 'terminate';
+  kind: ProjectControlActionKind;
   label: string;
+  enabled: boolean;
   disabledReason: string;
   confirmationCopy: string;
+  risk: ProjectControlActionRisk;
+  targetId: string | null;
+}
+
+export interface ProjectControlMutationRequest {
+  kind: ProjectControlActionKind;
+  taskId: string | null;
+  runId: string | null;
+  confirm: boolean;
+  reason?: string;
+}
+
+export interface ProjectControlMutationResult {
+  ok: boolean;
+  status: string;
+  message: string;
+  raw: Record<string, unknown>;
+  provenance: Provenance;
+}
+
+export interface ProjectControlMutationAdapter {
+  executeAction(request: ProjectControlMutationRequest): Promise<ProjectControlMutationResult>;
 }
 
 export interface ProjectControlTaskDetail {
   task: KanbanTaskCard;
-  diagnostics: ProjectControlReadSection<Record<string, unknown>>;
+  diagnostics: ProjectControlReadSection<unknown>;
   comments: ProjectControlReadSection<ProjectControlComment[]>;
   runs: ProjectControlReadSection<ProjectControlRunRecord[]>;
   logs: ProjectControlReadSection<ProjectControlLogChunk>;
@@ -97,6 +130,7 @@ export interface ProjectControlTaskDetail {
 }
 
 export interface ProjectControlTaskContext {
+  diagnostics: ProjectControlReadSection<unknown>;
   comments: ProjectControlReadSection<ProjectControlComment[]>;
   runs: ProjectControlReadSection<ProjectControlRunRecord[]>;
   logs: ProjectControlReadSection<ProjectControlLogChunk>;
@@ -112,6 +146,9 @@ export interface ProjectControlStoreState {
   taskDetail: Tracked<ProjectControlTaskDetail | null>;
   lastError: string | null;
   adapterBound: boolean;
+  mutationAdapterBound: boolean;
+  actionInFlight: ProjectControlActionKind | null;
+  lastMutation: Tracked<ProjectControlMutationResult | null>;
 }
 
 export interface ProjectControlSourceAggregate {

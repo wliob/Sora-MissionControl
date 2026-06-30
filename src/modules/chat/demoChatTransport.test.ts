@@ -2,7 +2,7 @@
  * demoChatTransport tests.
  *
  * Verifies the explicit mock satisfies the ChatTransport contract and is
- * clearly labelled DEMO MODE so demo output is never mistaken for a live
+ * clearly labelled mock/demo so demo output is never mistaken for a live
  * agent response.
  */
 

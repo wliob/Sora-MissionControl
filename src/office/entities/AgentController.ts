@@ -74,25 +74,33 @@ export class AgentController {
         }
         switch (activity) {
           case 'working':
-            this.agent.showSpeechBubble(
-              task ? `Working on: ${task.title}` : 'Working…',
+            this.agent.showStatusCallout(
+              task ? `working: ${task.title}` : 'working',
             );
+            this.agent.showStateBadge('WORK', true);
             break;
           case 'blocked':
-            this.agent.showSpeechBubble('Blocked ❌');
+            this.agent.showStatusCallout('blocked');
+            this.agent.showStateBadge('BLOCK');
             break;
           case 'reviewing':
-            this.agent.showSpeechBubble(
-              task ? `In review: ${task.title}` : 'In review…',
+            this.agent.showStatusCallout(
+              task ? `review: ${task.title}` : 'review',
             );
+            this.agent.showStateBadge('REVIEW');
             break;
           case 'celebrating':
-            this.agent.showSpeechBubble('Done! \u{1F389}');
+            this.agent.showStatusCallout('verified complete');
+            this.agent.showStateBadge('DONE');
             break;
           case 'idle':
+            this.agent.showStateBadge('IDLE');
             if (zone === 'break_room') {
-              this.agent.showSpeechBubble('Taking a break \u2615');
+              this.agent.showStatusCallout('standby');
             }
+            break;
+          case 'moving':
+            // Keep current state badge during movement — don't change
             break;
         }
       }

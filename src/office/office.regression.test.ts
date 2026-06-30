@@ -3,7 +3,7 @@
  *
  * Verifies the contract from docs/work-split.md → Phase 2 Verify:
  *   - Office renders in 600x400 and full-screen containers.
- *   - 5 agents render and animate.
+ *   - 6 agents render and animate.
  *   - FPS event reports > 0.
  *   - FSM tests pass (init/destroy/snapshot/event transitions).
  *
@@ -57,9 +57,9 @@ describe('office FSM — init and destroy', () => {
     }
   }
 
-  it('initialises 5 agents (one per department lead) in idle state', () => {
+  it('initialises 6 agents (one per department lead) in idle state', () => {
     startAll();
-    expect(actors).toHaveLength(5);
+    expect(actors).toHaveLength(6);
     for (const actor of actors) {
       const s = getAgentState(actor.getSnapshot());
       expect(s.activity).toBe('idle');
@@ -196,12 +196,12 @@ describe('office store — init/render/destroy', () => {
     useOfficeStore.getState().destroy();
   });
 
-  it('initAgents creates 5 agent actors and exposes their state', () => {
+  it('initAgents creates 6 agent actors and exposes their state', () => {
     const { initAgents } = useOfficeStore.getState();
     initAgents();
     const after = useOfficeStore.getState();
-    expect(after.actors.size).toBe(5);
-    expect(after.agents.size).toBe(5);
+    expect(after.actors.size).toBe(6);
+    expect(after.agents.size).toBe(6);
     for (const desk of AGENT_DESKS) {
       const s = after.getStateFor(desk.id);
       expect(s).toBeDefined();
@@ -239,7 +239,7 @@ describe('office store — init/render/destroy', () => {
   it('destroy clears all actors and agents', () => {
     const store = useOfficeStore.getState();
     store.initAgents();
-    expect(useOfficeStore.getState().actors.size).toBe(5);
+    expect(useOfficeStore.getState().actors.size).toBe(6);
     useOfficeStore.getState().destroy();
     const after = useOfficeStore.getState();
     expect(after.actors.size).toBe(0);
@@ -411,7 +411,7 @@ describe('office Phase 8 — idle timeout / sleep mode', () => {
       fps: 1,
       renderer: 'webgl',
       targetFps: 1,
-      agentCount: 5,
+      agentCount: 6,
       reducedMotion: false,
       performanceMode: 'sleep',
       qualityTier: 'high',

@@ -1,9 +1,37 @@
-version: '3.8'
-
 services:
-  sora-mission-control:
+  sora-missioncontrol-proxy:
     build: .
-    container_name: sora-mission-control
-    ports:
-      - "80:80"
+    container_name: sora-missioncontrol-proxy
     restart: unless-stopped
+    ports:
+      - "3187:3187"
+      - "3443:3443"
+    env_file:
+      - ../runtime/proxy.env
+    environment:
+      NODE_ENV: production
+      MISSION_CONTROL_PROXY_HOST: 0.0.0.0
+      MISSION_CONTROL_PROXY_PORT: "3187"
+      MISSION_CONTROL_TLS_PORT: "3443"
+      MISSION_CONTROL_TLS_CERT: /var/run/secrets/tls/server.crt
+      MISSION_CONTROL_TLS_KEY: /var/run/secrets/tls/server.key
+      MISSION_CONTROL_PROXY_AUTH_MODE: required
+      MISSION_CONTROL_REQUIRE_SECURE_TRANSPORT: "true"
+      HERMES_DASHBOARD_PROXY_TARGET: ${HERMES_DASHBOARD_URL:-http://192.168.0.85:9119}
+      HERMES_DASHBOARD_URL: ${HERMES_DASHBOARD_URL:-http://192.168.0.85:9119}
+      HERMES_WS_URL: ${HERMES_WS_URL:-ws://192.168.0.85:9119}
+      # Hermes Runtime Bridge config (Cloud, 2026-06-25)
+      HERMES_REMOTE_USER: ${HERMES_REMOTE_USER:-wliob}
+      HERMES_REMOTE_HOST: ${HERMES_REMOTE_HOST:-192.168.0.85}
+      HERMES_REMOTE_PATH: ${HERMES_REMOTE_PATH:-/home/wliob/.local/bin/hermes}
+      HERMES_SSH_KEY: /var/run/secrets/hermes_tunnel
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    read_only: true
+    volumes:
+      # Hermes Runtime Bridge: SSH key for remote hermes CLI execution
+      - ${HERMES_TUNNEL_KEY_PATH:-../runtime/hermes_tunnel_container}:/var/run/secrets/hermes_tunnel:ro
+      # TLS certificate for HTTPS (self-signed, homelab LAN)
+      - ${MISSION_CONTROL_TLS_DIR:-../runtime/tls}:/var/run/secrets/tls:ro

@@ -45,7 +45,7 @@ export type Confidence =
   | 'verified' // Confirmed against real Hermes runtime (Phase 0 verified surfaces)
   | 'inferred' // Derived/computed from verified data but not directly observed
   | 'unverified' // Endpoint exists but data has not been confirmed in this runtime
-  | 'placeholder' // Explicit mock/demo stand-in until real data is wired
+  | 'placeholder' // Stand-in until real data is wired — renders as 'unknown'
   | 'unknown'; // No basis to assign confidence — render as unknown
 
 /**

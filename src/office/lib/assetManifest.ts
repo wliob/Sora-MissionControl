@@ -9,6 +9,8 @@
  * logged rather than producing silent rendering bugs.
  *
  * Phase 8 — Sora stability audit #14.
+ * Phase B — extended to 6 agents (Cloud, Biscuit, Korra, Lelouch, Tifa, Rain)
+ *          plus Sora conductor station frames.
  */
 
 // ── Static atlases ──────────────────────────────────────────────────────────
@@ -21,16 +23,20 @@ export const STATIC_ATLAS_FRAMES: Record<string, readonly string[]> = {
     'korra_base', 'korra_block',
     'lelouch_base', 'lelouch_block',
     'tifa_base', 'tifa_block',
+    'rain_base', 'rain_block',
+    'sora_base', 'sora_block',
   ],
   'furniture-0': [
     'wall_back', 'wall_side', 'couch', 'window_large', 'bookshelf', 'door',
     'floor_archive', 'floor_break_room', 'floor_collaboration',
     'floor_workstations', 'plant_large', 'round_table', 'rug_break',
     'lamp_floor', 'meeting_chair', 'plant_small',
+    'guild_banner',
   ],
   'furniture-1': [
     'light_rays', 'kanban_board_prop', 'whiteboard', 'chair',
     'coffee_machine', 'desk', 'monitor',
+    'conductor_desk',
   ],
   'fx': ['emote_block', 'emote_sparkle', 'emote_thought'],
 };
@@ -45,8 +51,8 @@ export const STATIC_ATLAS_NAMES = Object.keys(STATIC_ATLAS_FRAMES) as (
 
 // ── Agent animation atlases ─────────────────────────────────────────────────
 
-/** The five agents rendered in the office. */
-export const AGENT_IDS = ['cloud', 'biscuit', 'korra', 'lelouch', 'tifa'] as const;
+/** The six agents rendered in the office (Phase B adds Rain). */
+export const AGENT_IDS = ['cloud', 'biscuit', 'korra', 'lelouch', 'tifa', 'rain'] as const;
 export type AgentId = (typeof AGENT_IDS)[number];
 
 /** The four per-agent animation spritesheets, loaded on demand. */

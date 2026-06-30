@@ -4,6 +4,8 @@
 // demo mode using this scripted mock board + event stream. This lets the
 // office render and animate inside the dashboard shell without a live
 // Kanban connection.
+//
+// Phase B — extended to 6 agents (Rain added).
 
 import type { Board, WsEvent, Task } from '@/office/types';
 
@@ -21,7 +23,7 @@ function makeTask(id: string, title: string, assignee: string, status: string): 
   };
 }
 
-/** A static mock board with tasks across all agents and statuses. */
+/** A static mock board with tasks across all 6 agents and statuses. */
 export const DEMO_BOARD: Board = {
   columns: [
     {
@@ -32,6 +34,7 @@ export const DEMO_BOARD: Board = {
         makeTask('t_demo_2', 'Build rate limiter', 'Biscuit', 'in_progress'),
         makeTask('t_demo_3', 'Landing page hero', 'Korra', 'in_progress'),
         makeTask('t_demo_4', 'Q2 budget forecast', 'Tifa', 'in_progress'),
+        makeTask('t_demo_8', 'Intel report: competitor movement', 'Rain', 'in_progress'),
       ],
     },
     {
@@ -103,6 +106,22 @@ export const DEMO_EVENT_SCRIPT: { delay: number; event: WsEvent }[] = [
     event: {
       type: 'task.claimed',
       task: makeTask('t_demo_7', 'New feature spec', 'Biscuit', 'in_progress'),
+      timestamp: now(),
+    },
+  },
+  {
+    delay: 28000,
+    event: {
+      type: 'task.blocked',
+      task: makeTask('t_demo_8', 'Intel report: competitor movement', 'Rain', 'blocked'),
+      timestamp: now(),
+    },
+  },
+  {
+    delay: 32000,
+    event: {
+      type: 'task.unblocked',
+      task: makeTask('t_demo_8', 'Intel report: competitor movement', 'Rain', 'in_progress'),
       timestamp: now(),
     },
   },

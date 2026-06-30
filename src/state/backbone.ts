@@ -28,6 +28,23 @@ import {
 import type { HealthSourceId, SourceHealth } from '@/types/connection';
 import type { ChatTransport } from '@/modules/chat/types';
 import { startChatBackbone, stopChatBackbone } from '@/modules/chat/chatBackbone';
+import { MissionControlAdminProxyAdapter } from '@/services/hermes/adminProxyAdapter';
+import { HermesProjectControlAdapter } from '@/services/hermes/projectControlAdapter';
+import {
+  loadKeys,
+  loadMcpEntries,
+  setKeyMcpAdminAdapter,
+} from '@/state/adminKeyMcpStore';
+import {
+  loadCronJobs,
+  loadSkills,
+  loadWebhooks,
+  setCwsAdminAdapter,
+} from '@/state/cwsAdminStore';
+import {
+  setProjectControlMutationAdapter,
+  setProjectControlReadAdapter,
+} from '@/state/projectControlStore';
 
 export interface MissionControlBackboneOptions extends DashboardClientOptions {
   /** Start REST sync immediately when `start()` is called. Default true. */
@@ -44,6 +61,10 @@ export interface MissionControlBackboneOptions extends DashboardClientOptions {
   chatTransport?: ChatTransport | null;
   /** Start the chat backbone alongside the session backbone. Default true. */
   startChat?: boolean;
+  /** Bind the local safe admin proxy adapter. Default true. */
+  startAdminProxy?: boolean;
+  /** Override the safe admin proxy URL. Default is same host on port 3187. */
+  adminProxyUrl?: string;
 }
 
 export interface MissionControlBackbone {
@@ -162,8 +183,9 @@ export function createMissionControlBackbone(
       url = client.createKanbanEventsUrl(cursor);
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
-      updateSourceHealth('kanban-ws', health('unauthorized', message));
-      markStale('kanban-ws', 'auth-required');
+      const isAuthGap = /token|unauthorized/i.test(message);
+      updateSourceHealth('kanban-ws', health(isAuthGap ? 'unauthorized' : 'offline', message));
+      markStale('kanban-ws', isAuthGap ? 'auth-required' : 'endpoint-unverified');
       return;
     }
 
@@ -196,6 +218,21 @@ export function createMissionControlBackbone(
   async function start(): Promise<void> {
     stopped = false;
     setSessionConnectionAdapter(adapter);
+    const projectControlAdapter = new HermesProjectControlAdapter(client);
+    setProjectControlReadAdapter(projectControlAdapter);
+    setProjectControlMutationAdapter(projectControlAdapter);
+    if (options.startAdminProxy !== false) {
+      const adminAdapter = new MissionControlAdminProxyAdapter({ baseUrl: options.adminProxyUrl });
+      setKeyMcpAdminAdapter(adminAdapter);
+      setCwsAdminAdapter(adminAdapter);
+      void Promise.allSettled([
+        loadKeys(),
+        loadMcpEntries(),
+        loadCronJobs(),
+        loadWebhooks(),
+        loadSkills(),
+      ]);
+    }
     setUsageAdapter({
       fetchUsage: (days = 7) => client.fetchUsage(days) as Promise<Record<string, unknown>>,
     });
@@ -221,6 +258,10 @@ export function createMissionControlBackbone(
     clearReconnectTimer();
     ws?.close();
     ws = null;
+    setCwsAdminAdapter(null);
+    setKeyMcpAdminAdapter(null);
+    setProjectControlMutationAdapter(null);
+    setProjectControlReadAdapter(null);
     setUsageAdapter(null);
     setSessionConnectionAdapter(null);
   }
@@ -247,7 +288,7 @@ export function startBrowserBackbone(options: MissionControlBackboneOptions = {}
   // profile roster into the chat store. The chat module depends only on the
   // ChatTransport interface; this is the app-level swap point.
   if (options.startChat !== false) {
-    startChatBackbone({ transport: options.chatTransport ?? null });
+    startChatBackbone({ transport: options.chatTransport ?? null, dashboardClient: browserBackbone.client });
   }
   return browserBackbone;
 }

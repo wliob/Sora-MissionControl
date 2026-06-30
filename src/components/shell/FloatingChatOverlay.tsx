@@ -37,7 +37,6 @@ import {
   type PointerEvent as ReactPointerEvent,
 } from 'react';
 import { ChatPanel } from '@/components/shell/ChatPanel';
-import { isDemoMode } from '@/modules/chat/chatBackbone';
 import { useShellState, shellStore } from '@/state/shellStore';
 
 const STORAGE_KEY = 'sora-mc:chat-bubble:v1';
@@ -197,7 +196,6 @@ export function FloatingChatOverlay() {
   const resizeRef = useRef<ResizeState | null>(null);
   const geoRef = useRef(geo);
   const { view, selectedAgent } = useShellState();
-  const demo = isDemoMode();
 
   // Keep geoRef synced for the global pointer handlers.
   useEffect(() => {
@@ -304,7 +302,7 @@ export function FloatingChatOverlay() {
 
   // "Copy last response" is not available in the command-console model (no
   // external DOM host). Provide a clear status hint instead of a no-op.
-  const statusLabel = demo ? 'demo mode' : selectedAgent ? 'live' : 'standby';
+  const statusLabel = selectedAgent ? 'live' : 'standby';
 
   // The bubble renders only when not on the docked chat view (avoid duplicate
   // chat surfaces on screen at once on wide layouts).

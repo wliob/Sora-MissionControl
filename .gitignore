@@ -9,3 +9,6 @@ coverage/
 .DS_Store
 *.log
 /tmp/
+.gstack/
+shared/releases/
+shared/playwright-results/

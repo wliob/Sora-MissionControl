@@ -7,7 +7,11 @@ import { tracked } from '@/types/provenance';
 import { KANBAN_COLUMN_ORDER, type KanbanTaskCard } from '@/types/board';
 import type {
   DisabledProjectControlAction,
+  ProjectControlActionKind,
   ProjectControlBlockerRow,
+  ProjectControlMutationAdapter,
+  ProjectControlMutationRequest,
+  ProjectControlMutationResult,
   ProjectControlOwnerRow,
   ProjectControlReadAdapter,
   ProjectControlReadSection,
@@ -25,38 +29,15 @@ const PROJECT_CONTROL_SOURCES: KnownHealthSourceId[] = [
   'admin-cli',
 ];
 
-const DISABLED_ACTIONS: DisabledProjectControlAction[] = [
-  {
-    kind: 'dispatch',
-    label: 'Dispatch',
-    disabledReason: 'Read-only surface: dispatch is intentionally disabled in Phase 7a.',
-    confirmationCopy:
-      'Placeholder confirmation: show scope, freshness, quota unknown/known status, and rollback path before dispatch is enabled.',
-  },
-  {
-    kind: 'decompose',
-    label: 'Decompose',
-    disabledReason: 'Read-only surface: decompose is intentionally disabled in Phase 7a.',
-    confirmationCopy:
-      'Placeholder confirmation: show parent task summary, expected child creation, and cost warning before decompose is enabled.',
-  },
-  {
-    kind: 'reclaim',
-    label: 'Reclaim',
-    disabledReason: 'Read-only surface: reclaim is intentionally disabled in Phase 7a.',
-    confirmationCopy:
-      'Placeholder confirmation: show assignee, run id, heartbeat age, and duplicate-work risk before reclaim is enabled.',
-  },
-  {
-    kind: 'terminate',
-    label: 'Terminate',
-    disabledReason: 'Read-only surface: terminate is intentionally disabled in Phase 7a.',
-    confirmationCopy:
-      'Placeholder confirmation: show PID, run id, heartbeat, and data-loss warning before terminate is enabled.',
-  },
-];
+const ACTION_LABELS: Record<ProjectControlActionKind, string> = {
+  dispatch: 'Dispatch',
+  decompose: 'Decompose',
+  reclaim: 'Reclaim',
+  terminate: 'Terminate',
+};
 
 let adapter: ProjectControlReadAdapter | null = null;
+let mutationAdapter: ProjectControlMutationAdapter | null = null;
 let currentBoardSnapshot: BoardStoreSnapshot | null = null;
 let currentConnectionState: ConnectionStateValue | null = null;
 let currentTasksById: Record<string, KanbanTaskCard> = {};
@@ -117,6 +98,14 @@ function createInitialState(): ProjectControlStoreState {
     }),
     lastError: null,
     adapterBound: false,
+    mutationAdapterBound: false,
+    actionInFlight: null,
+    lastMutation: tracked(null, {
+      source: 'unknown',
+      freshness: 'missing',
+      confidence: 'unknown',
+      note: 'No Project Control mutation has run.',
+    }),
   };
 }
 
@@ -145,6 +134,12 @@ function makeSection<T>(
 
 function unavailableTaskContext(note: string): ProjectControlTaskContext {
   return {
+    diagnostics: makeSection(null, 'unknown', {
+      source: 'unknown',
+      freshness: 'missing',
+      confidence: 'unknown',
+      note,
+    }),
     comments: makeSection([], 'unavailable', {
       source: 'unknown',
       freshness: 'missing',
@@ -157,7 +152,7 @@ function unavailableTaskContext(note: string): ProjectControlTaskContext {
       confidence: 'unknown',
       note,
     }),
-    logs: makeSection({ lines: [], truncated: false }, 'unavailable', {
+    logs: makeSection({ lines: [], truncated: false, path: null, exists: null, sizeBytes: null }, 'unavailable', {
       source: 'unknown',
       freshness: 'missing',
       confidence: 'unknown',
@@ -166,7 +161,7 @@ function unavailableTaskContext(note: string): ProjectControlTaskContext {
   };
 }
 
-function diagnosticsSection(task: KanbanTaskCard, aggregate: ProjectControlSourceAggregate): ProjectControlReadSection<Record<string, unknown>> {
+function diagnosticsSection(task: KanbanTaskCard, aggregate: ProjectControlSourceAggregate): ProjectControlReadSection<unknown> {
   if (task.diagnostics && Object.keys(task.diagnostics).length > 0) {
     return makeSection(task.diagnostics, 'available', {
       source: aggregate.source,
@@ -340,15 +335,57 @@ function buildSnapshot(): ProjectControlSnapshot {
   };
 }
 
+function projectControlMutationsAvailable(): boolean {
+  return mutationAdapter !== null && currentConnectionState?.value?.sources['kanban-rest']?.state === 'connected';
+}
+
+function actionReason(kind: ProjectControlActionKind, task: KanbanTaskCard, mutationsAvailable: boolean): string {
+  if (!mutationsAvailable) return 'Kanban mutation adapter is unavailable or REST source is not connected.';
+  if (kind === 'terminate' && !task.currentRunId) return 'Terminate requires a current run id from the verified board snapshot.';
+  if (kind === 'reclaim' && task.status !== 'running' && !task.workerPid && !task.currentRunId) {
+    return 'Reclaim is only enabled when the task appears actively claimed/running.';
+  }
+  return '';
+}
+
+function buildAction(kind: ProjectControlActionKind, task: KanbanTaskCard): DisabledProjectControlAction {
+  const mutationsAvailable = projectControlMutationsAvailable();
+  const disabledReason = actionReason(kind, task, mutationsAvailable);
+  const targetId = kind === 'terminate' ? task.currentRunId : kind === 'dispatch' ? null : task.id;
+  const risk = kind === 'terminate' || kind === 'reclaim' ? 'high' : 'medium';
+  const scope = kind === 'dispatch' ? 'current board dispatcher' : `${task.title} (${task.id})`;
+  return {
+    kind,
+    label: ACTION_LABELS[kind],
+    enabled: disabledReason.length === 0,
+    disabledReason,
+    risk,
+    targetId,
+    confirmationCopy:
+      kind === 'terminate'
+        ? `High risk: terminate run ${task.currentRunId ?? 'unknown'} for ${scope}. Confirm only after checking duplicate-work/data-loss risk.`
+        : kind === 'reclaim'
+          ? `High risk: reclaim ${scope}. Confirm only if the worker heartbeat/claim is stale or intentionally being taken over.`
+          : kind === 'decompose'
+            ? `Confirm decompose for ${scope}. This may create child tasks and may spend model quota.`
+            : 'Confirm dispatcher nudge for the current board. This may start eligible ready tasks.',
+  };
+}
+
+function buildActions(task: KanbanTaskCard): DisabledProjectControlAction[] {
+  return (['dispatch', 'decompose', 'reclaim', 'terminate'] as ProjectControlActionKind[]).map((kind) => buildAction(kind, task));
+}
+
 function buildTaskDetail(task: KanbanTaskCard, context: ProjectControlTaskContext): ProjectControlTaskDetail {
   const aggregate = currentAggregate();
+  const diagnostics = context.diagnostics.value != null ? context.diagnostics : diagnosticsSection(task, aggregate);
   return {
     task,
-    diagnostics: diagnosticsSection(task, aggregate),
+    diagnostics,
     comments: context.comments,
     runs: context.runs,
     logs: context.logs,
-    disabledActions: DISABLED_ACTIONS,
+    disabledActions: buildActions(task),
   };
 }
 
@@ -374,6 +411,7 @@ function refreshSelectedTaskShell(): void {
     'No project-control read adapter is bound yet. Comments, runs, and logs remain unavailable by design.',
   );
   const nextDetail = buildTaskDetail(task, existing ? {
+    diagnostics: existing.diagnostics,
     comments: existing.comments,
     runs: existing.runs,
     logs: existing.logs,
@@ -397,8 +435,19 @@ export function setProjectControlReadAdapter(next: ProjectControlReadAdapter | n
   emit();
 }
 
+export function setProjectControlMutationAdapter(next: ProjectControlMutationAdapter | null): void {
+  mutationAdapter = next;
+  state = { ...state, mutationAdapterBound: next !== null };
+  refreshSelectedTaskShell();
+  emit();
+}
+
 export function hasProjectControlReadAdapter(): boolean {
   return adapter !== null;
+}
+
+export function hasProjectControlMutationAdapter(): boolean {
+  return mutationAdapter !== null;
 }
 
 export const projectControlStore = {
@@ -524,6 +573,70 @@ export const projectControlStore = {
     }
   },
 
+  async executeAction(kind: ProjectControlActionKind, reason?: string): Promise<ProjectControlMutationResult | null> {
+    if (!mutationAdapter) {
+      const message = 'Kanban mutation adapter is not bound; action was not sent.';
+      state = { ...state, lastError: message };
+      emit();
+      return null;
+    }
+
+    const task = state.selectedTaskId ? currentTasksById[state.selectedTaskId] : null;
+    if (kind !== 'dispatch' && !task) {
+      const message = `${ACTION_LABELS[kind]} requires a selected task from the current board snapshot.`;
+      state = { ...state, lastError: message };
+      emit();
+      return null;
+    }
+
+    if (task) {
+      const action = buildAction(kind, task);
+      if (!action.enabled) {
+        state = { ...state, lastError: action.disabledReason };
+        emit();
+        return null;
+      }
+    } else if (!projectControlMutationsAvailable()) {
+      const message = 'Kanban mutation adapter is unavailable or REST source is not connected.';
+      state = { ...state, lastError: message };
+      emit();
+      return null;
+    }
+
+    const request: ProjectControlMutationRequest = {
+      kind,
+      taskId: kind === 'dispatch' ? null : task?.id ?? null,
+      runId: kind === 'terminate' ? task?.currentRunId ?? null : null,
+      confirm: true,
+      reason,
+    };
+
+    state = { ...state, actionInFlight: kind, lastError: null };
+    emit();
+
+    try {
+      const result = await mutationAdapter.executeAction(request);
+      state = {
+        ...state,
+        actionInFlight: null,
+        lastMutation: tracked(result, {
+          source: result.provenance.source,
+          freshness: result.provenance.freshness,
+          confidence: result.provenance.confidence,
+          note: result.provenance.note ?? result.message,
+        }),
+        lastError: null,
+      };
+      emit();
+      return result;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      state = { ...state, actionInFlight: null, lastError: message };
+      emit();
+      return null;
+    }
+  },
+
   clearLastError(): void {
     if (!state.lastError) return;
     state = { ...state, lastError: null };
@@ -537,6 +650,7 @@ export function useProjectControlState(): ProjectControlStoreState {
 
 export function _resetForTest(): void {
   adapter = null;
+  mutationAdapter = null;
   currentBoardSnapshot = null;
   currentConnectionState = null;
   currentTasksById = {};

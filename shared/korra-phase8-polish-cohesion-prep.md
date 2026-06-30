@@ -291,6 +291,23 @@ Applied one doc-only/comment fix:
 
 No code-heavy Phase 7 surface was implemented. No design-token changes were made.
 
+## Biscuit follow-through — 2026-06-22
+
+Bounded polish closures landed after Korra's prep pass:
+- `src/components/shell/MissionBar.tsx`: grouped Admin + Kanban behind a single Systems control so first-screen nav keeps Office / Chat / Telemetry as the primary rhythm.
+- `src/components/shell/ShellLayout.tsx`: renamed admin framing to `Systems Bay` and made Office / Chat / Telemetry focus states honest on wide and medium layouts.
+- `src/components/shell/OpsPanel.tsx`: collapsed the all-unknown default state into a single `Telemetry not verified` verdict with diagnostics tucked behind disclosure instead of repeating empty usage/quota chrome.
+- `src/components/kanban/ProjectControlSurface.tsx`: replaced unknown-board KPI noise with a board-level unavailable state until a verified Kanban snapshot exists.
+- `src/components/admin/UnifiedAdminSurface.tsx` + `src/components/admin/AdminProxyAuthControl.tsx`: shifted tab/control language toward systems-bay wording (`Model routing`, `Access & Links`, `Schedulers & Hooks`, `Systems proxy token`, `Stage token`).
+- `src/components/common/ProfileSelector.tsx`: quieted the presence rail into compact callsigns so Office remains the visual truth source and Chat does not over-shout persona metadata.
+
+Focused RED→GREEN coverage added for the polish pass:
+- `src/components/shell/MissionBar.test.tsx`
+- `src/components/shell/OpsPanel.test.tsx`
+- `src/components/common/ProfileSelector.test.tsx`
+- `src/components/admin/UnifiedAdminSurface.test.tsx`
+- `src/components/kanban/ProjectControlSurface.test.tsx`
+
 ## Blocker loop results
 
 Loop 1 — project/file inspection:

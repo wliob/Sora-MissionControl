@@ -2,6 +2,9 @@
 //
 // Adapted from the standalone office's status bar in OfficeShell.
 // Uses inline styles matching the dashboard's theme tokens.
+//
+// Phase B: Applied Phase A typography (JetBrains Mono for agent name/task,
+// Inter for status text) + guild class icon glyphs + Phase A color palette.
 
 import type { AgentState } from '@/office/engine/AgentStateMachine';
 import type { AgentAssetError } from '@/office/entities/Agent';
@@ -13,29 +16,40 @@ for (const desk of AGENT_DESKS) {
   AGENT_COLORS[desk.id] = '#' + desk.color.toString(16).padStart(6, '0');
 }
 
+// Phase A guild class icons per agent (from types/agents.ts AGENTS array)
+const GUILD_CLASS_ICONS: Record<string, string> = {
+  cloud: '⚔',
+  biscuit: '✦',
+  korra: '🎨',
+  lelouch: '♜',
+  tifa: '⚗',
+  rain: '✉',
+};
+
 /** Control-room activity snippets for the status bar. */
 function getAgentSnippet(agent: AgentState): string {
+  const icon = GUILD_CLASS_ICONS[agent.agentId] ?? '';
   switch (agent.activity) {
     case 'working':
       return agent.task
-        ? `${agent.name} is working on "${agent.task.title}"`
-        : `${agent.name} is busy…`;
+        ? `${icon} ${agent.name}: working on "${agent.task.title}"`
+        : `${icon} ${agent.name}: busy…`;
     case 'idle':
       return agent.zone === 'break_room'
-        ? `${agent.name} is in break-room standby`
-        : `${agent.name} is waiting for work`;
+        ? `${icon} ${agent.name}: in break-room standby`
+        : `${icon} ${agent.name}: waiting for work`;
     case 'reviewing':
       return agent.task
-        ? `${agent.name} is reviewing "${agent.task.title}"`
-        : `${agent.name} is in review`;
+        ? `${icon} ${agent.name}: reviewing "${agent.task.title}"`
+        : `${icon} ${agent.name}: in review`;
     case 'blocked':
-      return `${agent.name} is blocked — needs help`;
+      return `${icon} ${agent.name}: blocked — needs help`;
     case 'celebrating':
-      return `${agent.name} closed a task`;
+      return `${icon} ${agent.name}: closed a task`;
     case 'moving':
-      return `${agent.name} is on the move…`;
+      return `${icon} ${agent.name}: on the move…`;
     default:
-      return `${agent.name}: ${agent.activity}`;
+      return `${icon} ${agent.name}: ${agent.activity}`;
   }
 }
 
@@ -112,9 +126,11 @@ export function StatusBar({ agents, runtimeStats, assetErrors }: StatusBarProps)
                 display: 'flex',
                 alignItems: 'center',
                 gap: 6,
-                fontSize: 'var(--text-xs)',
+                fontSize: 10,
+                fontFamily: '"JetBrains Mono", monospace',
               }}
             >
+              {/* Agent guild house color dot */}
               <span
                 style={{
                   display: 'inline-block',
@@ -125,14 +141,22 @@ export function StatusBar({ agents, runtimeStats, assetErrors }: StatusBarProps)
                   backgroundColor: color,
                 }}
               />
-              <span style={{ fontWeight: 500, color: 'var(--text-primary)' }}>
-                {getAgentSnippet(agent)}
+              {/* Agent name in white */}
+              <span style={{ fontWeight: 500, color: 'var(--text-primary)', fontFamily: '"JetBrains Mono", monospace', fontSize: 10 }}>
+                {agent.name}
+              </span>
+              {/* Status snippet in dim text, Inter font */}
+              <span style={{ color: 'var(--text-muted)', fontFamily: 'Inter, system-ui, sans-serif', fontSize: 10 }}>
+                {getAgentSnippet(agent)
+                  // Remove icon prefix for bar display (already shown as dot)
+                  .replace(/^[⚔✦🎨♜⚗✉]\s*/, '')
+                  .replace(new RegExp(`^${agent.name}:\\s*`), '')}
               </span>
             </div>
           );
         })
       ) : (
-        <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)', textAlign: 'center' }}>
+        <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)', textAlign: 'center', fontFamily: 'Inter, system-ui, sans-serif' }}>
           No active agent telemetry is reporting work right now.
         </p>
       )}
