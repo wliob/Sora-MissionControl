@@ -149,9 +149,10 @@ export interface SkillEntry {
  * surfaces. Follows the same confirmation-gate pattern as KeyMcpAction.
  *
  * Action tier mapping:
- *   Safe (no confirm): cron.run, skill.view
- *   Risk (confirm): cron.pause, cron.resume, cron.update, webhook.update,
- *                   skill.enable, skill.disable
+ *   Safe (no confirm): skill.view
+ *   Risk (confirm): cron.create, cron.run, cron.pause, cron.resume,
+ *                   cron.update, webhook.update, skill.enable,
+ *                   skill.disable
  *   Danger (confirm + possibly typed phrase): cron.remove, webhook.remove
  */
 export type CwsAction =
@@ -174,9 +175,11 @@ export type CwsAction =
 
 /** Actions that the store gates behind an explicit confirmation. */
 const RISK_KINDS: ReadonlySet<CwsAction['kind']> = new Set([
+  'cron.create',
   'cron.update',
   'cron.pause',
   'cron.resume',
+  'cron.run',
   'webhook.update',
   'skill.enable',
   'skill.disable',
@@ -312,7 +315,7 @@ export function summarizeCwsAction(
 ): string {
   switch (action.kind) {
     case 'cron.create':
-      return `Create cron job "${action.name}" on schedule "${action.schedule}"?`;
+      return `Create cron job "${action.name}" on schedule "${action.schedule}"? This will mutate the live scheduler, may consume cost/quota on each execution, and rollback requires pause or remove after creation.`;
     case 'cron.update': {
       const job = cronJobs.find((j) => j.id === action.id);
       return `Update cron job "${job?.name ?? action.id}"? Schedule or configuration will change.`;
@@ -327,7 +330,7 @@ export function summarizeCwsAction(
     }
     case 'cron.run': {
       const job = cronJobs.find((j) => j.id === action.id);
-      return `Run cron job "${job?.name ?? action.id}" now?`;
+      return `Run cron job "${job?.name ?? action.id}" now? This will trigger the live scheduler immediately and may consume quota/cost or hit downstream side effects.`;
     }
     case 'cron.remove': {
       const job = cronJobs.find((j) => j.id === action.id);

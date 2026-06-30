@@ -9,26 +9,90 @@
  */
 
 /**
- * The five department-lead profile ids. These match the Hermes profile
+ * The seven department-lead profile ids. These match the Hermes profile
  * names and the 3D office's AGENT_DESKS layout. Custom profiles that are not
  * department leads are represented as free-form strings elsewhere (e.g. in
  * KanbanTaskCard.assignee) rather than extending this union.
  */
-export type AgentId = 'cloud' | 'biscuit' | 'korra' | 'lelouch' | 'tifa';
+export type AgentId = 'cloud' | 'biscuit' | 'korra' | 'lelouch' | 'tifa' | 'sora' | 'rain';
 
 export interface AgentMeta {
   id: AgentId;
   name: string;
   role: string;
   accent: string;
+  /** Guild class title rendered below the portrait (e.g. "Sentinel · Systems Class"). */
+  roleTitle: string;
+  /** Department marker — restrained text/glyph, not pictographic decoration. */
+  roleGlyph: string;
+  /** Department accent color CSS var. */
+  departmentAccent: string;
 }
 
 export const AGENTS: AgentMeta[] = [
-  { id: 'cloud', name: 'Cloud', role: 'Systems & Infra', accent: 'var(--agent-cloud)' },
-  { id: 'biscuit', name: 'Biscuit', role: 'Automation & Coding', accent: 'var(--agent-biscuit)' },
-  { id: 'korra', name: 'Korra', role: 'Creative & Media', accent: 'var(--agent-korra)' },
-  { id: 'lelouch', name: 'Lelouch', role: 'Lifestyle & Logistics', accent: 'var(--agent-lelouch)' },
-  { id: 'tifa', name: 'Tifa', role: 'Finance & Trading', accent: 'var(--agent-tifa)' },
+  {
+    id: 'cloud',
+    name: 'Cloud',
+    role: 'Systems & Infra',
+    accent: 'var(--agent-cloud)',
+    roleTitle: 'Sentinel · Systems Class',
+    roleGlyph: 'CL',
+    departmentAccent: 'var(--agent-cloud)',
+  },
+  {
+    id: 'biscuit',
+    name: 'Biscuit',
+    role: 'Automation & Coding',
+    accent: 'var(--agent-biscuit)',
+    roleTitle: 'Artificer · Code Class',
+    roleGlyph: 'BI',
+    departmentAccent: 'var(--agent-biscuit)',
+  },
+  {
+    id: 'korra',
+    name: 'Korra',
+    role: 'Creative & Media',
+    accent: 'var(--agent-korra)',
+    roleTitle: 'Visionweaver · Design Class',
+    roleGlyph: 'KO',
+    departmentAccent: 'var(--agent-korra)',
+  },
+  {
+    id: 'lelouch',
+    name: 'Lelouch',
+    role: 'Lifestyle & Logistics',
+    accent: 'var(--agent-lelouch)',
+    roleTitle: 'Strategist · Logistics Class',
+    roleGlyph: 'LE',
+    departmentAccent: 'var(--agent-lelouch)',
+  },
+  {
+    id: 'tifa',
+    name: 'Tifa',
+    role: 'Finance & Trading',
+    accent: 'var(--agent-tifa)',
+    roleTitle: 'Oracle · Finance Class',
+    roleGlyph: 'TI',
+    departmentAccent: 'var(--agent-tifa)',
+  },
+  {
+    id: 'sora',
+    name: 'Sora',
+    role: 'Operations & Orchestration',
+    accent: 'var(--agent-sora)',
+    roleTitle: 'Conductor',
+    roleGlyph: 'SO',
+    departmentAccent: 'var(--agent-sora)',
+  },
+  {
+    id: 'rain',
+    name: 'Rain',
+    role: 'Communications & Intel',
+    accent: 'var(--agent-rain)',
+    roleTitle: 'Chronicler · Media Class',
+    roleGlyph: 'RA',
+    departmentAccent: 'var(--agent-rain)',
+  },
 ];
 
 /**

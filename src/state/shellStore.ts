@@ -9,6 +9,7 @@ import type { AgentId, ConnectionState, PrimaryView } from '@/types';
 interface ShellState {
   view: PrimaryView;
   selectedAgent: AgentId | null;
+  selectedOwner: string | null;
   connection: ConnectionState;
   fps: number;
   eventTickerOpen: boolean;
@@ -17,6 +18,7 @@ interface ShellState {
 const initial: ShellState = {
   view: 'office',
   selectedAgent: null,
+  selectedOwner: null,
   connection: 'unknown',
   fps: 0,
   eventTickerOpen: false,
@@ -50,6 +52,11 @@ export const shellStore = {
   setSelectedAgent(agent: AgentId | null) {
     if (state.selectedAgent === agent) return;
     state = { ...state, selectedAgent: agent };
+    emit();
+  },
+  setSelectedOwner(owner: string | null) {
+    if (state.selectedOwner === owner) return;
+    state = { ...state, selectedOwner: owner };
     emit();
   },
   setConnection(connection: ConnectionState) {

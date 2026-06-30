@@ -4,10 +4,11 @@
  * Flows:
  *  - List cron jobs with schedule, status, last/next run, prompt preview.
  *  - Pause/Resume: risk-tier confirmation.
- *  - Run now: safe action, no confirmation.
+ *  - Run now: risk-tier confirmation with live-scheduler warning copy.
  *  - Remove: danger-tier confirmation with typed-phrase gate.
- *  - Create: form with name/schedule/prompt → store creates → one-time
- *    SecretReveal for fullPrompt/fullScript → dismiss.
+ *  - Create: form with name/schedule/prompt → risk-tier confirmation →
+ *    store creates → one-time SecretReveal for fullPrompt/fullScript →
+ *    dismiss.
  *
  * Security:
  *  - promptPreview is always truncated; full prompt/script only appear
@@ -16,7 +17,7 @@
  *  - When adapter is not bound, renders "unavailable" banner, not mock data.
  */
 
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import {
   cwsAdminStore,
   useCwsAdminState,
@@ -38,6 +39,12 @@ export function CronPanel() {
   // One-time secret from creation
   const createdCron = state.lastResult?.createdCron ?? null;
   const showSecret = createdCron != null;
+
+  useEffect(() => {
+    if (mode === 'create' && state.lastResult?.ok && state.lastResult.action.kind === 'cron.create') {
+      setMode('list');
+    }
+  }, [mode, state.lastResult]);
 
   return (
     <>
@@ -82,10 +89,7 @@ export function CronPanel() {
             )}
           </>
         ) : mode === 'create' ? (
-          <CreateCronForm
-            onCancel={() => setMode('list')}
-            onCreated={() => setMode('list')}
-          />
+          <CreateCronForm onCancel={() => setMode('list')} />
         ) : state.cronJobs.length === 0 ? (
           <EmptyState message="No cron jobs configured" />
         ) : (
@@ -121,19 +125,23 @@ export function CronPanel() {
 /* ── Helpers ──────────────────────────────────────────────────────────── */
 
 function confirmTitle(kind: string): string {
+  if (kind === 'cron.create') return 'Create Cron Job';
   if (kind === 'cron.remove') return 'Remove Cron Job';
   if (kind === 'cron.pause') return 'Pause Cron Job';
   if (kind === 'cron.resume') return 'Resume Cron Job';
   if (kind === 'cron.update') return 'Update Cron Job';
+  if (kind === 'cron.run') return 'Run Cron Job Now';
   return 'Confirm Action';
 }
 
 function actionVerb(kind: string): string {
   switch (kind) {
+    case 'cron.create': return 'Create';
     case 'cron.remove': return 'Remove';
     case 'cron.pause': return 'Pause';
     case 'cron.resume': return 'Resume';
     case 'cron.update': return 'Update';
+    case 'cron.run': return 'Run now';
     default: return 'Confirm';
   }
 }
@@ -266,10 +274,8 @@ function CronRow({ job, busy }: { job: CronJob; busy: boolean }) {
 
 function CreateCronForm({
   onCancel,
-  onCreated,
 }: {
   onCancel: () => void;
-  onCreated: () => void;
 }) {
   const [name, setName] = useState('');
   const [schedule, setSchedule] = useState('');
@@ -290,7 +296,6 @@ function CreateCronForm({
       skills: skills.trim() ? skills.split(',').map((s) => s.trim()) : undefined,
       modelOverride: modelOverride.trim() || undefined,
     });
-    onCreated();
   }
 
   return (
@@ -310,7 +315,7 @@ function CreateCronForm({
           lineHeight: 1.5,
         }}
       >
-        Create a new cron job. The full prompt and script will be shown once after creation.
+        Create a new cron job. This mutates the live scheduler, may consume cost/quota on each run, and will require explicit confirmation before creation. The full prompt and script will still be shown once after creation.
       </p>
       <EditField label="Name" value={name} onChange={setName} placeholder="e.g. daily-summary" />
       <EditField label="Schedule" value={schedule} onChange={setSchedule} placeholder="0 9 * * * or 30m" />

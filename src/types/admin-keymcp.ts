@@ -21,6 +21,7 @@
 
 import type { Tracked } from './provenance';
 import { tracked } from './provenance';
+import type { ActionTier } from './admin-cws';
 
 /* ───────────────────────────── API Keys ───────────────────────────── */
 
@@ -146,16 +147,41 @@ export type KeyMcpAction =
   | { kind: 'mcp.test'; id: string }
   | { kind: 'mcp.remove'; id: string };
 
-/** Actions that the store gates behind an explicit confirmation. */
-const DESTRUCTIVE_KINDS: ReadonlySet<KeyMcpAction['kind']> = new Set([
+const RISK_KINDS: ReadonlySet<KeyMcpAction['kind']> = new Set([
   'key.revoke',
   'key.regenerate',
+]);
+
+const DANGER_KINDS: ReadonlySet<KeyMcpAction['kind']> = new Set([
   'key.delete',
   'mcp.remove',
 ]);
 
+/** Actions that the store gates behind an explicit confirmation. */
+const DESTRUCTIVE_KINDS: ReadonlySet<KeyMcpAction['kind']> = new Set([
+  ...RISK_KINDS,
+  ...DANGER_KINDS,
+]);
+
 export function isDestructive(action: KeyMcpAction): boolean {
   return DESTRUCTIVE_KINDS.has(action.kind);
+}
+
+/** Whether a Key/MCP action requires confirmation before execution. */
+export function keyMcpRequiresConfirmation(action: KeyMcpAction): boolean {
+  return isDestructive(action);
+}
+
+/** Severity tier for Key/MCP confirmation UI. */
+export function keyMcpActionTier(action: KeyMcpAction): ActionTier {
+  if (DANGER_KINDS.has(action.kind)) return 'danger';
+  if (RISK_KINDS.has(action.kind)) return 'risk';
+  return 'safe';
+}
+
+/** Whether the action requires typing the affected entity before confirming. */
+export function keyMcpRequiresTypedPhrase(action: KeyMcpAction): boolean {
+  return DANGER_KINDS.has(action.kind);
 }
 
 /** A pending action awaiting confirmation. */
@@ -165,6 +191,12 @@ export interface PendingConfirmation {
   action: KeyMcpAction;
   /** Human-readable summary of what will happen, for the confirm dialog. */
   summary: string;
+  /** Severity tier for visual styling. */
+  tier: ActionTier;
+  /** Whether the user must type a phrase to confirm. */
+  requiresTypedPhrase: boolean;
+  /** The phrase the user must type when requiresTypedPhrase is true. */
+  typedPhrase: string;
   /** ISO timestamp the confirmation was requested. */
   requestedAt: string;
 }

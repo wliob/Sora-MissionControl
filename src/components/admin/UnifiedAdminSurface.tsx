@@ -14,6 +14,7 @@ import { useState } from 'react';
 import { ModelAdminPanel } from '@/components/shell/AdminPanel';
 import { KeyMcpAdminPanel } from '@/components/admin/KeyMcpAdminPanel';
 import { CwsAdminPanel } from '@/components/admin/CwsAdminPanel';
+import { AdminProxyAuthControl } from '@/components/admin/AdminProxyAuthControl';
 
 type AdminSection = 'models' | 'keysmcp' | 'cws';
 
@@ -21,9 +22,9 @@ export function UnifiedAdminSurface() {
   const [section, setSection] = useState<AdminSection>('models');
 
   const tabs: { id: AdminSection; label: string }[] = [
-    { id: 'models', label: 'Models' },
-    { id: 'keysmcp', label: 'Keys & MCP' },
-    { id: 'cws', label: 'Cron & Webhooks' },
+    { id: 'models', label: 'Model routing' },
+    { id: 'keysmcp', label: 'Access & Links' },
+    { id: 'cws', label: 'Schedulers & Hooks' },
   ];
 
   return (
@@ -70,6 +71,8 @@ export function UnifiedAdminSurface() {
           );
         })}
       </div>
+
+      <AdminProxyAuthControl />
 
       {/* Section body */}
       <div style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>

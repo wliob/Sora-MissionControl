@@ -27,7 +27,7 @@ import { useState, type FormEvent } from 'react';
 import { adminKeyMcpStore, useKeyMcpAdminState, hasKeyMcpAdapter } from '@/state/adminKeyMcpStore';
 import type { McpEntry, McpEntryCreated } from '@/types/admin-keymcp';
 import { AdminSectionShell } from '@/components/admin/AdminSectionShell';
-import { ConfirmDialog } from '@/components/admin/ConfirmDialog';
+import { RiskConfirmDialog } from '@/components/admin/RiskConfirmDialog';
 import { SecretReveal } from '@/components/admin/SecretReveal';
 import { MaskedField } from '@/components/admin/MaskedField';
 
@@ -90,13 +90,15 @@ export function McpPanel() {
       {state.pending
         .filter((p) => p.action.kind === 'mcp.remove')
         .map((p) => (
-          <ConfirmDialog
+          <RiskConfirmDialog
             key={p.nonce}
             open
-            title="Confirm destructive action"
+            title="Remove MCP Server"
             message={p.summary}
+            tier={p.tier}
+            requiresTypedPhrase={p.requiresTypedPhrase}
+            typedPhrase={p.typedPhrase}
             confirmLabel="Remove"
-            danger
             onConfirm={() => adminKeyMcpStore.confirmAction(p.nonce)}
             onCancel={() => adminKeyMcpStore.cancelAction(p.nonce)}
           />

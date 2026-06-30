@@ -2,33 +2,33 @@
  * AdminPanel — model management admin surface.
  *
  * Lists configured models with masked secrets, provides view/edit actions,
- * and gates destructive actions behind ConfirmDialog. Follows the
+ * and gates destructive actions behind RiskConfirmDialog. Follows the
  * mission-control visual language: dark, quiet, risk-first.
  *
  * Per docs/section-contracts.md §Admin/control module:
  *  - No secret values: the panel only ever displays `apiKeyMasked`.
  *  - Destructive/risky actions (disable, delete, setDefault, resetCredential)
- *    show a ConfirmDialog before executing.
+ *    show a RiskConfirmDialog before executing.
  *  - Non-destructive actions (enable, editConfig) execute immediately.
  */
 
 import { useEffect, useState } from 'react';
 import type { ModelEntry, ModelStatus, ModelCredentialPresence } from '@/types/admin';
 import { useAdminState, adminStore } from '@/modules/admin/adminStore';
-import { ConfirmDialog } from '@/components/common/ConfirmDialog';
+import { RiskConfirmDialog } from '@/components/admin/RiskConfirmDialog';
 
 const STATUS_META: Record<ModelStatus, { label: string; color: string; bg: string }> = {
   active: { label: 'Active', color: 'var(--accent-green)', bg: 'var(--accent-green-glow)' },
   available: { label: 'Available', color: 'var(--accent-cyan)', bg: 'var(--accent-cyan-glow)' },
   disabled: { label: 'Disabled', color: 'var(--text-muted)', bg: 'var(--status-unknown-bg)' },
-  error: { label: 'Error', color: 'var(--accent-red)', bg: 'var(--accent-red-glow)' },
+  error: { label: 'Config error', color: 'var(--accent-red)', bg: 'var(--accent-red-glow)' },
   unknown: { label: 'Unknown', color: 'var(--text-muted)', bg: 'var(--status-unknown-bg)' },
 };
 
 const CRED_META: Record<ModelCredentialPresence, { label: string; color: string }> = {
   configured: { label: 'Key set', color: 'var(--accent-green)' },
   missing: { label: 'No key', color: 'var(--accent-amber)' },
-  error: { label: 'Key error', color: 'var(--accent-red)' },
+  error: { label: 'Key unavailable', color: 'var(--accent-red)' },
   unknown: { label: '—', color: 'var(--text-dim)' },
 };
 
@@ -184,11 +184,17 @@ export function AdminPanel() {
 
       {/* Pending confirmation dialogs */}
       {pending.map((c) => (
-        <ConfirmDialog
+        <RiskConfirmDialog
           key={c.id}
-          confirmation={c}
-          onConfirm={(id) => void adminStore.confirmAction(id)}
-          onCancel={(id) => adminStore.cancelAction(id)}
+          open
+          title={c.title}
+          message={c.message}
+          tier={c.tier}
+          requiresTypedPhrase={c.requiresTypedPhrase}
+          typedPhrase={c.typedPhrase}
+          confirmLabel={c.confirmLabel}
+          onConfirm={() => void adminStore.confirmAction(c.id)}
+          onCancel={() => adminStore.cancelAction(c.id)}
         />
       ))}
     </div>

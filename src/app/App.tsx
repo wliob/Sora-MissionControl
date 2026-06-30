@@ -1,5 +1,5 @@
 /**
- * App root — Sora Mission Control.
+ * App root — Hermes Dashboard.
  * Phase 3 boots the shared Cloud backbone; section UI remains shell-owned.
  */
 

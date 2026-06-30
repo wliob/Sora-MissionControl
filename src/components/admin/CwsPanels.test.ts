@@ -141,9 +141,10 @@ describe('CWS UI panels: unavailable state when no adapter bound', () => {
   });
 
   it('action execution fails gracefully when no adapter', async () => {
-    // cron.run is safe tier → executes immediately without confirmation
     cwsAdminStore.requestCwsAction({ kind: 'cron.run', id: 'cron-1' });
-    // Wait for async execution
+    const pending = cwsAdminStore.getCwsPending();
+    expect(pending).toHaveLength(1);
+    cwsAdminStore.confirmCwsAction(pending[0].nonce);
     await new Promise((r) => setTimeout(r, 10));
     const result = cwsAdminStore.getCwsLastResult();
     expect(result).not.toBeNull();
@@ -205,9 +206,15 @@ describe('CWS UI panels: redaction and no raw secrets', () => {
     expect(json).not.toContain('fullScript');
   });
 
-  it('one-time createdCron fields are stripped before adding to persistent list', async () => {
+  it('cron.create keeps one-time fields in lastResult and reloads the authoritative list', async () => {
     const mockAdapter: CwsAdminAdapter = {
-      listCronJobs: vi.fn().mockResolvedValue([]),
+      listCronJobs: vi.fn().mockResolvedValue([
+        makeCronJob({
+          id: 'cron-real-1',
+          name: 'Test',
+          promptPreview: 'Full prompt text',
+        }),
+      ]),
       listWebhooks: vi.fn().mockResolvedValue([]),
       listSkills: vi.fn().mockResolvedValue([]),
       executeAction: vi.fn().mockResolvedValue({
@@ -237,34 +244,39 @@ describe('CWS UI panels: redaction and no raw secrets', () => {
 
     setCwsAdminAdapter(mockAdapter);
 
-    // Create action is safe-tier, no confirmation needed
     cwsAdminStore.requestCwsAction({
       kind: 'cron.create',
       name: 'Test',
       schedule: '0 9 * * *',
       prompt: 'Full prompt text',
     });
+    const pending = cwsAdminStore.getCwsPending();
+    expect(pending).toHaveLength(1);
+    cwsAdminStore.confirmCwsAction(pending[0].nonce);
 
     await new Promise((r) => setTimeout(r, 50));
 
     const jobs = cwsAdminStore.getCronJobs();
     expect(jobs).toHaveLength(1);
-    // promptPreview is derived from truncatePreview(fullPrompt), which is
-    // the truncated safe version — the key invariant is that fullPrompt
-    // and fullScript fields are NOT on the persisted CronJob object
-    expect(jobs[0].promptPreview).toBeTruthy();
-    expect(jobs[0].promptPreview!.length).toBeLessThanOrEqual(83); // 80 + '…'
+    expect(jobs[0].id).toBe('cron-real-1');
+    expect(jobs[0].promptPreview).toBe('Full prompt text');
 
-    // Raw fullPrompt and fullScript should NOT be in the job
     const jobJson = JSON.stringify(jobs[0]);
     expect(jobJson).not.toContain('fullPrompt');
     expect(jobJson).not.toContain('fullScript');
   });
 
-  it('one-time createdWebhook fields are stripped before adding to persistent list', async () => {
+  it('webhook.create keeps one-time fields in lastResult and reloads the authoritative list', async () => {
     const mockAdapter: CwsAdminAdapter = {
       listCronJobs: vi.fn().mockResolvedValue([]),
-      listWebhooks: vi.fn().mockResolvedValue([]),
+      listWebhooks: vi.fn().mockResolvedValue([
+        makeWebhook({
+          id: 'wh-real-1',
+          name: 'Test WH',
+          callbackUrl: 'https://••••@example.com/wh',
+          maskedSecret: 'wh-…new1',
+        }),
+      ]),
       listSkills: vi.fn().mockResolvedValue([]),
       executeAction: vi.fn().mockResolvedValue({
         action: { kind: 'webhook.create', name: 'Test WH', event: 'cron.completed' as const, callbackUrl: 'https://example.com/wh' },
@@ -301,6 +313,7 @@ describe('CWS UI panels: redaction and no raw secrets', () => {
 
     const webhooks = cwsAdminStore.getWebhooks();
     expect(webhooks).toHaveLength(1);
+    expect(webhooks[0].id).toBe('wh-real-1');
     const whJson = JSON.stringify(webhooks[0]);
     expect(whJson).not.toContain('secret');
     expect(whJson).not.toContain('rawCallbackUrl');
@@ -316,6 +329,18 @@ describe('CWS UI panels: redaction and no raw secrets', () => {
 // ────────────────────────────────────────────────────────────────────────
 
 describe('CWS UI panels: confirmation gate behavior', () => {
+  it('cron.create (risk) queues pending confirmation without prompt leakage', () => {
+    cwsAdminStore.requestCwsAction({ kind: 'cron.create', name: 'Nightly sync', schedule: '30m', prompt: 'secret prompt text' });
+    const pending = cwsAdminStore.getCwsPending();
+    expect(pending).toHaveLength(1);
+    expect(pending[0].tier).toBe('risk');
+    expect(pending[0].requiresTypedPhrase).toBe(false);
+    expect(pending[0].summary).toContain('Nightly sync');
+    expect(pending[0].summary).toContain('live scheduler');
+    expect(pending[0].summary).toContain('cost');
+    expect(pending[0].summary).not.toContain('secret prompt text');
+  });
+
   it('cron.pause (risk) queues pending confirmation', () => {
     _ingestCronJobs([makeCronJob()]);
     cwsAdminStore.requestCwsAction({ kind: 'cron.pause', id: 'cron-1' });
@@ -342,9 +367,15 @@ describe('CWS UI panels: confirmation gate behavior', () => {
     expect(pending[0].requiresTypedPhrase).toBe(true);
   });
 
-  it('cron.run (safe) executes immediately without confirmation', () => {
+  it('cron.run (risk) queues pending confirmation with live-run warning copy', () => {
+    _ingestCronJobs([makeCronJob()]);
     cwsAdminStore.requestCwsAction({ kind: 'cron.run', id: 'cron-1' });
-    expect(cwsAdminStore.getCwsPending()).toHaveLength(0);
+    const pending = cwsAdminStore.getCwsPending();
+    expect(pending).toHaveLength(1);
+    expect(pending[0].tier).toBe('risk');
+    expect(pending[0].requiresTypedPhrase).toBe(false);
+    expect(pending[0].summary).toContain('live scheduler');
+    expect(pending[0].summary).toContain('quota');
   });
 
   it('webhook.remove (danger) queues pending with typed phrase required', () => {
@@ -423,15 +454,16 @@ describe('CWS UI panels: confirmation gate behavior', () => {
 
 describe('RiskConfirmDialog tier mapping for CWS actions', () => {
   const safeActions: CwsAction[] = [
-    { kind: 'cron.run', id: 'cron-1' },
     { kind: 'skill.view', name: 'test-skill' },
     { kind: 'skill.list' },
   ];
 
   const riskActions: CwsAction[] = [
+    { kind: 'cron.create', name: 'nightly', schedule: '30m', prompt: 'do work' },
     { kind: 'cron.update', id: 'cron-1' },
     { kind: 'cron.pause', id: 'cron-1' },
     { kind: 'cron.resume', id: 'cron-1' },
+    { kind: 'cron.run', id: 'cron-1' },
     { kind: 'webhook.update', id: 'wh-1' },
     { kind: 'skill.enable', name: 'test-skill' },
     { kind: 'skill.disable', name: 'test-skill' },
@@ -526,8 +558,22 @@ describe('CWS confirmation summaries: no secrets in text', () => {
     );
     expect(summary).toContain('My Job');
     expect(summary).toContain('30m');
+    expect(summary).toContain('cost');
+    expect(summary).toContain('pause or remove');
     expect(summary).not.toContain('sk-1234');
     expect(summary).not.toContain('secret-prompt');
+  });
+
+  it('cron.run summary includes live-run warning copy but no prompt preview', () => {
+    const summary = summarizeCwsAction(
+      { kind: 'cron.run', id: 'cron-1' },
+      [makeCronJob({ promptPreview: 'secret prompt preview' })],
+      [], [],
+    );
+    expect(summary).toContain('Daily backup');
+    expect(summary).toContain('live scheduler');
+    expect(summary).toContain('quota');
+    expect(summary).not.toContain('secret prompt preview');
   });
 
   it('webhook.create summary includes name and event but no callback URL or secret', () => {

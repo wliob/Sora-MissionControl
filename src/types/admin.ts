@@ -125,21 +125,90 @@ export type AdminActionType =
   | 'model.editConfig' // Edit non-secret config (label, context) — non-destructive
   | 'model.resetCredential'; // Reset/regenerate credential — destructive, touches secrets
 
-/** Whether an action type is destructive/risky and requires confirmation. */
-export function isDestructiveAction(type: AdminActionType): boolean {
+/** Severity tier for model-admin actions. */
+export type ModelActionTier = 'safe' | 'risk' | 'danger';
+
+/** Get the severity tier for a model-admin action. */
+export function modelActionTier(type: AdminActionType): ModelActionTier {
   switch (type) {
     case 'model.enable':
     case 'model.editConfig':
-      return false;
+      return 'safe';
     case 'model.disable':
     case 'model.setDefault':
     case 'model.setFallback':
+      return 'risk';
     case 'model.delete':
     case 'model.resetCredential':
-      return true;
+      return 'danger';
     default:
-      return true; // unknown actions default to requiring confirmation
+      return 'danger';
   }
+}
+
+/** Whether an action type is destructive/risky and requires confirmation. */
+export function modelRequiresConfirmation(type: AdminActionType): boolean {
+  return modelActionTier(type) !== 'safe';
+}
+
+/** Whether an action type should require typed confirmation. */
+export function modelRequiresTypedPhrase(type: AdminActionType): boolean {
+  return modelActionTier(type) === 'danger';
+}
+
+/** Back-compat alias for existing callers. */
+export function isDestructiveAction(type: AdminActionType): boolean {
+  return modelRequiresConfirmation(type);
+}
+
+/** Human-readable action title for confirmation dialogs. */
+export function modelConfirmationTitle(type: AdminActionType): string {
+  switch (type) {
+    case 'model.enable':
+      return 'Enable Model';
+    case 'model.editConfig':
+      return 'Edit Model Configuration';
+    case 'model.disable':
+      return 'Disable Model';
+    case 'model.setDefault':
+      return 'Change Default Model';
+    case 'model.setFallback':
+      return 'Change Fallback Model';
+    case 'model.delete':
+      return 'Delete Model';
+    case 'model.resetCredential':
+      return 'Reset Credential';
+    default:
+      return 'Confirm Model Action';
+  }
+}
+
+/** Label for the confirm button in the shared risk dialog. */
+export function modelConfirmLabel(type: AdminActionType): string {
+  switch (type) {
+    case 'model.delete':
+      return 'Confirm';
+    case 'model.resetCredential':
+      return 'Confirm';
+    default:
+      return 'Confirm';
+  }
+}
+
+/** Phrase the user must type for danger-tier model actions. */
+export function modelTypedPhrase(type: AdminActionType, modelId: string): string {
+  switch (type) {
+    case 'model.delete':
+    case 'model.resetCredential':
+      return modelId;
+    default:
+      return '';
+  }
+}
+
+/** Whether an action type is safe and can execute immediately. */
+export function isSafeAction(type: AdminActionType): boolean {
+  return modelActionTier(type) === 'safe';
 }
 
 /**
@@ -192,8 +261,18 @@ export type AdminActionPayload =
 export interface ConfirmationRequest {
   id: string;
   action: AdminActionRequest;
+  /** Short title for the shared risk dialog. */
+  title: string;
   /** Human-readable confirmation prompt; no secrets. */
   message: string;
+  /** Severity tier for visual styling and safety behavior. */
+  tier: ModelActionTier;
+  /** Whether a typed phrase is required before confirmation. */
+  requiresTypedPhrase: boolean;
+  /** Typed confirmation phrase for danger-tier actions. */
+  typedPhrase: string;
+  /** Confirm button label for the shared risk dialog. */
+  confirmLabel: string;
   createdAt: number;
 }
 

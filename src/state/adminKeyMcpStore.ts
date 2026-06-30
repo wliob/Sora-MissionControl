@@ -26,6 +26,8 @@ import {
   type PendingConfirmation,
   isDestructive,
   initialKeyMcpState,
+  keyMcpActionTier,
+  keyMcpRequiresTypedPhrase,
 } from '@/types/admin-keymcp';
 
 /* ── Adapter binding ──────────────────────────────────────────────────── */
@@ -193,6 +195,19 @@ function summarizeAction(action: KeyMcpAction): string {
   }
 }
 
+function typedPhraseForAction(action: KeyMcpAction): string {
+  if (!keyMcpRequiresTypedPhrase(action)) return '';
+  if (action.kind.startsWith('key.') && 'id' in action) {
+    const key = state.keys.find((x) => x.id === action.id);
+    return key?.label ?? action.id;
+  }
+  if (action.kind === 'mcp.remove') {
+    const mcp = state.mcpEntries.find((x) => x.id === action.id);
+    return mcp?.name ?? action.id;
+  }
+  return '';
+}
+
 /* ── Data loading ─────────────────────────────────────────────────────── */
 
 /** Load API keys from the bound adapter. Sets lastError if no adapter. */
@@ -270,6 +285,9 @@ export const adminKeyMcpStore = {
         nonce,
         action,
         summary: summarizeAction(action),
+        tier: keyMcpActionTier(action),
+        requiresTypedPhrase: keyMcpRequiresTypedPhrase(action),
+        typedPhrase: typedPhraseForAction(action),
         requestedAt: new Date().toISOString(),
       };
       setState({ pending: [...state.pending, pending] });

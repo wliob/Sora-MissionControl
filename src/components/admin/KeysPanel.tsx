@@ -28,7 +28,7 @@ import { useState, type FormEvent } from 'react';
 import { adminKeyMcpStore, useKeyMcpAdminState, hasKeyMcpAdapter } from '@/state/adminKeyMcpStore';
 import type { ApiKey } from '@/types/admin-keymcp';
 import { AdminSectionShell } from '@/components/admin/AdminSectionShell';
-import { ConfirmDialog } from '@/components/admin/ConfirmDialog';
+import { RiskConfirmDialog } from '@/components/admin/RiskConfirmDialog';
 import { SecretReveal } from '@/components/admin/SecretReveal';
 import { MaskedField } from '@/components/admin/MaskedField';
 
@@ -106,19 +106,34 @@ export function KeysPanel() {
       {state.pending
         .filter((p) => p.action.kind.startsWith('key.'))
         .map((p) => (
-          <ConfirmDialog
+          <RiskConfirmDialog
             key={p.nonce}
             open
-            title="Confirm destructive action"
+            title={confirmTitle(p.action.kind)}
             message={p.summary}
+            tier={p.tier}
+            requiresTypedPhrase={p.requiresTypedPhrase}
+            typedPhrase={p.typedPhrase}
             confirmLabel={actionVerb(p.action.kind)}
-            danger
             onConfirm={() => adminKeyMcpStore.confirmAction(p.nonce)}
             onCancel={() => adminKeyMcpStore.cancelAction(p.nonce)}
           />
         ))}
     </>
   );
+}
+
+function confirmTitle(kind: string): string {
+  switch (kind) {
+    case 'key.revoke':
+      return 'Revoke API Key';
+    case 'key.regenerate':
+      return 'Regenerate API Key';
+    case 'key.delete':
+      return 'Delete API Key';
+    default:
+      return 'Confirm Key Action';
+  }
 }
 
 function actionVerb(kind: string): string {

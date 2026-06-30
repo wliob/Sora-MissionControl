@@ -17,7 +17,12 @@
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { AdminActionRequest, ModelEntry } from '@/types/admin';
-import { maskSecret } from '@/types/admin';
+import {
+  maskSecret,
+  modelActionTier,
+  modelRequiresConfirmation,
+  modelRequiresTypedPhrase,
+} from '@/types/admin';
 import {
   adminStore,
   setAdminAdapter,
@@ -206,8 +211,16 @@ describe('adminStore — destructive actions require confirmation', () => {
     const pending = getPendingConfirmations();
     expect(pending).toHaveLength(1);
     expect(pending[0].action.type).toBe('model.disable');
+    expect(pending[0].tier).toBe('risk');
+    expect(pending[0].requiresTypedPhrase).toBe(false);
     expect(pending[0].message).toContain('Disable');
     expect(pending[0].message).toContain('Claude Sonnet 4');
+    expect(pending[0].message).toContain('Provider: anthropic');
+    expect(pending[0].message).toContain('Model: claude-sonnet-4');
+    expect(pending[0].message).toContain('Provenance: source admin-cli, freshness live, confidence verified');
+    expect(pending[0].message).toContain('Cost class: unknown');
+    expect(pending[0].message).toContain('Quota/rate-limit: unknown');
+    expect(pending[0].message).toContain('Rollback: re-enable the same model after the adapter confirms the change');
     // Adapter must not have been called yet
     expect(adminStore.state.lastResults).toHaveLength(0);
   });
@@ -217,17 +230,27 @@ describe('adminStore — destructive actions require confirmation', () => {
     const pending = getPendingConfirmations();
     expect(pending).toHaveLength(1);
     expect(pending[0].action.type).toBe('model.delete');
+    expect(pending[0].tier).toBe('danger');
+    expect(pending[0].requiresTypedPhrase).toBe(true);
+    expect(pending[0].typedPhrase).toBe('openai/gpt-4o');
     expect(pending[0].message).toContain('Delete');
     expect(pending[0].message).toContain('GPT-4o');
     expect(pending[0].message).toContain('cannot be undone');
+    expect(pending[0].message).toContain('Affected routing: removes this configured model entry');
+    expect(pending[0].message).toContain('Cost class: unknown');
+    expect(pending[0].message).toContain('Quota/rate-limit: unknown');
   });
 
   it('model.setDefault creates a pending confirmation with routing warning', () => {
     requestAction('openai/gpt-4o', 'model.setDefault', { kind: 'setDefault' });
     const pending = getPendingConfirmations();
     expect(pending).toHaveLength(1);
+    expect(pending[0].tier).toBe('risk');
+    expect(pending[0].requiresTypedPhrase).toBe(false);
     expect(pending[0].message).toContain('default');
     expect(pending[0].message).toContain('routing');
+    expect(pending[0].message).toContain('Affected routing: profiles without an explicit model override may route to this model');
+    expect(pending[0].message).toContain('Rollback: set the previous default model again');
   });
 
   it('model.resetCredential creates a pending confirmation with credential warning', () => {
@@ -236,8 +259,12 @@ describe('adminStore — destructive actions require confirmation', () => {
     });
     const pending = getPendingConfirmations();
     expect(pending).toHaveLength(1);
+    expect(pending[0].tier).toBe('danger');
+    expect(pending[0].requiresTypedPhrase).toBe(true);
+    expect(pending[0].typedPhrase).toBe('anthropic/claude-sonnet-4');
     expect(pending[0].message).toContain('credential');
     expect(pending[0].message).toContain('invalidated');
+    expect(pending[0].message).toContain('Rollback: restore a known-good credential through the verified backend');
   });
 
   it('confirmAction executes the action and removes the pending confirmation', async () => {
@@ -295,6 +322,35 @@ describe('adminStore — destructive actions require confirmation', () => {
     expect(getPendingConfirmations()).toHaveLength(0);
     // Unlike cancelAction, dismissConfirmation does not record a result.
     expect(getLastResults()).toHaveLength(0);
+  });
+});
+
+describe('adminStore - model action risk helpers', () => {
+  it('classifies model actions into safe, risk, and danger tiers', () => {
+    expect(modelActionTier('model.enable')).toBe('safe');
+    expect(modelActionTier('model.editConfig')).toBe('safe');
+    expect(modelActionTier('model.disable')).toBe('risk');
+    expect(modelActionTier('model.setDefault')).toBe('risk');
+    expect(modelActionTier('model.setFallback')).toBe('risk');
+    expect(modelActionTier('model.delete')).toBe('danger');
+    expect(modelActionTier('model.resetCredential')).toBe('danger');
+  });
+
+  it('requires confirmation for risk and danger model actions only', () => {
+    expect(modelRequiresConfirmation('model.enable')).toBe(false);
+    expect(modelRequiresConfirmation('model.editConfig')).toBe(false);
+    expect(modelRequiresConfirmation('model.disable')).toBe(true);
+    expect(modelRequiresConfirmation('model.setDefault')).toBe(true);
+    expect(modelRequiresConfirmation('model.setFallback')).toBe(true);
+    expect(modelRequiresConfirmation('model.delete')).toBe(true);
+    expect(modelRequiresConfirmation('model.resetCredential')).toBe(true);
+  });
+
+  it('requires typed phrases for danger model actions only', () => {
+    expect(modelRequiresTypedPhrase('model.disable')).toBe(false);
+    expect(modelRequiresTypedPhrase('model.setDefault')).toBe(false);
+    expect(modelRequiresTypedPhrase('model.delete')).toBe(true);
+    expect(modelRequiresTypedPhrase('model.resetCredential')).toBe(true);
   });
 });
 

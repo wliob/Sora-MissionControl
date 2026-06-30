@@ -30,6 +30,27 @@ export {
   isAgentId,
 } from './agents';
 
+// ── Team surface types (Phase A) ──────────────────────────────────────────
+export type {
+  AttentionSeverity,
+  AttentionItem,
+  WorkloadLabel,
+  WorkloadScore,
+  AgentStatus,
+  LeadSnapshot,
+  DelegationType,
+  DelegationEdge,
+  DispatchLogEntry,
+  TeamPageState,
+} from './team';
+export {
+  STATE_WEIGHT,
+  SUB_AGENT_MULTIPLIER,
+  workloadDisplay,
+  AGENT_STATUS_COLORS,
+  initialTeamPageState,
+} from './team';
+
 // ── Provenance (canonical home: ./provenance) ─────────────────────────────
 export type {
   DataSource,
@@ -173,7 +194,7 @@ export type ConnectionState = TransportState;
 export type ConnectionStateRecord = import('./connection').ConnectionState;
 
 /** First-screen priority view — see visual contract §2.1 */
-export type PrimaryView = 'office' | 'chat' | 'ops' | 'admin' | 'kanban';
+export type PrimaryView = 'office' | 'chat' | 'ops' | 'admin' | 'kanban' | 'team';
 
 /**
  * Status semantics — see visual contract §1.1.

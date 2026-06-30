@@ -43,7 +43,16 @@ import type {
   ConfirmationRequest,
   ModelEntry,
 } from '@/types/admin';
-import { initialAdminState, isDestructiveAction, looksUnmasked } from '@/types/admin';
+import {
+  initialAdminState,
+  looksUnmasked,
+  modelActionTier,
+  modelConfirmationTitle,
+  modelConfirmLabel,
+  modelRequiresConfirmation,
+  modelRequiresTypedPhrase,
+  modelTypedPhrase,
+} from '@/types/admin';
 import { tracked } from '@/types/provenance';
 
 /* ── id generation ──────────────────────────────────────────────────────── */
@@ -214,7 +223,7 @@ export function requestAction(
     modelId,
     type,
     payload,
-    requiresConfirmation: isDestructiveAction(type),
+    requiresConfirmation: modelRequiresConfirmation(type),
   };
 
   if (!request.requiresConfirmation) {
@@ -228,7 +237,12 @@ export function requestAction(
   const confirmation: ConfirmationRequest = {
     id: nextId('confirm'),
     action: request,
+    title: modelConfirmationTitle(request.type),
     message: buildConfirmMessage(request),
+    tier: modelActionTier(request.type),
+    requiresTypedPhrase: modelRequiresTypedPhrase(request.type),
+    typedPhrase: modelTypedPhrase(request.type, request.modelId),
+    confirmLabel: modelConfirmLabel(request.type),
     createdAt: Date.now(),
   };
   state = {
@@ -245,19 +259,28 @@ export function requestAction(
 function buildConfirmMessage(request: AdminActionRequest): string {
   const model = findModel(request.modelId);
   const modelLabel = model ? (model.label ?? model.model) : request.modelId;
+  const provider = model?.provider ?? 'unknown';
+  const modelName = model?.model ?? request.modelId;
+  const provenance = state.models.provenance;
+  const provenanceNote = `Provenance: source ${provenance.source}, freshness ${provenance.freshness}, confidence ${provenance.confidence}.`;
+  const unknownCost = 'Cost class: unknown; no verified noninteractive model capability/cost endpoint is bound.';
+  const unknownQuota = 'Quota/rate-limit: unknown; no verified provider quota source is available.';
+  const targetNote = `Target: ${modelLabel} (${request.modelId}). Provider: ${provider}. Model: ${modelName}.`;
+  const commonNotes = `${targetNote} ${provenanceNote} ${unknownCost} ${unknownQuota}`;
+
   switch (request.type) {
     case 'model.disable':
-      return `Disable model "${modelLabel}"? This will interrupt any usage that depends on it.`;
+      return `Disable model "${modelLabel}"? This can interrupt usage that depends on it. Affected routing: existing explicit routes to this model may stop working until re-enabled. ${commonNotes} Rollback: re-enable the same model after the adapter confirms the change.`;
     case 'model.setDefault':
-      return `Set "${modelLabel}" as the default model? This changes routing for all profiles using the default.`;
+      return `Set "${modelLabel}" as the default model? This changes routing for all profiles using the default. Affected routing: profiles without an explicit model override may route to this model. ${commonNotes} Rollback: set the previous default model again.`;
     case 'model.setFallback':
-      return `Change fallback configuration for "${modelLabel}"? This affects failover routing.`;
+      return `Change fallback configuration for "${modelLabel}"? This affects failover routing. Affected routing: failed primary routes may use or stop using this model as fallback. ${commonNotes} Rollback: restore the previous fallback setting.`;
     case 'model.delete':
-      return `Delete model "${modelLabel}"? This cannot be undone.`;
+      return `Delete model "${modelLabel}"? This cannot be undone through the current UI. Affected routing: removes this configured model entry, so profiles or fallbacks pointing at it may fail until reconfigured. ${commonNotes} Rollback: recreate the model entry through the verified backend if available.`;
     case 'model.resetCredential':
-      return `Reset the credential for "${modelLabel}"? The current API key will be invalidated.`;
+      return `Reset the credential for "${modelLabel}"? The current API key will be invalidated if the backend supports this action. Affected routing: requests using provider "${provider}" may fail until the new credential is configured. ${commonNotes} Rollback: restore a known-good credential through the verified backend.`;
     default:
-      return `Confirm action "${request.type}" on "${modelLabel}"?`;
+      return `Confirm action "${request.type}" on "${modelLabel}"? ${commonNotes} Rollback: use the verified backend to restore the previous configuration.`;
   }
 }
 

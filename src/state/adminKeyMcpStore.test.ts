@@ -25,7 +25,15 @@ import {
   hasKeyMcpAdapter,
   type KeyMcpAdminAdapter,
 } from '@/state/adminKeyMcpStore';
-import { isDestructive, maskSecret, maskUrl, initialKeyMcpState } from '@/types/admin-keymcp';
+import {
+  isDestructive,
+  keyMcpActionTier,
+  keyMcpRequiresConfirmation,
+  keyMcpRequiresTypedPhrase,
+  maskSecret,
+  maskUrl,
+  initialKeyMcpState,
+} from '@/types/admin-keymcp';
 import type { KeyMcpAction, ApiKey, McpEntry } from '@/types/admin-keymcp';
 
 /* ── Helpers ──────────────────────────────────────────────────────────── */
@@ -506,6 +514,32 @@ describe('isDestructive', () => {
   });
 });
 
+describe('Key/MCP RiskConfirmDialog metadata', () => {
+  it('maps destructive actions to risk and danger tiers without changing safe actions', () => {
+    expect(keyMcpActionTier({ kind: 'key.create', label: 'l', provider: 'p' })).toBe('safe');
+    expect(keyMcpActionTier({ kind: 'key.update', id: 'x', label: 'l' })).toBe('safe');
+    expect(keyMcpActionTier({ kind: 'mcp.test', id: 'x' })).toBe('safe');
+    expect(keyMcpActionTier({ kind: 'key.revoke', id: 'x' })).toBe('risk');
+    expect(keyMcpActionTier({ kind: 'key.regenerate', id: 'x' })).toBe('risk');
+    expect(keyMcpActionTier({ kind: 'key.delete', id: 'x' })).toBe('danger');
+    expect(keyMcpActionTier({ kind: 'mcp.remove', id: 'x' })).toBe('danger');
+  });
+
+  it('keeps existing confirmation coverage while adding typed gates only to danger actions', () => {
+    expect(keyMcpRequiresConfirmation({ kind: 'key.create', label: 'l', provider: 'p' })).toBe(false);
+    expect(keyMcpRequiresConfirmation({ kind: 'mcp.test', id: 'x' })).toBe(false);
+    expect(keyMcpRequiresConfirmation({ kind: 'key.revoke', id: 'x' })).toBe(true);
+    expect(keyMcpRequiresConfirmation({ kind: 'key.regenerate', id: 'x' })).toBe(true);
+    expect(keyMcpRequiresConfirmation({ kind: 'key.delete', id: 'x' })).toBe(true);
+    expect(keyMcpRequiresConfirmation({ kind: 'mcp.remove', id: 'x' })).toBe(true);
+
+    expect(keyMcpRequiresTypedPhrase({ kind: 'key.revoke', id: 'x' })).toBe(false);
+    expect(keyMcpRequiresTypedPhrase({ kind: 'key.regenerate', id: 'x' })).toBe(false);
+    expect(keyMcpRequiresTypedPhrase({ kind: 'key.delete', id: 'x' })).toBe(true);
+    expect(keyMcpRequiresTypedPhrase({ kind: 'mcp.remove', id: 'x' })).toBe(true);
+  });
+});
+
 describe('destructive action confirmation (with adapter)', () => {
   beforeEach(() => {
     resetSeed();
@@ -516,6 +550,9 @@ describe('destructive action confirmation (with adapter)', () => {
     const keysBefore = snapshot().keys.length;
     adminKeyMcpStore.requestAction({ kind: 'key.revoke', id: 'key_openrouter_1' });
     expect(snapshot().pending).toHaveLength(1);
+    expect(snapshot().pending[0].tier).toBe('risk');
+    expect(snapshot().pending[0].requiresTypedPhrase).toBe(false);
+    expect(snapshot().pending[0].typedPhrase).toBe('');
     expect(snapshot().keys).toHaveLength(keysBefore);
   });
 
@@ -543,6 +580,9 @@ describe('destructive action confirmation (with adapter)', () => {
     const keysBefore = snapshot().keys.length;
     adminKeyMcpStore.requestAction({ kind: 'key.delete', id: 'key_anthropic_1' });
     expect(snapshot().pending).toHaveLength(1);
+    expect(snapshot().pending[0].tier).toBe('danger');
+    expect(snapshot().pending[0].requiresTypedPhrase).toBe(true);
+    expect(snapshot().pending[0].typedPhrase).toBe('Anthropic — Claude');
     expect(snapshot().keys).toHaveLength(keysBefore);
   });
 
@@ -550,6 +590,9 @@ describe('destructive action confirmation (with adapter)', () => {
     const before = snapshot().mcpEntries.length;
     adminKeyMcpStore.requestAction({ kind: 'mcp.remove', id: 'mcp_n8n' });
     expect(snapshot().pending).toHaveLength(1);
+    expect(snapshot().pending[0].tier).toBe('danger');
+    expect(snapshot().pending[0].requiresTypedPhrase).toBe(true);
+    expect(snapshot().pending[0].typedPhrase).toBe('n8n');
     expect(snapshot().mcpEntries).toHaveLength(before);
   });
 

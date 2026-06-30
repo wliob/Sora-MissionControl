@@ -6,15 +6,21 @@
 // - StatusBar (agent activity snippets)
 // - Agent info panel (tap detail)
 //
+// Phase B additions:
+// - Pop-out button + full-screen toggle in RoomTabs bar
+// - Pop-out mode awareness (read-only contract)
+// - ConductorStation React overlay positioned over canvas
+//
 // It manages agent state via useOfficeStore and feeds board data to the
 // FSMs. In demo mode, it uses scripted mock data. When connected to the
 // dashboard backbone, it receives adapted data from adapter.ts.
 
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import { OfficeCanvas } from '@/office/components/OfficeCanvas';
 import { OfficeErrorBoundary } from '@/office/components/OfficeErrorBoundary';
 import { RoomTabs } from '@/office/components/RoomTabs';
 import { StatusBar } from '@/office/components/StatusBar';
+import { PopOutButton } from '@/office/components/PopOutButton';
 import { useOfficeStore } from '@/office/store';
 import { DEMO_BOARD, DEMO_EVENT_SCRIPT } from '@/office/demoData';
 import type { GameRuntime, GameRuntimeStats } from '@/office/engine/GameRuntime';
@@ -22,15 +28,41 @@ import type { AgentAssetError } from '@/office/entities/Agent';
 import type { AgentState } from '@/office/engine/AgentStateMachine';
 import type { ZoneDef } from '@/office/engine/iso';
 import { AGENT_DESKS } from '@/office/engine/iso';
-import { shellStore } from '@/state/shellStore';
+import { shellStore, useShellState } from '@/state/shellStore';
 import { onSessionConnectionEvent } from '@/state/sessionConnectionStore';
 import { useBoardStoreSnapshot } from '@/state/boardStore';
 import { adaptBoard } from '@/office/adapter';
 import { getBrowserBackbone } from '@/state/backbone';
+import { canSend } from '@/modules/chat/chatStore';
+import { useAttentionItems } from '@/hooks/useAttentionItems';
+import { isAgentId } from '@/types';
+import type { KanbanTaskCard, KanbanStatus } from '@/types/board';
 
 const AGENT_COLORS: Record<string, string> = {};
 for (const desk of AGENT_DESKS) {
   AGENT_COLORS[desk.id] = '#' + desk.color.toString(16).padStart(6, '0');
+}
+
+const CURRENT_WORK_PRIORITY: Record<KanbanStatus, number> = {
+  running: 0,
+  blocked: 1,
+  review: 2,
+  ready: 3,
+  scheduled: 4,
+  todo: 5,
+  triage: 6,
+  done: 7,
+};
+
+function flattenBoardTasks(board: ReturnType<typeof useBoardStoreSnapshot>['board']['value']): KanbanTaskCard[] {
+  if (!board) return [];
+  return board.columns.flatMap((column) => column.tasks);
+}
+
+function compareCurrentWork(a: KanbanTaskCard, b: KanbanTaskCard): number {
+  const statusDelta = CURRENT_WORK_PRIORITY[a.status] - CURRENT_WORK_PRIORITY[b.status];
+  if (statusDelta !== 0) return statusDelta;
+  return b.priority - a.priority;
 }
 
 function getTaskStatusText(status: string): string {
@@ -44,13 +76,35 @@ function getTaskStatusText(status: string): string {
   }
 }
 
+function navigateToPath(path: string): void {
+  if (typeof window === 'undefined') return;
+  window.history.pushState({}, '', path);
+  window.dispatchEvent(new PopStateEvent('popstate'));
+}
+
 /** Agent info panel — shows details when an agent is selected. */
 function AgentInfoPanel({
   agent,
   onClose,
+  onViewCurrentWork,
+  currentWorkEnabled,
+  currentWorkNote,
+  onOpenChat,
+  chatEnabled,
+  chatLabel,
+  chatNote,
+  popoutMode,
 }: {
   agent: AgentState;
   onClose: () => void;
+  onViewCurrentWork: () => void;
+  currentWorkEnabled: boolean;
+  currentWorkNote: string | null;
+  onOpenChat: () => void;
+  chatEnabled: boolean;
+  chatLabel: string;
+  chatNote: string | null;
+  popoutMode?: boolean;
 }) {
   const color = AGENT_COLORS[agent.agentId] ?? '#888888';
 
@@ -165,6 +219,68 @@ function AgentInfoPanel({
           </div>
         )}
       </dl>
+
+      {/* Action buttons — hidden in pop-out mode (read-only contract) */}
+      {!popoutMode && (
+        <div style={{ marginTop: 24, display: 'grid', gap: 12 }}>
+          <button
+            type="button"
+            data-office-current-work-button
+            disabled={!currentWorkEnabled}
+            className="admin-btn"
+            onClick={onViewCurrentWork}
+            style={{
+              minHeight: 44,
+              padding: 'var(--space-2) var(--space-3)',
+              border: '1px solid var(--border-faint)',
+              borderRadius: 'var(--radius-sm)',
+              background: currentWorkEnabled ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.02)',
+              color: currentWorkEnabled ? 'var(--text-primary)' : 'var(--text-dim)',
+              cursor: currentWorkEnabled ? 'pointer' : 'not-allowed',
+              opacity: currentWorkEnabled ? 1 : 0.6,
+            }}
+          >
+            View current work
+          </button>
+          <button
+            type="button"
+            data-office-open-chat-button
+            disabled={!chatEnabled}
+            className="admin-btn"
+            onClick={onOpenChat}
+            style={{
+              minHeight: 44,
+              padding: 'var(--space-2) var(--space-3)',
+              border: '1px solid var(--border-faint)',
+              borderRadius: 'var(--radius-sm)',
+              background: chatEnabled ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.02)',
+              color: chatEnabled ? 'var(--text-primary)' : 'var(--text-dim)',
+              cursor: chatEnabled ? 'pointer' : 'not-allowed',
+              opacity: chatEnabled ? 1 : 0.6,
+            }}
+          >
+            {chatLabel}
+          </button>
+          {currentWorkNote && (
+            <div style={{ color: 'var(--text-dim)', fontSize: 'var(--text-xs)', lineHeight: 1.5 }}>
+              {currentWorkNote}
+            </div>
+          )}
+          {chatNote && (
+            <div style={{ color: 'var(--text-dim)', fontSize: 'var(--text-xs)', lineHeight: 1.5 }}>
+              {chatNote}
+            </div>
+          )}
+        </div>
+      )}
+
+      {popoutMode && (
+        <div style={{ marginTop: 24, padding: '12px 0', borderTop: '1px solid var(--border-faint)' }}>
+          <p style={{ color: 'var(--text-dim)', fontSize: 'var(--text-xs)', lineHeight: 1.5, fontStyle: 'italic' }}>
+            Pop-out mode — read only. Commands are unavailable in this view.
+          </p>
+        </div>
+      )}
     </div>
   );
 }
@@ -172,16 +288,18 @@ function AgentInfoPanel({
 export interface OfficeModuleProps {
   /** When true, runs in demo mode with scripted mock data. */
   demoMode?: boolean;
+  /** When true, the office is in pop-out read-only mode (no commands, no nav). */
+  popoutMode?: boolean;
 }
 
-export function OfficeModule({ demoMode = false }: OfficeModuleProps) {
-  const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
+export function OfficeModule({ demoMode = false, popoutMode = false }: OfficeModuleProps) {
   const [activeZoneId, setActiveZoneId] = useState<string | null>(null);
   const [runtimeStats, setRuntimeStats] = useState<GameRuntimeStats | null>(null);
-  // Sora stability audit #4 / R12: collect spritesheet load failures so the
-  // dashboard can show a subtle indicator instead of agents that look frozen.
+  // Sora stability audit #4 / R12: collect spritesheet load failures.
   const [assetErrors, setAssetErrors] = useState<AgentAssetError[]>([]);
   const runtimeRef = useRef<GameRuntime | null>(null);
+  const { selectedAgent: selectedShellAgent } = useShellState();
+  const attentionItems = useAttentionItems(5);
 
   const { agents, initAgents, applySnapshot, applyEvent, destroy, setDemoMode } = useOfficeStore();
 
@@ -191,12 +309,7 @@ export function OfficeModule({ demoMode = false }: OfficeModuleProps) {
     return () => destroy();
   }, [initAgents, destroy]);
 
-  // Phase 2 fix: bridge store FSM zone changes to the visual GameRuntime so
-  // the living scene reflects who is working/blocked/idle. The store FSMs
-  // derive a target zone from board task status; we track the previous zone
-  // per agent and route changes to runtime.syncAgentZone, which drives the
-  // visual AgentController movement. This is the "movement" deliverable from
-  // docs/work-split.md Phase 2 Verify.
+  // Phase 2 fix: bridge store FSM zone changes to the visual GameRuntime.
   const prevZonesRef = useRef<Map<string, string>>(new Map());
   useEffect(() => {
     if (!runtimeRef.current) return;
@@ -244,10 +357,7 @@ export function OfficeModule({ demoMode = false }: OfficeModuleProps) {
   }, [demoMode, applySnapshot, applyEvent, setDemoMode]);
 
   // Sora stability audit #5: subscribe to the live board store and push
-  // adapted snapshots into the office FSMs. This bridges the dashboard's
-  // canonical board state to the office's internal Board shape so agents
-  // reflect who is working/blocked/idle in real time. In demo mode this
-  // subscription is skipped (the demo effect above feeds scripted data).
+  // adapted snapshots into the office FSMs.
   const boardSnapshot = useBoardStoreSnapshot();
   useEffect(() => {
     if (demoMode) return;
@@ -257,13 +367,6 @@ export function OfficeModule({ demoMode = false }: OfficeModuleProps) {
   }, [boardSnapshot.board, demoMode, applySnapshot]);
 
   // Phase 3 / Sora stability audit #6 / R10: reconnect catch-up animation.
-  // When the Kanban WS transitions to 'connected' after a drop, the board
-  // snapshot is re-fetched (by the backbone syncOnce) and agent target zones
-  // may have changed while we were disconnected. Instead of snap-teleporting
-  // agents to their new zone positions, we trigger a 1-second ease-out lerp
-  // from each agent's current visual grid position to its new zone center.
-  // The GameRuntime.catchUpAllAgents method handles the per-agent distance
-  // gate (agents already at their target are left alone).
   useEffect(() => {
     if (demoMode) return;
     const unsub = onSessionConnectionEvent((event) => {
@@ -274,10 +377,6 @@ export function OfficeModule({ demoMode = false }: OfficeModuleProps) {
       ) {
         const runtime = runtimeRef.current;
         if (!runtime) return;
-        // Build a per-agent zone map from the current office store state.
-        // The store FSMs have already been updated by applySnapshot by the
-        // time the connection.changed event fires (the backbone re-fetches
-        // the board before marking the WS as connected).
         const agentZones = new Map<string, string>();
         for (const [id, state] of useOfficeStore.getState().agents) {
           agentZones.set(id, state.zone);
@@ -289,7 +388,10 @@ export function OfficeModule({ demoMode = false }: OfficeModuleProps) {
   }, [demoMode]);
 
   const handleSelectAgent = useCallback((id: string | null) => {
-    setSelectedAgentId(id);
+    const nextAgent = id !== null && isAgentId(id) ? id : null;
+    shellStore.setSelectedAgent(nextAgent);
+    shellStore.setSelectedOwner(nextAgent);
+    runtimeRef.current?.followAgent(nextAgent);
   }, []);
 
   const handleFocusZone = useCallback((zone: ZoneDef | null) => {
@@ -304,17 +406,9 @@ export function OfficeModule({ demoMode = false }: OfficeModuleProps) {
 
   const handleStats = useCallback((stats: GameRuntimeStats) => {
     setRuntimeStats(stats);
-    // Phase 2 shared-state fix: surface live office FPS to the shell so the
-    // MissionBar indicator activates. The stats callback fires at most once
-    // per second (see OfficeCanvas telemetry effect), matching the
-    // throttling recommendation in docs/motion-and-fps-report.md.
     shellStore.setFps(stats.fps);
   }, []);
 
-  // Sora stability audit #4 / R12: collect spritesheet load failures. Each
-  // failure appends to the list; the StatusBar shows a subtle amber indicator
-  // when there are any. Dedup by agent+animType so repeated retries don't
-  // spam the indicator.
   const handleAssetError = useCallback((info: AgentAssetError) => {
     setAssetErrors((prev) => {
       const key = `${info.agentId}:${info.animType}`;
@@ -323,28 +417,86 @@ export function OfficeModule({ demoMode = false }: OfficeModuleProps) {
     });
   }, []);
 
-  // Sora stability audit #5: when the document becomes visible again after
-  // being hidden, re-sync the board so the office doesn't render stale agent
-  // state. In demo mode this re-applies the demo snapshot; in live mode it
-  // triggers a backbone syncOnce() which re-fetches the board into boardStore
-  // (the subscription above then pushes it into the office FSMs).
   const handleResume = useCallback(() => {
     if (demoMode) {
       applySnapshot(DEMO_BOARD);
       return;
     }
-    // Re-fetch the board snapshot from the dashboard. The boardStore
-    // subscription effect above will pick up the updated data and push
-    // it into the office FSMs.
     try {
       void getBrowserBackbone()?.syncOnce();
     } catch {
-      // Backbone may not be started yet (e.g. during tests). The boardStore
-      // subscription will still pick up the next live update.
+      // Backbone may not be started yet.
     }
   }, [demoMode, applySnapshot]);
 
-  const selectedAgent = selectedAgentId ? agents.get(selectedAgentId) : null;
+  useEffect(() => {
+    runtimeRef.current?.followAgent(selectedShellAgent);
+  }, [selectedShellAgent]);
+
+  const selectedAgent = selectedShellAgent ? agents.get(selectedShellAgent) ?? null : null;
+  const topAttentionAgent = useMemo(() => {
+    for (const item of attentionItems) {
+      const source = item.source;
+      if (typeof source === 'string' && isAgentId(source.toLowerCase())) return source.toLowerCase();
+    }
+    return null;
+  }, [attentionItems]);
+  const attentionFocusTask = useMemo(() => {
+    if (!topAttentionAgent) return null;
+    return flattenBoardTasks(boardSnapshot.board.value)
+      .filter((task) => task.assignee?.toLowerCase() === topAttentionAgent)
+      .sort(compareCurrentWork)[0] ?? null;
+  }, [boardSnapshot.board.value, topAttentionAgent]);
+  const currentWorkTasks = useMemo(() => {
+    if (!selectedAgent) return [];
+    return flattenBoardTasks(boardSnapshot.board.value)
+      .filter((task) => task.assignee === selectedAgent.agentId)
+      .sort(compareCurrentWork);
+  }, [boardSnapshot.board.value, selectedAgent]);
+  const currentWorkTask = currentWorkTasks[0] ?? null;
+  const currentWorkNote = !selectedAgent
+    ? null
+    : !currentWorkTask
+      ? `Current work unavailable until a verified Kanban task is mapped for ${selectedAgent.name}.`
+      : null;
+  const chatEnabled = !popoutMode && selectedAgent !== null && canSend();
+  const chatLabel = popoutMode
+    ? 'Chat unavailable (pop-out mode)'
+    : !selectedAgent
+      ? 'Open chat unavailable'
+      : !canSend()
+        ? 'Open chat unavailable'
+        : 'Open chat';
+  const chatNote = popoutMode
+    ? null
+    : !selectedAgent
+      ? null
+      : canSend()
+        ? null
+        : 'Chat transport is not bound right now.';
+
+  const handleViewCurrentWork = useCallback(() => {
+    if (popoutMode) return;
+    if (!selectedAgent || !currentWorkTask || !selectedShellAgent) return;
+    shellStore.setSelectedOwner(selectedAgent.agentId);
+    shellStore.setSelectedAgent(selectedShellAgent);
+    shellStore.setView('kanban');
+    navigateToPath('/kanban');
+  }, [currentWorkTask, selectedAgent, selectedShellAgent, popoutMode]);
+
+  const handleOpenChat = useCallback(() => {
+    if (popoutMode) return;
+    if (!selectedAgent || !canSend() || !selectedShellAgent) return;
+    shellStore.setSelectedOwner(selectedAgent.agentId);
+    shellStore.setSelectedAgent(selectedShellAgent);
+    shellStore.setView('chat');
+    navigateToPath('/chat');
+  }, [selectedAgent, selectedShellAgent, popoutMode]);
+
+  useEffect(() => {
+    if (selectedShellAgent || !topAttentionAgent || !attentionFocusTask) return;
+    runtimeRef.current?.followAgent(topAttentionAgent);
+  }, [attentionFocusTask, selectedShellAgent, topAttentionAgent]);
 
   return (
     <div
@@ -357,20 +509,24 @@ export function OfficeModule({ demoMode = false }: OfficeModuleProps) {
         overflow: 'hidden',
       }}
     >
-      {/* Room navigation tabs */}
+      {/* Room navigation tabs + pop-out buttons */}
       <div
         style={{
           flexShrink: 0,
+          display: 'flex',
+          alignItems: 'center',
           background: 'rgba(8, 11, 18, 0.94)',
           borderBottom: '1px solid var(--border-faint)',
         }}
       >
-        <RoomTabs onFocusZone={handleFocusZone} activeZone={activeZoneId} />
+        <div style={{ flex: 1 }}>
+          <RoomTabs onFocusZone={handleFocusZone} activeZone={activeZoneId} />
+        </div>
+        {/* Pop-out + full-screen toggle — hidden in pop-out window itself */}
+        {!popoutMode && <PopOutButton />}
       </div>
 
-      {/* Pixi canvas + overlays — wrapped in error boundary so a Pixi
-          init failure (no WebGL, atlas 404, GPU crash) degrades to a
-          graceful fallback card instead of crashing the whole app. */}
+      {/* Pixi canvas + overlays */}
       <div style={{ position: 'relative', flex: 1, minHeight: 0, overflow: 'hidden' }}>
         <OfficeErrorBoundary>
           <OfficeCanvas
@@ -380,6 +536,7 @@ export function OfficeModule({ demoMode = false }: OfficeModuleProps) {
             onStats={handleStats}
             onAssetError={handleAssetError}
             onResume={handleResume}
+            popoutMode={popoutMode}
           />
         </OfficeErrorBoundary>
 
@@ -387,8 +544,36 @@ export function OfficeModule({ demoMode = false }: OfficeModuleProps) {
         {selectedAgent && (
           <AgentInfoPanel
             agent={selectedAgent}
-            onClose={() => setSelectedAgentId(null)}
+            onClose={() => shellStore.setSelectedAgent(null)}
+            onViewCurrentWork={handleViewCurrentWork}
+            currentWorkEnabled={currentWorkTask !== null}
+            currentWorkNote={currentWorkNote}
+            onOpenChat={handleOpenChat}
+            chatEnabled={chatEnabled}
+            chatLabel={chatLabel}
+            chatNote={chatNote}
+            popoutMode={popoutMode}
           />
+        )}
+        {!selectedAgent && topAttentionAgent && attentionFocusTask && (
+          <div
+            data-office-attention-focus
+            className="mono"
+            style={{
+              position: 'absolute',
+              left: 16,
+              bottom: 16,
+              zIndex: 30,
+              maxWidth: 360,
+              padding: 'var(--space-2) var(--space-3)',
+              border: '1px solid var(--border-faint)',
+              background: 'rgba(8, 11, 18, 0.86)',
+              color: 'var(--text-secondary)',
+              fontSize: 'var(--text-xs)',
+            }}
+          >
+            Attention focus: {topAttentionAgent} - {attentionFocusTask.title}
+          </div>
         )}
       </div>
 

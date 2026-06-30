@@ -28,7 +28,6 @@ import {
   cwsRequiresTypedPhrase,
   summarizeCwsAction,
   assertCwsFieldMasked,
-  truncatePreview,
   initialCwsAdminState,
 } from '@/types/admin-cws';
 
@@ -262,35 +261,18 @@ async function executeCwsAction(action: CwsAction): Promise<void> {
 
     const result = await adapter.executeAction(action);
 
-    // After a successful action, update the relevant list in the store.
-    // For creates, the adapter returns the new entry in the result.
+    // After a successful action, refresh authoritative lists from the adapter.
+    // One-time creation payloads stay in lastResult for reveal UI, but we do
+    // not persist provisional create rows locally because some Hermes CLIs
+    // assign final ids/derived fields only after the command completes.
     if (result.ok) {
-      if (result.createdCron) {
-        // Add the new cron job to the list — strip one-time fields
-        const { fullPrompt, fullScript, ...safeCron } = result.createdCron;
-        const newJob: CronJob = {
-          ...safeCron,
-          promptPreview: truncatePreview(fullPrompt),
-        };
-        setState({ cronJobs: [...state.cronJobs, newJob] });
-      }
-      if (result.createdWebhook) {
-        // Add the new webhook to the list — strip one-time secret fields
-        const { secret, rawCallbackUrl, ...safeWh } = result.createdWebhook;
-        const newWh: WebhookEntry = {
-          ...safeWh,
-          hasSecret: !!secret,
-        };
-        setState({ webhooks: [...state.webhooks, newWh] });
-      }
-
-      // For remove/disable/enable/pause/resume, reload the relevant list
+      // Reload the relevant list after every successful action so final ids,
+      // derived status, and masked fields come from the verified backend.
       const actionKind = action.kind;
-      if (actionKind.startsWith('cron.') && actionKind !== 'cron.create') {
-        // Reload cron jobs in the background
+      if (actionKind.startsWith('cron.')) {
         void loadCronJobs();
       }
-      if (actionKind.startsWith('webhook.') && actionKind !== 'webhook.create') {
+      if (actionKind.startsWith('webhook.')) {
         void loadWebhooks();
       }
       if (actionKind.startsWith('skill.')) {

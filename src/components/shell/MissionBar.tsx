@@ -1,66 +1,39 @@
 /**
- * MissionBar — thin top chrome: product identity, global connection state,
- * current mode, and primary navigation. Quiet, never a site map.
+ * MissionBar — Hermes-style page header.
+ *
+ * The left rail owns navigation. The banner only shows the active page title
+ * plus compact state/actions, matching the dashboard contract.
  */
 
-import type { PrimaryView } from '@/types';
-import { useShellState, shellStore } from '@/state/shellStore';
 import { StatusPill } from '@/components/common/StatusPill';
+import { initialBoardState } from '@/types/board';
+import { useBoardStoreSnapshot } from '@/state/boardStore';
+import { useConnectionStateValue } from '@/state/sessionConnectionStore';
+import { truthProvenanceLabel } from '@/utils/truthVocabulary';
 
-const NAV_ITEMS: { id: PrimaryView; label: string }[] = [
-  { id: 'office', label: 'Office' },
-  { id: 'chat', label: 'Chat' },
-  { id: 'ops', label: 'Telemetry' },
-  { id: 'admin', label: 'Control' },
-  { id: 'kanban', label: 'Kanban' },
-];
+interface MissionBarProps {
+  title?: string;
+}
 
-export function MissionBar() {
-  const { view, connection, fps } = useShellState();
+export function MissionBar({ title = 'Kanban' }: MissionBarProps) {
+  const boardSnapshot = useBoardStoreSnapshot();
+  const connectionState = useConnectionStateValue();
+  const fallbackBoard = initialBoardState().value!;
+  const totalTasks = (boardSnapshot.board.value ?? fallbackBoard).columns.reduce((sum, column) => sum + column.tasks.length, 0);
+  const restState = connectionState.value?.sources['kanban-rest']?.state ?? 'unknown';
 
   return (
-    <header className="mission-bar">
-      {/* Identity */}
-      <div className="mission-brand">
-        <div className="mission-glyph" />
-        <span className="mission-title">
-          Sora Mission Control
+    <header className="dashboard-header" role="banner">
+      <div className="dashboard-header-title-group">
+        <h1 className="dashboard-header-title">{title}</h1>
+        {title === 'Kanban' && <span className="dashboard-header-count">{totalTasks}</span>}
+      </div>
+      <div className="dashboard-header-actions">
+        <StatusPill state={restState} size="sm" />
+        <span className="dashboard-header-meta mono">
+          {truthProvenanceLabel(boardSnapshot.board.provenance)}
         </span>
       </div>
-
-      {/* Connection health — first-screen priority #1 */}
-      <div className="mission-health">
-        <StatusPill state={connection} pulse size="sm" />
-        {fps > 0 && (
-          <span
-            className="mono"
-            style={{
-              fontSize: 'var(--text-xs)',
-              color: fps < 30 ? 'var(--accent-amber)' : 'var(--text-dim)',
-              minWidth: '52px',
-            }}
-          >
-            {fps} fps
-          </span>
-        )}
-      </div>
-
-      {/* Primary navigation — quiet, scan-friendly */}
-      <nav className="mission-nav">
-        {NAV_ITEMS.map((item) => {
-          const active = view === item.id;
-          return (
-            <button
-              key={item.id}
-              onClick={() => shellStore.setView(item.id)}
-              className={`nav-tab${active ? ' nav-tab-active' : ''}`}
-              data-active={active ? 'true' : 'false'}
-            >
-              {item.label}
-            </button>
-          );
-        })}
-      </nav>
     </header>
   );
 }

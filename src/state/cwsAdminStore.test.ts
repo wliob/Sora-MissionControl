@@ -112,14 +112,15 @@ beforeEach(() => {
 
 describe('cwsActionTier', () => {
   it('classifies safe actions', () => {
-    expect(cwsActionTier({ kind: 'cron.run', id: 'x' })).toBe('safe');
     expect(cwsActionTier({ kind: 'skill.list' })).toBe('safe');
     expect(cwsActionTier({ kind: 'skill.view', name: 'x' })).toBe('safe');
   });
 
   it('classifies risk actions', () => {
+    expect(cwsActionTier({ kind: 'cron.create', name: 'x', schedule: '*', prompt: 'do thing' })).toBe('risk');
     expect(cwsActionTier({ kind: 'cron.pause', id: 'x' })).toBe('risk');
     expect(cwsActionTier({ kind: 'cron.resume', id: 'x' })).toBe('risk');
+    expect(cwsActionTier({ kind: 'cron.run', id: 'x' })).toBe('risk');
     expect(cwsActionTier({ kind: 'cron.update', id: 'x' })).toBe('risk');
     expect(cwsActionTier({ kind: 'webhook.update', id: 'x' })).toBe('risk');
     expect(cwsActionTier({ kind: 'skill.enable', name: 'x' })).toBe('risk');
@@ -134,15 +135,15 @@ describe('cwsActionTier', () => {
 
 describe('cwsRequiresConfirmation', () => {
   it('does not require confirmation for safe actions', () => {
-    expect(cwsRequiresConfirmation({ kind: 'cron.run', id: 'x' })).toBe(false);
-    expect(cwsRequiresConfirmation({ kind: 'cron.create', name: 'x', schedule: '*', prompt: '' })).toBe(false);
     expect(cwsRequiresConfirmation({ kind: 'webhook.create', name: 'x', event: 'cron.completed', callbackUrl: '' })).toBe(false);
     expect(cwsRequiresConfirmation({ kind: 'skill.list' })).toBe(false);
     expect(cwsRequiresConfirmation({ kind: 'skill.view', name: 'x' })).toBe(false);
   });
 
   it('requires confirmation for risk and danger actions', () => {
+    expect(cwsRequiresConfirmation({ kind: 'cron.create', name: 'x', schedule: '*', prompt: 'do thing' })).toBe(true);
     expect(cwsRequiresConfirmation({ kind: 'cron.pause', id: 'x' })).toBe(true);
+    expect(cwsRequiresConfirmation({ kind: 'cron.run', id: 'x' })).toBe(true);
     expect(cwsRequiresConfirmation({ kind: 'cron.remove', id: 'x' })).toBe(true);
     expect(cwsRequiresConfirmation({ kind: 'webhook.remove', id: 'x' })).toBe(true);
     expect(cwsRequiresConfirmation({ kind: 'skill.enable', name: 'x' })).toBe(true);
@@ -247,6 +248,18 @@ describe('webhook ingest redaction guard', () => {
 // ── 3. Confirmation gate flow ────────────────────────────────────────
 
 describe('confirmation gate for destructive actions', () => {
+  it('queues a pending confirmation for cron.create', () => {
+    cwsAdminStore.requestCwsAction({ kind: 'cron.create', name: 'cron-risk', schedule: '30m', prompt: 'do work' });
+    const pending = cwsAdminStore.getCwsPending();
+    expect(pending).toHaveLength(1);
+    expect(pending[0].action.kind).toBe('cron.create');
+    expect(pending[0].tier).toBe('risk');
+    expect(pending[0].requiresTypedPhrase).toBe(false);
+    expect(pending[0].summary).toContain('live scheduler');
+    expect(pending[0].summary).toContain('cost');
+    expect(pending[0].summary).not.toContain('do work');
+  });
+
   it('queues a pending confirmation for cron.remove', () => {
     cwsAdminStore.requestCwsAction({ kind: 'cron.remove', id: 'cron-1' });
     const pending = cwsAdminStore.getCwsPending();
@@ -271,6 +284,18 @@ describe('confirmation gate for destructive actions', () => {
     expect(pending[0].requiresTypedPhrase).toBe(false);
   });
 
+  it('queues a pending confirmation for cron.run', () => {
+    _ingestCronJobs([makeCronJob()]);
+    cwsAdminStore.requestCwsAction({ kind: 'cron.run', id: 'cron-1' });
+    const pending = cwsAdminStore.getCwsPending();
+    expect(pending).toHaveLength(1);
+    expect(pending[0].action.kind).toBe('cron.run');
+    expect(pending[0].tier).toBe('risk');
+    expect(pending[0].requiresTypedPhrase).toBe(false);
+    expect(pending[0].summary).toContain('live scheduler');
+    expect(pending[0].summary).toContain('quota');
+  });
+
   it('cancels a pending confirmation without executing', () => {
     cwsAdminStore.requestCwsAction({ kind: 'cron.remove', id: 'cron-1' });
     const nonce = cwsAdminStore.getCwsPending()[0].nonce;
@@ -288,8 +313,8 @@ describe('confirmation gate for destructive actions', () => {
   });
 });
 
-describe('safe actions execute immediately', () => {
-  it('executes cron.run immediately without confirmation', async () => {
+describe('risk-gated cron actions execute only after confirmation', () => {
+  it('does not execute cron.run before confirmation', async () => {
     const executeAction = vi.fn<() => Promise<CwsActionResult>>(async () => ({
       action: { kind: 'cron.run', id: 'cron-1' },
       ok: true,
@@ -301,13 +326,44 @@ describe('safe actions execute immediately', () => {
 
     cwsAdminStore.requestCwsAction({ kind: 'cron.run', id: 'cron-1' });
 
-    // No pending confirmation
-    expect(cwsAdminStore.getCwsPending()).toHaveLength(0);
+    expect(cwsAdminStore.getCwsPending()).toHaveLength(1);
+    await Promise.resolve();
+    expect(executeAction).not.toHaveBeenCalled();
+  });
 
-    // Wait for async execution
+  it('executes cron.run after confirmation', async () => {
+    const executeAction = vi.fn<() => Promise<CwsActionResult>>(async () => ({
+      action: { kind: 'cron.run', id: 'cron-1' },
+      ok: true,
+      message: 'Ran',
+      completedAt: new Date().toISOString(),
+    }));
+    setCwsAdminAdapter(makeAdapter({ executeAction }));
+    _ingestCronJobs([makeCronJob()]);
+
+    cwsAdminStore.requestCwsAction({ kind: 'cron.run', id: 'cron-1' });
+    const nonce = cwsAdminStore.getCwsPending()[0].nonce;
+    cwsAdminStore.confirmCwsAction(nonce);
+
     await vi.waitFor(() => {
       expect(executeAction).toHaveBeenCalledOnce();
     });
+  });
+
+  it('does not execute cron.create before confirmation', async () => {
+    const executeAction = vi.fn<() => Promise<CwsActionResult>>(async () => ({
+      action: { kind: 'cron.create', name: 'cron-risk', schedule: '30m', prompt: 'do work' },
+      ok: true,
+      message: 'Created',
+      completedAt: new Date().toISOString(),
+    }));
+    setCwsAdminAdapter(makeAdapter({ executeAction }));
+
+    cwsAdminStore.requestCwsAction({ kind: 'cron.create', name: 'cron-risk', schedule: '30m', prompt: 'do work' });
+
+    expect(cwsAdminStore.getCwsPending()).toHaveLength(1);
+    await Promise.resolve();
+    expect(executeAction).not.toHaveBeenCalled();
   });
 });
 
@@ -395,7 +451,16 @@ describe('one-time secret in lastResult', () => {
       },
       completedAt: new Date().toISOString(),
     }));
-    setCwsAdminAdapter(makeAdapter({ executeAction }));
+    setCwsAdminAdapter(makeAdapter({
+      executeAction,
+      listCronJobs: async () => [
+        makeCronJob({
+          id: 'cron-real-1',
+          name: 'test',
+          promptPreview: truncatePreview(longPrompt),
+        }),
+      ],
+    }));
 
     cwsAdminStore.requestCwsAction({
       kind: 'cron.create',
@@ -403,6 +468,8 @@ describe('one-time secret in lastResult', () => {
       schedule: '*',
       prompt: longPrompt,
     });
+    const nonce = cwsAdminStore.getCwsPending()[0].nonce;
+    cwsAdminStore.confirmCwsAction(nonce);
 
     await vi.waitFor(() => {
       const result = cwsAdminStore.getCwsLastResult();
@@ -413,7 +480,7 @@ describe('one-time secret in lastResult', () => {
 
     // The cron job list should have truncated preview, NOT full prompt
     const jobs = cwsAdminStore.getCronJobs();
-    const newJob = jobs.find((j) => j.id === 'cron-new');
+    const newJob = jobs.find((j) => j.id === 'cron-real-1');
     expect(newJob).toBeDefined();
     expect(newJob!.promptPreview).not.toBe(longPrompt);
     expect(newJob!.promptPreview!.length).toBeLessThan(longPrompt.length);
@@ -584,6 +651,29 @@ describe('summarizeCwsAction', () => {
   it('falls back to id when job not found', () => {
     const summary = summarizeCwsAction({ kind: 'cron.remove', id: 'unknown' }, cronJobs, webhooks, skills);
     expect(summary).toContain('unknown');
+  });
+
+  it('warns about live scheduler cost and rollback for cron.create without leaking prompt text', () => {
+    const summary = summarizeCwsAction(
+      { kind: 'cron.create', name: 'cron-risk', schedule: '30m', prompt: 'secret prompt text' },
+      cronJobs,
+      webhooks,
+      skills,
+    );
+    expect(summary).toContain('cron-risk');
+    expect(summary).toContain('30m');
+    expect(summary).toContain('live scheduler');
+    expect(summary).toContain('cost');
+    expect(summary).toContain('pause or remove');
+    expect(summary).not.toContain('secret prompt text');
+  });
+
+  it('warns about immediate execution cost/quota for cron.run without leaking prompt previews', () => {
+    const summary = summarizeCwsAction({ kind: 'cron.run', id: 'c1' }, cronJobs, webhooks, skills);
+    expect(summary).toContain('Backup job');
+    expect(summary).toContain('live scheduler');
+    expect(summary).toContain('quota');
+    expect(summary).not.toContain('Run backup…');
   });
 });
 
