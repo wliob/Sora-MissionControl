@@ -1,12 +1,14 @@
 # Sora-MissionControl — Project Overview
 
-> **Status:** CODEX FINAL ACCEPTANCE COMPLETE FOR CURRENT VERIFIED SCOPE — Phases 0-5 are complete; Phase 6/7 are functionally partial with verified safe subsets; Phase 8 polish has Codex browser/e2e proof. The Sora proxy is deployed on Unraid Tower (`192.168.10.5`) as Docker container `sora-missioncontrol-proxy` with HTTPS on port 3443 and plain HTTP on 3187 (sensitive routes blocked). LAN acceptance has passed for both `https://192.168.10.5:3443` (primary) and `http://192.168.10.5:3187` (locked fallback).
-> **Last Updated:** 2026-06-30 (Kanban t_42907006 — PixiJS no-eval office runtime fix)
+> **Status:** v1.0.0 RELEASED — Hermes Dashboard complete and deployed. Phases 0-5 complete; Phase 6/7 live with verified safe subsets and honest unavailable states; Phase 8 polish has browser/e2e proof. Deployed on Unraid Tower (`192.168.10.5`) as Docker container `sora-missioncontrol-proxy` with HTTPS on port 3443 and plain HTTP on 3187 (sensitive routes blocked). LAN acceptance passed for both `https://192.168.10.5:3443` (primary) and `http://192.168.10.5:3187` (locked fallback). 753/753 tests passing. CSP-compliant (no unsafe-eval).
+> **Last Updated:** 2026-06-30 (v1.0.0 release — repo hygiene, GitHub backup, final docs)
 > **Created:** 2026-06-18
+> **GitHub:** https://github.com/wliob/Sora-MissionControl
+> **Release:** https://github.com/wliob/Sora-MissionControl/releases/tag/v1.0.0
 > **Deployment Target:** Docker container on Unraid Tower (`192.168.10.5`); **primary URL** `https://192.168.10.5:3443`, health `https://192.168.10.5:3443/health`. Plain HTTP on port 3187 returns 403 for all sensitive routes (admin, login, session, Kanban API). Staging/dev on Hermes host baset-ai (`192.168.0.85:3187`) via systemd user service.
 > **Stack:** React 18 + TypeScript + Vite, PixiJS v8 for 3D office, Zustand + XState for state, GSAP for motion, CSS theme tokens, optional local proxy for Hermes/CLI transport
 > **Data Source:** Hermes dashboard APIs + live agent/runtime state + Hermes 3D Office v2 assets/code + Hermes Kanban + usage/rate-limit signals; OpenClaw Mission Control remains a UX reference only
-> **Repo/Vault:** `/Users/wliob/LLM Brain/Projects/Active/Sora-MissionControl`
+> **Repo/Vault:** `/home/wliob/llm-brain/Projects/Active/Sora-MissionControl`
 
 ---
 

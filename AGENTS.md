@@ -1,7 +1,8 @@
 # Sora-MissionControl Agent Handoff
 
-> **Last Updated:** 2026-06-30
-> **Project State:** Phases 0-5 complete; Phase 6/7 have verified safe subsets and honest unavailable states; Phase 8 has browser/e2e proof. **Canonical production deployment:** Docker container `sora-missioncontrol-proxy` on Unraid Tower (192.168.10.5), HTTPS on port 3443, plain HTTP on port 3187 locked to health-only (sensitive routes return 403). A development/staging systemd service exists on `192.168.0.85:3187` but the primary user-facing URL is `https://192.168.10.5:3443`.
+> **Last Updated:** 2026-06-30 (v1.0.0 release)
+> **Project State:** v1.0.0 RELEASED — Phases 0-5 complete; Phase 6/7 have verified safe subsets and honest unavailable states; Phase 8 has browser/e2e proof. 753/753 tests passing. **Canonical production deployment:** Docker container `sora-missioncontrol-proxy` on Unraid Tower (192.168.10.5), HTTPS on port 3443, plain HTTP on port 3187 locked to health-only (sensitive routes return 403). A development/staging systemd service exists on `192.168.0.85:3187` but the primary user-facing URL is `https://192.168.10.5:3443`.
+> **GitHub:** https://github.com/wliob/Sora-MissionControl — tag v1.0.0
 > **Companion Status File:** Keep `OVERVIEW.md` updated after each meaningful task with current status, next steps, and blockers.
 
 ---

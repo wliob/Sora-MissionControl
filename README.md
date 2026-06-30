@@ -2,9 +2,13 @@
 
 Custom Hermes mission-control dashboard for the local LAN.
 
+**GitHub:** https://github.com/wliob/Sora-MissionControl
+**Release:** https://github.com/wliob/Sora-MissionControl/releases/tag/v1.0.0
+**Version:** v1.0.0
+
 ## Status
 
-Phases 0-5 are complete for the current scope. Phase 6 and Phase 7 are live with verified safe subsets and honest unavailable states for unsupported backend actions. Phase 8 has browser proof coverage.
+v1.0.0 released. Phases 0-5 are complete for the current scope. Phase 6 and Phase 7 are live with verified safe subsets and honest unavailable states for unsupported backend actions. Phase 8 has browser proof coverage. 753/753 tests passing. CSP-compliant (no unsafe-eval).
 
 **Primary deployment:** Docker container `sora-missioncontrol-proxy` on Unraid Tower (192.168.10.5).
 
