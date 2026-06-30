@@ -1,0 +1,121 @@
+{
+  "state": {
+    "title": "Hermes Dashboard",
+    "url": "http://192.168.10.5:3187/kanban",
+    "body": "HERMES\nAGENT\nthis dashboard (default)\nbiscuit\ncloud\nkorra\nlelouch\nrain\ntifa\nTEAM\nOFFICE\nACTIVITY\nPROJECTS\nDECISIONS\nCALENDAR\nCHAT\nSESSIONS\nFILES\nMODELS\nLOGS\nCRON\nSKILLS\nPLUGINS\nMCP\nCHANNELS\nWEBHOOKS\nPAIRING\nPROFILES\nCONFIG\nKEYS\nSYSTEM\nDOCUMENTATION\nKANBAN\nACHIEVEMENTS\nGateway Status: Offline\nActive Sessions: unknown\nTHEME SWITCH\nLANGUAGE SWITCH\nKanban\n0\nOffline\nunknown • unknown/unknown\n⟐\nATTENTION — top 3\nUNKNOWN\n«❶»\n[STALE]\nSYSTEM\nboard data unavailable — attention state unknown\nVERIFY CONNECTION\n«❷»\n[STALE]\nSYSTEM\ncalendar/deadline awareness unavailable — schedule data n…\nCONNECT CALENDAR\n«❸»\n[INFO]\nSYSTEM\nunknown attention state\nBOARD\nDefault · 0\n0 tasks\n?\n+ New board\nOrchestration:Auto\n▸ Orchestration settings\nSEARCH\nTENANT\nAll tenants\nASSIGNEE\nAll profiles\nShow archived\nLanes by profile\nNudge dispatcher\nRefresh\nClear filters\nKanban REST: offline\nEvents: unknown\nunknown • unknown/unknown\nSensitive Mission Control routes are unavailable on this plain HTTP listener. Use an HTTPS reverse proxy or SSH tunnel before sending dashboard credentials, session cookies, or admin proxy tokens.\nTriage\n0\n+\nRaw ideas — a specifier will flesh out the spec\n— no tasks —\nTodo\n0\n+\nWaiting on dependencies or unassigned\n— no tasks —\nScheduled\n0\n+\nWaiting on a known time delay or scheduled follow-up\n— no tasks —\nReady\n0\n+\nDependencies satisfied; assign a profile to dispatch\n— no tasks —\nIn Progress\n0\n+\nClaimed by a worker — in-flight\n— no tasks —\nBlocked\n0\n+\nWorker asked for human input\n— no tasks —\nreview\n0\n+\nAwaiting review or handoff confirmation\n— no tasks —\nOFFICE\nBuilt-in live visual panel\nOffline\nThe office mirrors the live/shared Kanban stores. When live data is unavailable, it stays in honest idle states instead of switching to demo mode.\nALL\nAll Zones\nWRK\nWorkstations\nCOL\nCollaboration\nBRK\nBreak Room\nARC\nArchive\n⛶\n↗\nOffice canvas offline\n\nThe control-room canvas failed to initialize. Runtime remains offline until retry succeeds.\n\nCurrent environment does not allow unsafe-eval, please use pixi.js/unsafe-eval module to enable support.\n\nRetry canvas init\nCloud\nin break-room standby\nBiscuit\nin break-room standby\nKorra\n\udfa8 Korra: in break-room standby\nLelouch\nin break-room standby\nTifa\nin break-room standby\nRain\nin break-room standby",
+    "canvasCount": 0,
+    "statusNotes": [
+      "Sensitive Mission Control routes are unavailable on this plain HTTP listener. Use an HTTPS reverse proxy or SSH tunnel before sending dashboard credentials, session cookies, or admin proxy tokens.",
+      "The office mirrors the live/shared Kanban stores. When live data is unavailable, it stays in honest idle states instead of switching to demo mode."
+    ],
+    "officeText": "ALLAll ZonesWRKWorkstationsCOLCollaborationBRKBreak RoomARCArchive⛶↗Office canvas offlineThe control-room canvas failed to initialize. Runtime remains offline until retry succeeds.Current environment does not allow unsafe-eval, please use pixi.js/unsafe-eval module to enable support.Retry canvas initCloudin break-room standbyBiscuitin break-room standbyKorra\udfa8 Korra: in break-room standbyLelouchin break-room standbyTifain break-room standbyRainin break-room standby"
+  },
+  "logs": [
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 403 (Forbidden)"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 403 (Forbidden)"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 403 (Forbidden)"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 403 (Forbidden)"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 403 (Forbidden)"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 403 (Forbidden)"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 403 (Forbidden)"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 403 (Forbidden)"
+    },
+    {
+      "type": "error",
+      "text": "WebSocket connection to 'ws://192.168.10.5:3187/api/pty?token=' failed: Error during WebSocket handshake: Unexpected response code: 403"
+    },
+    {
+      "type": "error",
+      "text": "GameRuntime init failed: Error: Current environment does not allow unsafe-eval, please use pixi.js/unsafe-eval module to enable support.\n    at Yt._unsafeEvalCheck (http://192.168.10.5:3187/assets/index-Cl9liJlb.js:62:24686)\n    at new f_ (http://192.168.10.5:3187/assets/index-Cl9liJlb.js:62:21427)\n    at new Yt (http://192.168.10.5:3187/assets/WebGLRenderer-CcbktUjh.js:156:25159)\n    at NE (http://192.168.10.5:3187/assets/index-Cl9liJlb.js:62:26740)\n    at async Xh.init (http://192.168.10.5:3187/assets/index-Cl9liJlb.js:62:29005)\n    at async rj.init (http://192.168.10.5:3187/assets/index-Cl9liJlb.js:341:21168)"
+    }
+  ],
+  "responses": [
+    {
+      "status": 200,
+      "url": "http://192.168.10.5:3187/kanban"
+    },
+    {
+      "status": 200,
+      "url": "http://192.168.10.5:3187/assets/index-srW1eDlg.css"
+    },
+    {
+      "status": 200,
+      "url": "http://192.168.10.5:3187/assets/index-Cl9liJlb.js"
+    },
+    {
+      "status": 403,
+      "url": "http://192.168.10.5:3187/admin/keys"
+    },
+    {
+      "status": 403,
+      "url": "http://192.168.10.5:3187/admin/mcp"
+    },
+    {
+      "status": 200,
+      "url": "http://192.168.10.5:3187/assets/Filter-D_S32TqF.js"
+    },
+    {
+      "status": 403,
+      "url": "http://192.168.10.5:3187/admin/cron"
+    },
+    {
+      "status": 403,
+      "url": "http://192.168.10.5:3187/admin/webhooks"
+    },
+    {
+      "status": 403,
+      "url": "http://192.168.10.5:3187/admin/skills"
+    },
+    {
+      "status": 200,
+      "url": "http://192.168.10.5:3187/"
+    },
+    {
+      "status": 403,
+      "url": "http://192.168.10.5:3187/api/plugins/kanban/profiles"
+    },
+    {
+      "status": 403,
+      "url": "http://192.168.10.5:3187/api/plugins/kanban/board"
+    },
+    {
+      "status": 200,
+      "url": "http://192.168.10.5:3187/assets/RenderTargetSystem-BFJ2mxvF.js"
+    },
+    {
+      "status": 200,
+      "url": "http://192.168.10.5:3187/assets/WebGLRenderer-CcbktUjh.js"
+    },
+    {
+      "status": 200,
+      "url": "http://192.168.10.5:3187/assets/BufferResource-DhaNGH_i.js"
+    },
+    {
+      "status": 403,
+      "url": "http://192.168.10.5:3187/api/plugins/kanban/board"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "base": "http://127.0.0.1:3187",
+  "status": 200,
+  "finalUrl": "http://127.0.0.1:3187/office",
+  "canvasCount": 1,
+  "csp": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' ws://127.0.0.1:3187 wss://127.0.0.1:3443 http://127.0.0.1:3187 https://127.0.0.1:3443; font-src 'self' data:; frame-ancestors 'none'; form-action 'self'",
+  "cspHasUnsafeEval": false,
+  "scripts": [
+    "http://127.0.0.1:3187/assets/index-k2GobxlW.js"
+  ],
+  "networkToTower3187": [],
+  "unsafeEvalConsole": [],
+  "pageErrors": [],
+  "consoleCount": 10,
+  "textSample": "HERMES\nAGENT\nthis dashboard (default)\nbiscuit\ncloud\nkorra\nlelouch\nrain\ntifa\nTEAM\nOFFICE\nACTIVITY\nPROJECTS\nDECISIONS\nCALENDAR\nCHAT\nSESSIONS\nFILES\nMODELS\nLOGS\nCRON\nSKILLS\nPLUGINS\nMCP\nCHANNELS\nWEBHOOKS\nPAIRING\nPROFILES\nCONFIG\nKEYS\nSYSTEM\nDOCUMENTATION\nKANBAN\nACHIEVEMENTS\nGateway Status: Offline\nActive Sessions: unknown\nTHEME SWITCH\nLANGUAGE SWITCH\nOffice\nOffline\nunknown • unknown/unknown\n⟐\nATTENTION — top 3\nUNKNOWN\n«❶»\n[STALE]\nSYSTEM\nboard data unavailable — attention state unknown\nVERIFY CONNECTION\n«❷»\n[STALE]\nSYSTEM\ncalendar/deadline awareness unavailable — schedule data n…\nCONNECT CALENDAR\n«❸»\n[INFO]\nSYSTEM\nunknown attention state\nALL\nAll Zones\nWRK\nWorkstations\nCOL\nCollaboration\nBRK\nBreak Room\nARC\nArchive\n⛶\n↗\n\nInitializing office canvas…\n\nCloud\nin break-room standby\nBiscuit\nin break-room s",
+  "screenshotPath": "/home/wliob/llm-brain/Projects/Active/Sora-MissionControl/shared/verification/local-office-csp-20260630/office-local.png"
+}

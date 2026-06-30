@@ -1,0 +1,71 @@
+﻿{
+    "host":  "WIN11-CECE",
+    "chrome":  "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+    "started":  "2026-06-30T10:49:17.6406494-04:00",
+    "routes":  [
+                   {
+                       "route":  "/team",
+                       "url":  "https://192.168.10.5:3443/team",
+                       "screenshot":  "C:\\HermesWorker\\smc-final-gate-20260630\\team.png",
+                       "screenshotBytes":  0,
+                       "screenshotExit":  null,
+                       "dom":  "C:\\HermesWorker\\smc-final-gate-20260630\\team.html",
+                       "domExit":  null,
+                       "hasHermes":  [
+
+                                     ],
+                       "hasAsset":  [
+
+                                    ],
+                       "hasOffice":  [
+
+                                     ],
+                       "hasKanban":  [
+
+                                     ]
+                   },
+                   {
+                       "route":  "/kanban",
+                       "url":  "https://192.168.10.5:3443/kanban",
+                       "screenshot":  "C:\\HermesWorker\\smc-final-gate-20260630\\kanban.png",
+                       "screenshotBytes":  0,
+                       "screenshotExit":  null,
+                       "dom":  "C:\\HermesWorker\\smc-final-gate-20260630\\kanban.html",
+                       "domExit":  null,
+                       "hasHermes":  [
+
+                                     ],
+                       "hasAsset":  [
+
+                                    ],
+                       "hasOffice":  [
+
+                                     ],
+                       "hasKanban":  [
+
+                                     ]
+                   },
+                   {
+                       "route":  "/office",
+                       "url":  "https://192.168.10.5:3443/office",
+                       "screenshot":  "C:\\HermesWorker\\smc-final-gate-20260630\\office.png",
+                       "screenshotBytes":  0,
+                       "screenshotExit":  null,
+                       "dom":  "C:\\HermesWorker\\smc-final-gate-20260630\\office.html",
+                       "domExit":  null,
+                       "hasHermes":  [
+
+                                     ],
+                       "hasAsset":  [
+
+                                    ],
+                       "hasOffice":  [
+
+                                     ],
+                       "hasKanban":  [
+
+                                     ]
+                   }
+               ],
+    "finished":  "2026-06-30T10:49:17.7649631-04:00"
+}

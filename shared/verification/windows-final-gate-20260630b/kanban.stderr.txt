@@ -1,0 +1,11 @@
+[17884:16840:0630/105005.148:ERROR:components\page_load_metrics\browser\page_load_metrics_update_dispatcher.cc:88] Invalid response_start 1.064 s for parse_start 1.062 s
+[17884:16840:0630/105005.152:ERROR:components\page_load_metrics\browser\page_load_metrics_update_dispatcher.cc:88] Invalid response_start 1.064 s for parse_start 1.062 s
+[17884:16840:0630/105005.295:ERROR:components\page_load_metrics\browser\page_load_metrics_update_dispatcher.cc:88] Invalid response_start 1.064 s for parse_start 1.062 s
+[17884:16840:0630/105005.476:ERROR:components\page_load_metrics\browser\page_load_metrics_update_dispatcher.cc:88] Invalid response_start 1.064 s for parse_start 1.062 s
+[17884:16840:0630/105005.488:ERROR:components\page_load_metrics\browser\page_load_metrics_update_dispatcher.cc:88] Invalid response_start 1.064 s for parse_start 1.062 s
+[17884:16840:0630/105005.644:ERROR:components\page_load_metrics\browser\page_load_metrics_update_dispatcher.cc:88] Invalid response_start 1.064 s for parse_start 1.062 s
+[17884:16840:0630/105005.686:ERROR:components\page_load_metrics\browser\page_load_metrics_update_dispatcher.cc:88] Invalid response_start 1.064 s for parse_start 1.062 s
+[17884:16840:0630/105005.690:ERROR:components\page_load_metrics\browser\page_load_metrics_update_dispatcher.cc:88] Invalid response_start 1.064 s for parse_start 1.062 s
+[17884:16840:0630/105005.691:ERROR:components\page_load_metrics\browser\page_load_metrics_update_dispatcher.cc:88] Invalid response_start 1.064 s for parse_start 1.062 s
+[17884:16840:0630/105005.798:ERROR:components\page_load_metrics\browser\page_load_metrics_update_dispatcher.cc:88] Invalid response_start 1.064 s for parse_start 1.062 s
+154354 bytes written to file C:\HermesWorker\smc-final-gate-20260630b\kanban.png

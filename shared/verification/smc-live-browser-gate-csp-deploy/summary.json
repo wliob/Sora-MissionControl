@@ -1,0 +1,37 @@
+{
+  "base": "https://192.168.10.5:3443",
+  "routeResults": [
+    {
+      "route": "/team",
+      "status": 200,
+      "finalUrl": "https://192.168.10.5:3443/team",
+      "canvasCount": 0,
+      "textSample": "HERMES\nAGENT\nthis dashboard (default)\nbiscuit\ncloud\nkorra\nlelouch\nrain\ntifa\nTEAM\nOFFICE\nACTIVITY\nPROJECTS\nDECISIONS\nCALENDAR\nCHAT\nSESSIONS\nFILES\nMODELS\nLOGS\nCRON\nSKILLS\nPLUGINS\nMCP\nCHANNELS\nWEBHOOKS\nPAIRING\nPROFILES\nCONFIG\nKEYS\nSYSTEM\nDOCUMENTATION\nKANBAN\nACHIEVEMENTS\nGateway Status: Offline\nActive Sessions: unknown\nTHEME SWITCH\nLANGUAGE SWITCH\nTeam\nOffline\nunknown • unknown/unknown\n⟐\nATTENTION — top 3\nUNKNOWN\n«❶»\n[STALE]\nSYSTEM\nboard data unavailable — attention state unknown\nVERIFY CONNECTION\n«❷»\n[STALE]\nSYSTEM\ncalendar/deadline awareness unavailable — schedule data n…\nCONNECT CALENDAR\n«❸»\n[INFO]\nSYSTEM\nunknown attention state\n⟐\nATTENTION LOG — tail -f /dev/attention\n█\n«❶»\n[STALE]\n11:16:51.000\nSYSTEM\nboard data unavailable — attention state unknown\nverify connection\nunknown\n«❷»\n[STALE]\n11:16:51.000\nSYSTEM\ncalendar/deadline awareness unavailable — schedule data n…\nconnect calendar\nunknown\n«❸»\n[INFO]\n--:--:--.---\nSYSTEM\nunknown attention state\nunknown\nOFFLINE\nIDLE 0\n✦\nCL\nCloud\nSentinel · Systems Class\n──┬─ workload ───\nIDLE 0\nnot verified\nunknown\n╰── inspect\nOFFLINE\nIDLE 0\n✦\nBI\nBiscuit\nArtificer · Code Class\n──┬─ workload ───\nIDLE 0\nnot verified\nunknown\n╰── inspect\nOFFLINE\nIDLE 0\n✦",
+      "screenshotPath": "/home/wliob/llm-brain/Projects/Active/Sora-MissionControl/shared/verification/smc-live-browser-gate-csp-deploy/team.png"
+    },
+    {
+      "route": "/kanban",
+      "status": 200,
+      "finalUrl": "https://192.168.10.5:3443/kanban",
+      "canvasCount": 1,
+      "textSample": "HERMES\nAGENT\nthis dashboard (default)\nbiscuit\ncloud\nkorra\nlelouch\nrain\ntifa\nTEAM\nOFFICE\nACTIVITY\nPROJECTS\nDECISIONS\nCALENDAR\nCHAT\nSESSIONS\nFILES\nMODELS\nLOGS\nCRON\nSKILLS\nPLUGINS\nMCP\nCHANNELS\nWEBHOOKS\nPAIRING\nPROFILES\nCONFIG\nKEYS\nSYSTEM\nDOCUMENTATION\nKANBAN\nACHIEVEMENTS\nGateway Status: Offline\nActive Sessions: unknown\nTHEME SWITCH\nLANGUAGE SWITCH\nKanban\n0\nOffline\nunknown • unknown/unknown\n⟐\nATTENTION — top 3\nUNKNOWN\n«❶»\n[STALE]\nSYSTEM\nboard data unavailable — attention state unknown\nVERIFY CONNECTION\n«❷»\n[STALE]\nSYSTEM\ncalendar/deadline awareness unavailable — schedule data n…\nCONNECT CALENDAR\n«❸»\n[INFO]\nSYSTEM\nunknown attention state\nBOARD\nDefault · 0\n0 tasks\n?\n+ New board\nOrchestration:Auto\n▸ Orchestration settings\nSEARCH\nTENANT\nAll tenants\nASSIGNEE\nAll profiles\nShow archived\nLanes by profile\nNudge dispatcher\nRefresh\nClear filters\nKanban REST: offline\nEvents: unknown\nunknown • unknown/unknown\nunauthenticated\nTriage\n0\n+\nRaw ideas — a specifier will flesh out the spec\n— no tasks —\nTodo\n0\n+\nWaiting on dependencies or unassigned\n— no tasks —\nScheduled\n0\n+\nWaiting on a known time delay or scheduled follow-up\n— no tasks —\nReady\n0\n+\nDependencies satisfied; assign a profile to dispatch\n— n",
+      "screenshotPath": "/home/wliob/llm-brain/Projects/Active/Sora-MissionControl/shared/verification/smc-live-browser-gate-csp-deploy/kanban.png"
+    },
+    {
+      "route": "/office",
+      "status": 200,
+      "finalUrl": "https://192.168.10.5:3443/office",
+      "canvasCount": 1,
+      "textSample": "HERMES\nAGENT\nthis dashboard (default)\nbiscuit\ncloud\nkorra\nlelouch\nrain\ntifa\nTEAM\nOFFICE\nACTIVITY\nPROJECTS\nDECISIONS\nCALENDAR\nCHAT\nSESSIONS\nFILES\nMODELS\nLOGS\nCRON\nSKILLS\nPLUGINS\nMCP\nCHANNELS\nWEBHOOKS\nPAIRING\nPROFILES\nCONFIG\nKEYS\nSYSTEM\nDOCUMENTATION\nKANBAN\nACHIEVEMENTS\nGateway Status: Offline\nActive Sessions: unknown\nTHEME SWITCH\nLANGUAGE SWITCH\nOffice\nOffline\nunknown • unknown/unknown\n⟐\nATTENTION — top 3\nUNKNOWN\n«❶»\n[STALE]\nSYSTEM\nboard data unavailable — attention state unknown\nVERIFY CONNECTION\n«❷»\n[STALE]\nSYSTEM\ncalendar/deadline awareness unavailable — schedule data n…\nCONNECT CALENDAR\n«❸»\n[INFO]\nSYSTEM\nunknown attention state\nALL\nAll Zones\nWRK\nWorkstations\nCOL\nCollaboration\nBRK\nBreak Room\nARC\nArchive\n⛶\n↗\n\nInitializing office canvas…\n\nCloud\nin break-room standby\nBiscuit\nin break-room standby\nKorra\n\udfa8 Korra: in break-room standby\nLelouch\nin break-room standby\nTifa\nin break-room standby\nRain\nin break-room standby\nSORA · CONDUCTOR\nDISPATCH\n15:16:59\nSYSTEM:\nunknown — no verified dispatch activity\n⏣\nSYSTEM\nverified\nAGENTS\n0/7 ACTIVE\nDELEGATIONS\n0 ACTIVE\nUPTIME\n15:16:59 UTC",
+      "screenshotPath": "/home/wliob/llm-brain/Projects/Active/Sora-MissionControl/shared/verification/smc-live-browser-gate-csp-deploy/office.png"
+    }
+  ],
+  "scripts": [
+    "https://192.168.10.5:3443/assets/index-k2GobxlW.js"
+  ],
+  "badRequests": [],
+  "networkTo3187": [],
+  "consoleCount": 33,
+  "fatalConsole": [],
+  "pageErrors": []
+}
