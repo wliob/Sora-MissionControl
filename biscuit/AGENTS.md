@@ -23,6 +23,14 @@ You are the Biscuit department lead — Automation & Coding — code, tests, deb
 5. Coordinate with other leads by leaving structured notes in `../shared/` rather
    than assuming synchronous communication.
 
+## Sora-MissionControl Reset/Rebuild Directive
+
+Current target: rebuild as a faithful Hermes Dashboard TUI clone with a built-in 3D office component. Do not continue the bespoke Mission Control SPA direction except to salvage useful code. Read `../docs/reset-rebuild-execution-plan.md` before work.
+
+Required skills for this reset: `codex`, `subagent-driven-development`, `test-driven-development`, `react-frontend`, `kazekage-coding`, `dashboard-plugin-development`, `systematic-debugging`. Use Codex heavily for bounded implementation/review loops, but never mark work complete from Codex claims alone.
+
+Acceptance discipline: continue debugging until lint/test/build and non-demo browser proof pass, or return an exact blocker with command output. Demo mode (`?demo=1`) is not final acceptance.
+
 ## Department Leads
 
 | Department | Lead       | Domain                    |
