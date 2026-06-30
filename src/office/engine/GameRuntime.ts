@@ -1,3 +1,8 @@
+// Pixi v8 uses generated shader/uniform sync functions by default. Under the
+// production CSP (no `unsafe-eval`), Pixi's official workaround is this
+// side-effect module, which swaps those runtime generators for no-eval
+// polyfills. This does not require weakening missionControlProxy.js CSP.
+import 'pixi.js/unsafe-eval';
 import {
   Application,
   Container,
@@ -19,6 +24,7 @@ import {
   GRID_ROWS,
   TILE_W,
   TILE_H,
+  CONDUCTOR_ZONE,
   type AgentDesk,
 } from '@/office/engine/iso';
 import { Agent, type AgentAssetError } from '@/office/entities/Agent';
@@ -28,6 +34,7 @@ import { computePerformanceMode, type PerformanceMode } from '@/office/engine/pe
 import { createContextLossRecovery, type ContextLossRecovery } from '@/office/engine/contextLossRecovery';
 import { QualityManager, type QualityTier, type QualitySettings } from '@/office/engine/QualityManager';
 import { debounce } from '@/office/lib/debounce';
+import { AmbientLighting } from '@/office/engine/AmbientLighting';
 
 const WORLD_BG = 0x0b111a; // Match dashboard --bg-2
 const ATLAS_BASE = '/assets/atlases/';
@@ -183,6 +190,7 @@ export class GameRuntime {
   private intersectionObserver: IntersectionObserver | null = null;
   private contextLossRecovery: ContextLossRecovery | null = null;
   private qualityManager: QualityManager;
+  private ambientLighting: AmbientLighting | null = null;
   private debouncedResize: ((w: number, h: number) => void) & { cancel: () => void };
   private tickerCallback: ((ticker: Ticker) => void) | null = null;
   private pendingDesk: AgentDesk | null = null;
@@ -264,6 +272,22 @@ export class GameRuntime {
   /** Whether the WebGL context is currently lost (between loss and restore events). */
   get isContextLost(): boolean { return this.contextLossRecovery?.isLost ?? false; }
 
+  /**
+   * Get the screen position of a grid coordinate, accounting for current
+   * camera pan/zoom. Used by React overlays (ConductorStation) to position
+   * themselves relative to isometric grid locations.
+   */
+  getScreenPosition(col: number, row: number): { x: number; y: number } {
+    if (!this.app) return { x: 0, y: 0 };
+    const world = gridToScreen(col, row);
+    const { width, height } = this.options;
+    const scale = this.camera.zoom;
+    return {
+      x: width / 2 - this.camera.x * scale + world.x * scale,
+      y: height / 2 - this.camera.y * scale + world.y * scale,
+    };
+  }
+
   async init(): Promise<void> {
     const app = new Application();
     await app.init({
@@ -334,6 +358,15 @@ export class GameRuntime {
     this.paintFloor();
     this.placeProps();
     this.placeZoneLabels();
+
+    // Phase B: Initialize ambient lighting (warm light pools, CRT glows)
+    if (!this.options.prefersReducedMotion) {
+      this.ambientLighting = new AmbientLighting(this.fxLayer, {
+        reducedMotion: this.options.prefersReducedMotion ?? false,
+      });
+      this.ambientLighting.createLightPools();
+      this.ambientLighting.start();
+    }
 
     if (this.pendingDesk) {
       this.spawnAgent(this.pendingDesk);
@@ -406,6 +439,7 @@ export class GameRuntime {
     if (this.tickerCallback && this.app) {
       this.app.ticker.remove(this.tickerCallback);
     }
+    this.ambientLighting?.destroy();
     this.contextLossRecovery?.detach();
     this.contextLossRecovery = null;
     this.debouncedResize.cancel();
@@ -635,7 +669,8 @@ export class GameRuntime {
   }
 
   private paintFloor(): void {
-    const sortedZones = [...ZONES].sort((a, b) => {
+    const allZones = [...ZONES, CONDUCTOR_ZONE];
+    const sortedZones = [...allZones].sort((a, b) => {
       const aW = a.isWalkway ? 0 : 1;
       const bW = b.isWalkway ? 0 : 1;
       return aW - bW;

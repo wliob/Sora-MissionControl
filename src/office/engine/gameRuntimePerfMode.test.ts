@@ -13,6 +13,13 @@ const mockTicker = vi.hoisted(() => ({
   deltaMS: 16.67,
 }));
 
+const mockPixiCspShimLoaded = vi.hoisted(() => vi.fn());
+
+vi.mock('pixi.js/unsafe-eval', () => {
+  mockPixiCspShimLoaded();
+  return {};
+});
+
 vi.mock('pixi.js', () => {
   const mockApp = {
     init: vi.fn().mockResolvedValue(undefined),
@@ -69,6 +76,19 @@ vi.mock('pixi.js', () => {
         scale: { set: vi.fn() },
         x: 0,
         y: 0,
+        alpha: 1,
+      };
+    }),
+    Graphics: vi.fn(function () {
+      return {
+        circle: vi.fn().mockReturnThis(),
+        fill: vi.fn().mockReturnThis(),
+        roundRect: vi.fn().mockReturnThis(),
+        stroke: vi.fn().mockReturnThis(),
+        clear: vi.fn(),
+        x: 0,
+        y: 0,
+        zIndex: 0,
         alpha: 1,
       };
     }),
@@ -165,6 +185,10 @@ describe('GameRuntime performance mode handling (t_aeececba)', () => {
     intersectionObserverCtor.mockClear();
     resizeObserverCtor.mockClear();
     runtime = new GameRuntime({ container, width: 800, height: 600 });
+  });
+
+  it('loads the Pixi no-eval CSP shim at the runtime boundary', () => {
+    expect(mockPixiCspShimLoaded).toHaveBeenCalledTimes(1);
   });
 
   it('sets targetFps to hidden when document is hidden', async () => {
